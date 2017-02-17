@@ -5,12 +5,31 @@
  */
 package br.com.ufrn.kann2.observer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author kenreurison
  */
-public interface Subject {
-    public void registerObserver(Observer o);
-    public void removeObserver(Observer o);
-    public void notifyObserver();
+public abstract class Subject {
+
+    private List<Observer> observers = new ArrayList();
+
+    public void registerObserver(Observer o) {
+        observers.add(o);
+    }
+
+    public void removeObserver(Observer o) {
+        int i = observers.indexOf(o);
+        if (i >= 0) {
+            observers.remove(o);
+        }
+    }
+
+    public void notifyObserver() {
+        for (Observer o : observers) {
+            o.update();
+        }
+    }
 }

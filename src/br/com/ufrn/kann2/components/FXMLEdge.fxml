@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root mouseTransparent="true" prefHeight="38.0" prefWidth="201.0" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.ufrn.kann2.components.FXMLEdgeController">
+   <children>
+      <Line fx:id="lineT" endX="200.0" layoutY="0.0" />
+      <Label fx:id="labelText" alignment="CENTER" layoutX="94.0" layoutY="6.0" text="50" />
+   </children>
+</fx:root>

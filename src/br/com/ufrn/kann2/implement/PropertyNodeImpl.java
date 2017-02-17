@@ -23,5 +23,25 @@ public class PropertyNodeImpl extends Property {
         registerField("value");
         registerField("activation");
     }
+    
+    protected void setNet(Double v){
+        setMapValue("value", v);
+    }
+
+    Double getBias() {
+        return getMapValue("bias");
+    }
+
+    Double getNet() {
+        return getMapValue("value");
+    }
+
+    Double getActivation() {
+        return getMapValue("activation");
+    }
+
+    void setActivation(double d) {
+        setMapValue("activation", d);
+    }
 
 }

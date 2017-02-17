@@ -5,47 +5,41 @@
  */
 package br.com.ufrn.kann2.implement;
 
-import br.com.ufrn.kann2.observer.Observer;
 import br.com.ufrn.kann2.observer.Subject;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
  * @author kenreurison
  */
-public class Node implements Subject {
+public class Node extends Subject {
     
-    public ArrayList<Edge> edgesIn = new ArrayList<>();
-    public ArrayList<Edge> edgesOut = new ArrayList<>();
-    private List<Observer> observers = new ArrayList<>();
-    Property p = new PropertyNodeImpl();
+    private ArrayList<Edge> edgesIn = new ArrayList<>();
+    private ArrayList<Edge> edgesOut = new ArrayList<>();
+    Property pNode = new PropertyNodeImpl();
     
-    @Override
-    public void registerObserver(Observer o) {
-        observers.add(o);
-    }
-    
-    @Override
-    public void removeObserver(Observer o) {
-        int i = observers.indexOf(o);
-        if (i >= 0) {
-            observers.remove(o);
-        }
-    }
-    
-    @Override
-    public void notifyObserver() {
-        for (Observer o : observers) {
-            o.update();
-        }
-    }
-    
-    public Double net() {
-        Double sum = p.getValue("bias");
+    public void setNet() {
+        Double sum = ((PropertyNodeImpl) pNode).getBias();
         for (Edge e : edgesIn) {
             sum += e.getPeso();
         }
-        return sum;
+        ((PropertyNodeImpl) pNode).setNet(sum);
     }
+    
+    public Double getNet() {
+        return ((PropertyNodeImpl) pNode).getNet();
+    }
+    
+    public void activation() {
+        ((PropertyNodeImpl) pNode).setActivation(logsig(getNet()));
+    }
+    
+    public Double getActivation() {
+        return ((PropertyNodeImpl) pNode).getActivation();
+    }
+    
+    private Double logsig(Double net) {
+        return 1. / (1. + Math.exp(-net));
+    }
+    
 }

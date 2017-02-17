@@ -28,11 +28,11 @@ public abstract class Property {
         fields.remove(field);
     }
 
-    protected Double getValue(String field) {
+    protected Double getMapValue(String field) {
         return fields.get(field);
     }
 
-    private void setValue(String field, Double value) {
+    protected void setMapValue(String field, Double value) {
         fields.computeIfPresent(field, (k, v) -> value);
     }
 

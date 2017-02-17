@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="556.0" prefWidth="1315.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.ufrn.kann2components.MainFXMLController">
+   <children>
+      <BorderPane layoutX="32.0" layoutY="61.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="306.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="TOP_CENTER">
+              <menus>
+                <Menu mnemonicParsing="false" text="Arquivo">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Close" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Regras">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Inserir" />
+                  </items>
+                </Menu>
+                  <Menu mnemonicParsing="false" text="Planta">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Inserir" />
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Dados">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Inserir" />
+                     </items>
+                  </Menu>
+                <Menu mnemonicParsing="false" text="Gráfico">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Erro Treinamento" />
+                  </items>
+                </Menu>
+                  <Menu mnemonicParsing="false" text="Ajuda">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Sobre" />
+                     </items>
+                  </Menu>
+              </menus>
+            </MenuBar>
+         </top>
+         <left>
+            <Accordion maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" BorderPane.alignment="TOP_LEFT">
+              <panes>
+                <TitledPane animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Conjunto Inicial">
+                     <content>
+                        <TreeView fx:id="tvwRegraInicial" prefHeight="200.0" prefWidth="200.0" />
+                     </content>
+                </TitledPane>
+                  <TitledPane animated="false" text="Conjunto Final">
+                     <content>
+                        <TreeView fx:id="tvwRegraFinal" prefHeight="200.0" prefWidth="200.0" />
+                     </content>
+                  </TitledPane>
+                <TitledPane animated="false" text="Rede">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </TitledPane>
+              </panes>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Accordion>
+         </left>
+         <right>
+            <Accordion prefHeight="274.0" prefWidth="187.0" BorderPane.alignment="TOP_RIGHT">
+              <panes>
+                <TitledPane animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Visualização">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox layoutX="39.0" layoutY="6.0" prefHeight="211.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <CheckBox fx:id="cbxCirculo" mnemonicParsing="false" selected="true" text="Círculo">
+                                       <padding>
+                                          <Insets bottom="10.0" />
+                                       </padding>
+                                    </CheckBox>
+                                    <CheckBox fx:id="cbxNivel" mnemonicParsing="false" text="Nível" textAlignment="CENTER">
+                                       <padding>
+                                          <Insets bottom="10.0" />
+                                       </padding>
+                                    </CheckBox>
+                                 </children>
+                              </VBox>
+                           </children></AnchorPane>
+                  </content>
+                </TitledPane>
+                  <TitledPane animated="false" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Legendas">
+                     <content>
+                        <VBox fx:id="vbxLegenda" />
+                     </content>
+                  </TitledPane>
+                <TitledPane animated="false" text="Conhecimento Extraído">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </TitledPane>
+              </panes>
+            </Accordion>
+         </right>
+         <center>
+            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ToolBar maxHeight="35.0" maxWidth="1.7976931348623157E308" minHeight="35.0" prefHeight="35.0">
+                     <items>
+                        <Label text=" Erro aceitável">
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="txfErro" prefHeight="25.0" prefWidth="68.0" text="0.01" />
+                        <Label layoutX="10.0" layoutY="16.0" text="Número épocas">
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="txfEpocas" layoutX="59.0" layoutY="11.0" prefHeight="25.0" prefWidth="69.0" text="10000" />
+                        <Label layoutX="104.0" layoutY="16.0" text="Taxa de momentum">
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </Label>
+                        <ComboBox fx:id="cmbMomento" prefHeight="25.0" prefWidth="72.0" />
+                        <Label layoutX="217.0" layoutY="16.0" text="Eta">
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="txfEta" layoutX="163.0" layoutY="21.0" prefHeight="25.0" prefWidth="69.0" text="0.01" />
+                        <Button mnemonicParsing="false" text="Treinar" />
+                        <Button fx:id="btnTopGen" disable="true" mnemonicParsing="false" text="TopGen" />
+                     </items>
+                  </ToolBar>
+                  <ToolBar maxHeight="35.0" maxWidth="1.7976931348623157E308" minHeight="35.0" prefHeight="35.0">
+                     <items>
+                        <Label text="Erro validação">
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="txfErroValidacao" disable="true" editable="false" prefHeight="25.0" prefWidth="176.0" />
+                        <Label layoutX="10.0" layoutY="11.0" text="Erro treinamento">
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="txfErroTreinamneto" disable="true" editable="false" layoutX="111.0" layoutY="6.0" prefHeight="25.0" prefWidth="169.0" />
+                        <Label layoutX="20.0" layoutY="21.0" text="Número de épocas">
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="txfnumEpocas" disable="true" editable="false" layoutX="121.0" layoutY="16.0" prefHeight="25.0" prefWidth="69.0" />
+                     </items></ToolBar>
+                  <Pane fx:id="pnPrincipal" nodeOrientation="LEFT_TO_RIGHT" prefHeight="0.0" prefWidth="911.0">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Pane>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

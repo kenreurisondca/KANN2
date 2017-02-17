@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml" fx:controller="br.com.ufrn.kann2.components.ComponenteNovoController">
+   <children>
+      <AnchorPane layoutY="-2.0" prefHeight="137.0" prefWidth="226.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="62.0" layoutY="60.0" text="Componente Novo" />
+         </children>
+      </AnchorPane>
+   </children>
+</fx:root>

@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author kenreurison
  */
-public class Edge implements Subject {
+public class Edge extends Subject {
 
     public Node in = new Node();
     public Node out = new Node();
@@ -25,28 +25,8 @@ public class Edge implements Subject {
 
     }
 
-    @Override
-    public void registerObserver(Observer o) {
-        observers.add(o);
-    }
-
-    @Override
-    public void removeObserver(Observer o) {
-        int i = observers.indexOf(o);
-        if (i >= 0) {
-            observers.remove(o);
-        }
-    }
-
-    @Override
-    public void notifyObserver() {
-        for (Observer o : observers) {
-            o.update();
-        }
-    }
-
     Double getPeso() {
-        return p.getValue("weigth");
+        return p.getMapValue("weigth");
     }
 
 }
