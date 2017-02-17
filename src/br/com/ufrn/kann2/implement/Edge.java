@@ -16,17 +16,35 @@ import java.util.List;
  */
 public class Edge extends Subject {
 
-    public Node in = new Node();
-    public Node out = new Node();
+    private Node in;
+    private Node out;
     private List<Observer> observers = new ArrayList();
     private Property p = new PropertyEdgeImpl();
 
-    public Edge() {
-
+    public Edge(Node a, Node b) {
+        this.in = a;
+        this.out = b;
     }
 
-    Double getPeso() {
-        return p.getMapValue("weigth");
+    public Edge(String a, String b) {
+        this.in = new Node(a);
+        this.out = new Node(b);
+    }
+
+    Double getWeigth() {
+        return ((PropertyEdgeImpl) p).getWeigth();
+    }
+
+    void setWeigth(Double w) {
+        ((PropertyEdgeImpl) p).setWeigth(w);
+    }
+
+    public Node getIn() {
+        return in;
+    }
+
+    public Node getOut() {
+        return out;
     }
 
 }

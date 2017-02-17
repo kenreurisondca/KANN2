@@ -10,11 +10,11 @@ package br.com.ufrn.kann2.implement;
  * @author kenreurison
  */
 public class PropertyNodeImpl extends Property {
-
+    
     public PropertyNodeImpl() {
         super();
     }
-
+    
     @Override
     public void createFields() {
         registerField("bias");
@@ -22,26 +22,33 @@ public class PropertyNodeImpl extends Property {
         registerField("nivel");
         registerField("value");
         registerField("activation");
+        registerField("label");
     }
     
-    protected void setNet(Double v){
+    protected void setNet(Double v) {
         setMapValue("value", v);
     }
-
-    Double getBias() {
-        return getMapValue("bias");
-    }
-
+    
     Double getNet() {
         return getMapValue("value");
     }
-
+    
+    Double getBias() {
+        return getMapValue("bias");
+    }
+    
     Double getActivation() {
         return getMapValue("activation");
     }
-
-    void setActivation(double d) {
+    
+    void setActivation(Double d) {
         setMapValue("activation", d);
     }
-
+    
+    void setBias(Double b) {
+        Double oldBias = getMapValue("bias");
+        setMapValue("oldBias", oldBias);
+        setMapValue("bias", b);
+    }
+    
 }

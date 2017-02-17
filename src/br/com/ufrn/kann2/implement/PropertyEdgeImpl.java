@@ -21,4 +21,20 @@ public class PropertyEdgeImpl extends Property {
         registerField("oldWeigth");
     }
 
+    public Double getWeigth() {
+        return getMapValue("weigth");
+    }
+    
+    void setWeigth(Double w) {
+        Double oldWeigth = getMapValue("weigth");
+        setMapValue("oldWeigth", oldWeigth);
+        setMapValue("weigth", w);
+    }
+
+    void setBias(Double b) {
+        Double oldWeigth = getMapValue("bias");
+        setMapValue("oldBias", oldWeigth);
+        setMapValue("weigth", b);
+    }
+
 }

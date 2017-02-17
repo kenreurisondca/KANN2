@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package br.com.ufrn.kann2.implement;
-
 import br.com.ufrn.kann2.observer.Subject;
 import java.util.ArrayList;
 
@@ -16,14 +15,21 @@ public class Node extends Subject {
     
     private ArrayList<Edge> edgesIn = new ArrayList<>();
     private ArrayList<Edge> edgesOut = new ArrayList<>();
+    private String label;
     Property pNode = new PropertyNodeImpl();
+
+    public Node(String label) {
+        this.label = label;
+    }
     
-    public void setNet() {
+    
+    public void net() {
         Double sum = ((PropertyNodeImpl) pNode).getBias();
         for (Edge e : edgesIn) {
-            sum += e.getPeso();
+            sum += e.getWeigth();
         }
         ((PropertyNodeImpl) pNode).setNet(sum);
+        notifyObserver();
     }
     
     public Double getNet() {
@@ -32,6 +38,8 @@ public class Node extends Subject {
     
     public void activation() {
         ((PropertyNodeImpl) pNode).setActivation(logsig(getNet()));
+        notifyObserver();
+        
     }
     
     public Double getActivation() {
@@ -40,6 +48,18 @@ public class Node extends Subject {
     
     private Double logsig(Double net) {
         return 1. / (1. + Math.exp(-net));
+    }
+    
+    void setBias(Double b){
+        ((PropertyNodeImpl) pNode).setBias(b);
+    }
+    
+    void addEdgeIn(Edge e){
+        edgesIn.add(e);
+    }
+    
+    void addEdgeOut(Edge e){
+        edgesOut.add(e);
     }
     
 }

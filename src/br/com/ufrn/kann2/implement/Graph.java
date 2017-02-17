@@ -18,5 +18,25 @@ public class Graph extends Subject {
     private ArrayList<Node> nodes;
     Property p = new PropertyGraphImpl();
 
+    public Graph(){
+        this.edges = new ArrayList<>();
+        this.nodes = new ArrayList<>();
+    }
+    
+    public Graph(ArrayList<Edge> edges, ArrayList<Node> nodes) {
+        this.edges = edges;
+        this.nodes = nodes;
+    }
+
+    public ArrayList<Edge> getEdges() {
+        return edges;
+    }
+
+    public ArrayList<Node> getNodes() {
+        return nodes;
+    }
+
+    
+    
     
 }
