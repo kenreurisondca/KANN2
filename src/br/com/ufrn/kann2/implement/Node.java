@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package br.com.ufrn.kann2.implement;
+
 import br.com.ufrn.kann2.observer.Subject;
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  * @author kenreurison
  */
 public class Node extends Subject {
-    
+
     private ArrayList<Edge> edgesIn = new ArrayList<>();
     private ArrayList<Edge> edgesOut = new ArrayList<>();
     private String label;
@@ -21,8 +22,7 @@ public class Node extends Subject {
     public Node(String label) {
         this.label = label;
     }
-    
-    
+
     public void net() {
         Double sum = ((PropertyNodeImpl) pNode).getBias();
         for (Edge e : edgesIn) {
@@ -31,35 +31,43 @@ public class Node extends Subject {
         ((PropertyNodeImpl) pNode).setNet(sum);
         notifyObserver();
     }
-    
+
     public Double getNet() {
         return ((PropertyNodeImpl) pNode).getNet();
     }
-    
+
     public void activation() {
         ((PropertyNodeImpl) pNode).setActivation(logsig(getNet()));
         notifyObserver();
-        
     }
-    
+
+    public void activation(Double d) {
+        ((PropertyNodeImpl) pNode).setActivation(d);
+        notifyObserver();
+    }
+
     public Double getActivation() {
         return ((PropertyNodeImpl) pNode).getActivation();
     }
-    
+
     private Double logsig(Double net) {
         return 1. / (1. + Math.exp(-net));
     }
-    
-    void setBias(Double b){
+
+    void setBias(Double b) {
         ((PropertyNodeImpl) pNode).setBias(b);
     }
-    
-    void addEdgeIn(Edge e){
+
+    void addEdgeIn(Edge e) {
         edgesIn.add(e);
     }
-    
-    void addEdgeOut(Edge e){
+
+    void addEdgeOut(Edge e) {
         edgesOut.add(e);
     }
-    
+
+    public String getLabel() {
+        return label;
+    }
+
 }

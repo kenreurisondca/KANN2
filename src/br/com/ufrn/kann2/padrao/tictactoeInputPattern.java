@@ -6,8 +6,6 @@
 package br.com.ufrn.kann2.padrao;
 
 import br.com.ufrn.kann2.implement.Node;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,29 +14,8 @@ import java.util.Map;
  */
 public class tictactoeInputPattern extends InputPattern {
 
-    @Override
-    public Map<String, Double> mapping(List<Node> list) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Map<String, Double> evaluate() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Double> getOutput() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Double> getInput() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Double getError(Map<String, Double> desired) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public tictactoeInputPattern(Map<String, Node> inputs, Map<String, Node> outputs) {
+        super(inputs, outputs);
     }
 
 }
