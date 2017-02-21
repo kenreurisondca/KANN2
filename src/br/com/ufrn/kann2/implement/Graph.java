@@ -30,9 +30,7 @@ public class Graph extends Subject {
 
     public Graph(ArrayList<Rule> rules) {
         for (Rule r : rules) {
-            List<String> antecedents = r.getAntecedents();
-            String consequent = r.getConsequent();
-            createEdges(antecedents, consequent);
+            createArestas(r);
         }
     }
 
@@ -107,7 +105,39 @@ public class Graph extends Subject {
         return false;
     }
 
-    private void createEdges(List<String> antecedents, String consequent) {
+    private void createArestas(Rule r) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private ArrayList<Rule> rewrite(ArrayList<Rule> arrayListRule) {
+        Map<String, Integer> statConsequent = statConsequent(arrayListRule);
+        for (Rule r : arrayListRule) {
+            String consequent = r.getConsequent();
+            Integer sizeConsequent = statConsequent.get(consequent);
+            Integer sizeAntecedent = r.getAntecedents().size();
+            if (sizeAntecedent > 1 && sizeConsequent > 1) {
+                arrayListRule.remove(r);
+                statConsequent.put(consequent, statConsequent.get(consequent) - 1);
+                arrayListRule.add(rewriteRule(r, statConsequent));
+            }
+        }
+        return arrayListRule;
+    }
+
+    private Map<String, Integer> statConsequent(ArrayList<Rule> rules) {
+        Map<String, Integer> countConsequent = new HashMap<>();
+        for (Rule r : rules) {//Contando os consequentes
+            String consequent = r.getConsequent();
+            if (countConsequent.get(consequent) != null) {
+                countConsequent.put(consequent, countConsequent.get(consequent) + 1);
+            } else {
+                countConsequent.put(consequent, 1);
+            }
+        }
+        return countConsequent;
+    }
+
+    private Rule rewriteRule(Rule r, Map<String, Integer> statConsequent) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

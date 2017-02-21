@@ -73,4 +73,6 @@ public class Rule {
     public void addAntecedente(String r) {
         antecedents.add(r);
     }
+    
+    
 }
