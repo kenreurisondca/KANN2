@@ -8,6 +8,7 @@ package br.com.ufrn.kann2.implement;
 import br.com.ufrn.kann2.observer.Subject;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,17 +18,25 @@ import java.util.Map;
 public class Graph extends Subject {
 
     private ArrayList<Edge> edges;
-    private ArrayList<Node> nodes;
+    private Map<String, Node> nodes;
     private Map<String, Node> inputMap = new HashMap<>();
-    private Map<String, Node> outputMap;
+    private Map<String, Node> outputMap = new HashMap<>();
     Property p = new PropertyGraphImpl();
 
     public Graph() {
         this.edges = new ArrayList<>();
-        this.nodes = new ArrayList<>();
+        this.nodes = new HashMap<>();
     }
 
-    public Graph(ArrayList<Edge> edges, ArrayList<Node> nodes) {
+    public Graph(ArrayList<Rule> rules) {
+        for (Rule r : rules) {
+            List<String> antecedents = r.getAntecedents();
+            String consequent = r.getConsequent();
+            createEdges(antecedents, consequent);
+        }
+    }
+
+    public Graph(ArrayList<Edge> edges, Map<String, Node> nodes) {
         this.edges = edges;
         this.nodes = nodes;
     }
@@ -36,7 +45,7 @@ public class Graph extends Subject {
         return edges;
     }
 
-    public ArrayList<Node> getNodes() {
+    public Map<String, Node> getNodes() {
         return nodes;
     }
 
@@ -89,4 +98,16 @@ public class Graph extends Subject {
         }
     }
 
+    private boolean existEdge(String a, String b) {
+        for (int i = 0; i < edges.size(); i++) {
+            if (edges.get(i).getIn().getLabel().equals(a) && edges.get(i).getOut().getLabel().equals(b)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void createEdges(List<String> antecedents, String consequent) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
