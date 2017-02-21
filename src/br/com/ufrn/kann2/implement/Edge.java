@@ -7,6 +7,7 @@ package br.com.ufrn.kann2.implement;
 
 import br.com.ufrn.kann2.observer.Observer;
 import br.com.ufrn.kann2.observer.Subject;
+import br.com.ufrn.kann2.util.RandomKann;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,12 +32,33 @@ public class Edge extends Subject {
         this.out = new Node(b);
     }
 
-    Double getWeigth() {
+    public Edge(Node a, Node b, Double weigth) {
+        this.in = a;
+        this.out = b;
+        this.setWeigth(weigth);
+    }
+
+    public Edge(Double weigth) {
+        this.setWeigth(weigth);
+    }
+
+    public void disturbWeigth() {
+        Double weigth = getWeigth();
+        RandomKann r = RandomKann.getInstance();
+        ((PropertyEdgeImpl) p).setWeigth(weigth + r.nextDouble() - 0.5);
+    }
+
+    public Double getWeigth() {
         return ((PropertyEdgeImpl) p).getWeigth();
     }
 
-    void setWeigth(Double w) {
+    public void setWeigth(Double w) {
         ((PropertyEdgeImpl) p).setWeigth(w);
+    }
+
+    public void addWeigth(Double d) {
+        Double weigth = getWeigth();
+        ((PropertyEdgeImpl) p).setWeigth(weigth + d);
     }
 
     public Node getIn() {
