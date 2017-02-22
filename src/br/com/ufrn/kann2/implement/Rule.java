@@ -19,8 +19,8 @@ public class Rule {
 
     public Rule(String r) {
         int auxPosicao = r.indexOf("-");
-        this.consequent = r.substring(0, auxPosicao - 2); 
-        String auxRegra = r.substring(consequent.length() + 4); 
+        this.consequent = r.substring(0, auxPosicao - 2);
+        String auxRegra = r.substring(consequent.length() + 4);
         while (auxRegra.contains(",")) {
             auxPosicao = auxRegra.indexOf(",");
             antecedents.add(auxRegra.substring(0, auxPosicao));
@@ -32,6 +32,11 @@ public class Rule {
     public Rule(String c, String a) {
         this.consequent = c;
         antecedents.add(a);
+    }
+
+    public Rule(String c, List<String> a) {
+        this.consequent = c;
+        antecedents.addAll(a);
     }
 
     public Rule() {
@@ -73,6 +78,14 @@ public class Rule {
     public void addAntecedente(String r) {
         antecedents.add(r);
     }
-    
-    
+
+    public ArrayList<Rule> rewriteRule(Integer labelInt) {
+        String c = this.getConsequent() + Integer.toString(labelInt);
+        Rule r1 = new Rule(c, this.getAntecedents());
+        Rule old = new Rule(this.getConsequent(), c);
+        ArrayList<Rule> rules = new ArrayList<>();
+        rules.add(old);
+        rules.add(r1);
+        return rules;
+    }
 }

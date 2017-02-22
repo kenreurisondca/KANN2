@@ -116,28 +116,35 @@ public class Graph extends Subject {
             Integer sizeConsequent = statConsequent.get(consequent);
             Integer sizeAntecedent = r.getAntecedents().size();
             if (sizeAntecedent > 1 && sizeConsequent > 1) {
+                r.rewriteRule(sizeConsequent);
+                statConsequent.put(r.getConsequent(), sizeConsequent - 1);
                 arrayListRule.remove(r);
-                statConsequent.put(consequent, statConsequent.get(consequent) - 1);
-                arrayListRule.add(rewriteRule(r, statConsequent));
             }
         }
         return arrayListRule;
     }
 
     private Map<String, Integer> statConsequent(ArrayList<Rule> rules) {
-        Map<String, Integer> countConsequent = new HashMap<>();
-        for (Rule r : rules) {//Contando os consequentes
-            String consequent = r.getConsequent();
-            if (countConsequent.get(consequent) != null) {
-                countConsequent.put(consequent, countConsequent.get(consequent) + 1);
+        Map<String, Integer> countConsec = new HashMap<>();
+        for (Rule r : rules) {
+            String c = r.getConsequent();
+            if (countConsec.get(c) == null) {
+                countConsec.put(c, 1);
             } else {
-                countConsequent.put(consequent, 1);
+                countConsec.put(c, countConsec.get(c) + 1);
             }
         }
-        return countConsequent;
+        return countConsec;
     }
 
-    private Rule rewriteRule(Rule r, Map<String, Integer> statConsequent) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static void main(String[] args) {
+        ArrayList<Rule> rules = new ArrayList();
+        rules.add(new Rule("A :- B"));
+        rules.add(new Rule("A :- C, D"));
+        rules.add(new Rule("A :- D, E, D"));
+        rules.add(new Rule("A :- G"));
+        Graph g = new Graph(rules);
+        ArrayList<Rule> rewrite = g.rewrite(rules);
+        rewrite.toString();
     }
 }
