@@ -111,16 +111,20 @@ public class Graph extends Subject {
 
     private ArrayList<Rule> rewrite(ArrayList<Rule> arrayListRule) {
         Map<String, Integer> statConsequent = statConsequent(arrayListRule);
+        ArrayList<Rule> newRules = new ArrayList<>();
+        ArrayList<Rule> oldRules = new ArrayList<>();
         for (Rule r : arrayListRule) {
             String consequent = r.getConsequent();
             Integer sizeConsequent = statConsequent.get(consequent);
             Integer sizeAntecedent = r.getAntecedents().size();
             if (sizeAntecedent > 1 && sizeConsequent > 1) {
-                r.rewriteRule(sizeConsequent);
+                newRules.addAll(r.rewriteRule(sizeConsequent));
+                oldRules.add(r);
                 statConsequent.put(r.getConsequent(), sizeConsequent - 1);
-                arrayListRule.remove(r);
             }
         }
+        arrayListRule.addAll(newRules);
+        arrayListRule.removeAll(oldRules);
         return arrayListRule;
     }
 
@@ -141,9 +145,9 @@ public class Graph extends Subject {
         ArrayList<Rule> rules = new ArrayList();
         rules.add(new Rule("A :- B"));
         rules.add(new Rule("A :- C, D"));
-        rules.add(new Rule("A :- D, E, D"));
+        rules.add(new Rule("A :- D, E, F"));
         rules.add(new Rule("A :- G"));
-        Graph g = new Graph(rules);
+        Graph g = new Graph();
         ArrayList<Rule> rewrite = g.rewrite(rules);
         rewrite.toString();
     }

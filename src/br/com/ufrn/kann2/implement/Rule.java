@@ -88,4 +88,11 @@ public class Rule {
         rules.add(r1);
         return rules;
     }
+
+    @Override
+    public String toString() {
+        return "Rule{" + "consequent=" + consequent + ", antecedents=" + antecedents + '}';
+    }
+    
+    
 }
