@@ -58,6 +58,10 @@ public class Node extends Subject {
         ((PropertyNodeImpl) pNode).setBias(b);
     }
 
+    Double getBias(){
+        return ((PropertyNodeImpl) pNode).getBias();
+    }
+    
     void addEdgeIn(Edge e) {
         edgesIn.add(e);
     }
@@ -72,8 +76,12 @@ public class Node extends Subject {
 
     @Override
     public String toString() {
-        return "Node{" + "label=" + label + '}';
+        return "Node{" + "label=" + label + ", bias=" + getBias() + '}';
     }
+
+    
+
+  
     
     
 

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  *
@@ -32,8 +33,12 @@ public class Graph extends Subject {
 
     public Graph(ArrayList<Rule> rules) {
         this.rules = rewrite(rules);
+    }
+
+    public void mapping() {
         createNodes();
         createEdges();
+        adjustBias();
     }
 
     public Graph(ArrayList<Edge> edges, Map<String, Node> nodes) {
@@ -159,20 +164,58 @@ public class Graph extends Subject {
 
     private void createEdges() {
         Edge e = null;
-        Node a = null;
-        Node b = null;
+        Node nodeOut = null;
+        Node nodeIn = null;
         for (Rule r : rules) {
             for (String s : r.getAntecedents()) {
-                a = this.getNode(r.getConsequent());
-                b = this.getNode(s);
+                nodeOut = this.getNode(r.getConsequent());
+                nodeIn = this.getNode(s);
                 if (s.startsWith("¬")) {
-                    e = new Edge(b, a, -4.);
+                    e = new Edge(nodeIn, nodeOut, -4.);
                 } else {
-                    e = new Edge(b, a, 4.);
+                    e = new Edge(nodeIn, nodeOut, 4.);
                 }
+                nodeIn.addEdgeOut(e);
+                nodeOut.addEdgeIn(e);
                 edges.add(e);
             }
         }
+    }
+
+    private void adjustBias() {
+        Double bias = 0.;
+        for (Rule r : rules) {
+            if (r.getAntecedents().size() == 1) {
+                bias = -2.;
+            } else if (r.getAntecedents().size() > 1) {
+                Integer N = countPositiveAntecedents(r);
+                bias = 2. - 4. * N;
+            }
+            String consequent = r.getConsequent();
+            Node nodeAdjust = nodes.get(consequent);
+            nodeAdjust.setBias(bias);
+        }
+    }
+
+    private Map<String, Integer> statAntecedent(List<Rule> rules) {
+        Map<String, Integer> res = new HashMap<>();
+        Integer soma = 0;
+        for (Rule r : rules) {
+            if (r.getAntecedents().size() == 1) {
+                nodes.get(r.getConsequent()).setBias(Double.NaN);
+            }
+        }
+        return res;
+    }
+
+    private Integer countPositiveAntecedents(Rule r) {
+        Integer N = 0;
+        for (String s : r.getAntecedents()) {
+            if (!s.startsWith("¬")) {
+                N = N + 1;
+            }
+        }
+        return N;
     }
 
     public static void main(String[] args) {
@@ -182,9 +225,8 @@ public class Graph extends Subject {
         rules.add(new Rule("B :- E, F, G"));
         rules.add(new Rule("Z :- Y, ¬X"));
         rules.add(new Rule("Y :- S, T"));
-        Graph g = new Graph(rules);
-        g.rewrite(rules);
-        Map<String, Node> nodes = g.getNodes();
-        List<Edge> edges = g.getEdges();
+        Graph g = new Graph(rules);//Passo 1: Rewrite
+        g.mapping();//Passo 2
     }
+
 }
