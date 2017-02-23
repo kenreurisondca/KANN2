@@ -5,7 +5,7 @@
  */
 package br.com.ufrn.kann2.implement;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -14,10 +14,10 @@ import java.util.Map;
  */
 public abstract class Property {
 
-    private final Map<String, Double> fields;
+    private final Map<String, Double> fields = new HashMap<>();
 
     public Property() {
-        fields = new Hashtable<>();
+        createFields();
     }
 
     protected void registerField(String field) {
@@ -36,5 +36,5 @@ public abstract class Property {
         fields.computeIfPresent(field, (k, v) -> value);
     }
 
-    public abstract void createFields();
+    protected abstract void createFields();
 }

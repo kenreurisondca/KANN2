@@ -16,7 +16,7 @@ public class PropertyEdgeImpl extends Property {
     }
 
     @Override
-    public void createFields() {
+    protected final void createFields() {
         registerField("weigth");
         registerField("oldWeigth");
     }
