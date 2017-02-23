@@ -58,10 +58,10 @@ public class Node extends Subject {
         ((PropertyNodeImpl) pNode).setBias(b);
     }
 
-    Double getBias(){
+    Double getBias() {
         return ((PropertyNodeImpl) pNode).getBias();
     }
-    
+
     void addEdgeIn(Edge e) {
         edgesIn.add(e);
     }
@@ -90,15 +90,21 @@ public class Node extends Subject {
         this.edgesOut = edgesOut;
     }
 
-    @Override
-    public String toString() {
-        return "Node{" + "label=" + label + ", bias=" + getBias() + '}';
+    void setLevel(Integer i) {
+        ((PropertyNodeImpl) pNode).setLevel(i.doubleValue());
     }
 
-    
+    void setLevel(Double i) {
+        ((PropertyNodeImpl) pNode).setLevel(i);
+    }
 
-  
-    
-    
+    public Double getLevel() {
+        return ((PropertyNodeImpl) pNode).getLevel();
+    }
+
+    @Override
+    public String toString() {
+        return "Node{" + "label=" + label + ", level=" + getLevel() + '}';
+    }
 
 }

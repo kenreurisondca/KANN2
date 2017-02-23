@@ -20,16 +20,16 @@ import java.util.function.Consumer;
  */
 public class Graph extends Subject {
 
-    private List<Edge> edges = new ArrayList<>();
-    private Map<String, Node> nodes = new HashMap<>();
+    private List<Edge> edgeList = new ArrayList<>();
+    private Map<String, Node> nodeMap = new HashMap<>();
     private Map<String, Node> inputMap = new HashMap<>();
     private Map<String, Node> outputMap = new HashMap<>();
     private List<Rule> rules = new ArrayList<>();
     private Property p = new PropertyGraphImpl();
 
     public Graph() {
-        this.edges = new ArrayList<>();
-        this.nodes = new HashMap<>();
+        this.edgeList = new ArrayList<>();
+        this.nodeMap = new HashMap<>();
     }
 
     public Graph(ArrayList<Rule> rules) {
@@ -40,19 +40,21 @@ public class Graph extends Subject {
         createNodes();
         createEdges();
         adjustBias();
+        performInputMap();
+        performOutputMap();
     }
 
     public Graph(ArrayList<Edge> edges, Map<String, Node> nodes) {
-        this.edges = edges;
-        this.nodes = nodes;
+        this.edgeList = edges;
+        this.nodeMap = nodes;
     }
 
     public List<Edge> getEdges() {
-        return edges;
+        return edgeList;
     }
 
     public Map<String, Node> getNodes() {
-        return nodes;
+        return nodeMap;
     }
 
     public Map<String, Node> getinputs() {
@@ -69,41 +71,8 @@ public class Graph extends Subject {
         return outputMap;
     }
 
-//    private void performInputMap() {
-//        boolean inputBoolean;
-//        for (int i = 0; i < edges.size(); i++) {
-//            Node source = edges.get(i).getIn();
-//            inputBoolean = true;
-//            for (int j = 0; j < edges.size(); j++) {
-//                if (edges.get(j).getOut().getLabel().equals(source.getLabel())) {
-//                    inputBoolean = false;
-//                }
-//                if (edges.get(j).getIn() == source) {
-//                    inputBoolean = false;
-//                }
-//            }
-//            if (inputBoolean) {
-//                inputMap.put(source.getLabel(), source);
-//            }
-//        }
-//    }
-//    private void performOutputMap() {
-//        boolean saida;
-//        for (int i = 0; i < edges.size(); i++) {
-//            Node destino = edges.get(i).getOut();
-//            saida = true;
-//            for (int j = 0; j < edges.size(); j++) {
-//                if (edges.get(j).getIn().getLabel().equals(destino.getLabel())) {
-//                    saida = false;
-//                }
-//            }
-//            if (saida) {
-//                outputMap.put(destino.getLabel(), destino);
-//            }
-//        }
-//    }
     private void performOutputMap() {
-        Collection<Node> values = nodes.values();
+        Collection<Node> values = nodeMap.values();
         for (Node n : values) {
             if (n.getEdgesOut().isEmpty()) {
                 String s = n.getLabel();
@@ -113,7 +82,7 @@ public class Graph extends Subject {
     }
 
     private void performInputMap() {
-        Collection<Node> values = nodes.values();
+        Collection<Node> values = nodeMap.values();
         for (Node n : values) {
             if (n.getEdgesIn().isEmpty()) {
                 String s = n.getLabel();
@@ -123,7 +92,7 @@ public class Graph extends Subject {
     }
 
     private Node getNode(String s) {
-        return nodes.get(s.replace("¬", ""));
+        return nodeMap.get(s.replace("¬", ""));
     }
 
     private ArrayList<Rule> rewrite(ArrayList<Rule> rules) {
@@ -167,8 +136,8 @@ public class Graph extends Subject {
         for (Rule r : rules) {
             List<String> antecedents = r.getAntecedents();
             String consequents = r.getConsequent();
-            antecedents.forEach((s) -> this.nodes.put(s.replace("¬", ""), new Node(s.replace("¬", ""))));
-            this.nodes.put(consequents, new Node(consequents));
+            antecedents.forEach((s) -> this.nodeMap.put(s.replace("¬", ""), new Node(s.replace("¬", ""))));
+            this.nodeMap.put(consequents, new Node(consequents));
         }
     }
 
@@ -187,7 +156,7 @@ public class Graph extends Subject {
                 }
                 nodeIn.addEdgeOut(e);
                 nodeOut.addEdgeIn(e);
-                edges.add(e);
+                edgeList.add(e);
             }
         }
     }
@@ -202,7 +171,7 @@ public class Graph extends Subject {
                 bias = 2. - 4. * N;
             }
             String consequent = r.getConsequent();
-            Node nodeAdjust = nodes.get(consequent);
+            Node nodeAdjust = nodeMap.get(consequent);
             nodeAdjust.setBias(bias);
         }
     }
@@ -212,7 +181,7 @@ public class Graph extends Subject {
         Integer soma = 0;
         for (Rule r : rules) {
             if (r.getAntecedents().size() == 1) {
-                nodes.get(r.getConsequent()).setBias(Double.NaN);
+                nodeMap.get(r.getConsequent()).setBias(Double.NaN);
             }
         }
         return res;
@@ -228,6 +197,39 @@ public class Graph extends Subject {
         return N;
     }
 
+    public void labeling() {
+        Collection<Node> values = inputMap.values();
+        values.forEach((n) -> propagateLevel(n));
+    }
+
+    //Selectiona todos os Nodes que CHEGAM em a
+    private ArrayList<Node> nodesIn(Node a) {
+        ArrayList<Node> res = new ArrayList<>();
+        a.getEdgesIn().forEach((e) -> res.add(e.getIn()));
+        return res;
+    }
+
+    //Seleciona todos os Nodes que SAEM de b
+    private ArrayList<Node> nodesOut(Node b) {
+        ArrayList<Node> res = new ArrayList<>();
+        b.getEdgesOut().forEach((e) -> res.add(e.getOut()));
+        return res;
+    }
+
+    private void propagateLevel(Node n) {
+        System.out.println(n.getLabel());
+        ArrayList<Node> nodesOut = this.nodesOut(n);
+        for (Node nodeConseq : nodesOut) {
+            Double level = nodeConseq.getLevel();
+            if (level <= n.getLevel()) {
+                nodeConseq.setLevel(n.getLevel() + 1);
+                if (!outputMap.containsKey(nodeConseq.getLabel())) {
+                    propagateLevel(nodeConseq);
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) {
         ArrayList<Rule> rules = new ArrayList();
         rules.add(new Rule("A :- B, Z"));
@@ -237,8 +239,6 @@ public class Graph extends Subject {
         rules.add(new Rule("Y :- S, T"));
         Graph g = new Graph(rules);//Passo 1: Rewrite
         g.mapping();//Passo 2
-        Map<String, Node> inputs = g.getinputs();
-        Map<String, Node> output = g.getOutput();
+        g.labeling();//Passo 3
     }
-
 }
