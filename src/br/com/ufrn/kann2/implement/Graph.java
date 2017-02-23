@@ -8,6 +8,7 @@ package br.com.ufrn.kann2.implement;
 import br.com.ufrn.kann2.observer.Subject;
 import com.sun.org.apache.xpath.internal.axes.WalkerFactory;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,48 +69,57 @@ public class Graph extends Subject {
         return outputMap;
     }
 
-    private void performInputMap() {
-        boolean inputBoolean;
-        for (int i = 0; i < edges.size(); i++) {
-            Node source = edges.get(i).getIn();
-            inputBoolean = true;
-            for (int j = 0; j < edges.size(); j++) {
-                if (edges.get(j).getOut().getLabel().equals(source.getLabel())) {
-                    inputBoolean = false;
-                }
-                if (edges.get(j).getIn() == source) {
-                    inputBoolean = false;
-                }
-            }
-            if (inputBoolean) {
-                inputMap.put(source.getLabel(), source);
-            }
-        }
-    }
-
+//    private void performInputMap() {
+//        boolean inputBoolean;
+//        for (int i = 0; i < edges.size(); i++) {
+//            Node source = edges.get(i).getIn();
+//            inputBoolean = true;
+//            for (int j = 0; j < edges.size(); j++) {
+//                if (edges.get(j).getOut().getLabel().equals(source.getLabel())) {
+//                    inputBoolean = false;
+//                }
+//                if (edges.get(j).getIn() == source) {
+//                    inputBoolean = false;
+//                }
+//            }
+//            if (inputBoolean) {
+//                inputMap.put(source.getLabel(), source);
+//            }
+//        }
+//    }
+//    private void performOutputMap() {
+//        boolean saida;
+//        for (int i = 0; i < edges.size(); i++) {
+//            Node destino = edges.get(i).getOut();
+//            saida = true;
+//            for (int j = 0; j < edges.size(); j++) {
+//                if (edges.get(j).getIn().getLabel().equals(destino.getLabel())) {
+//                    saida = false;
+//                }
+//            }
+//            if (saida) {
+//                outputMap.put(destino.getLabel(), destino);
+//            }
+//        }
+//    }
     private void performOutputMap() {
-        boolean saida;
-        for (int i = 0; i < edges.size(); i++) {
-            Node destino = edges.get(i).getOut();
-            saida = true;
-            for (int j = 0; j < edges.size(); j++) {
-                if (edges.get(j).getIn().getLabel().equals(destino.getLabel())) {
-                    saida = false;
-                }
-            }
-            if (saida) {
-                outputMap.put(destino.getLabel(), destino);
+        Collection<Node> values = nodes.values();
+        for (Node n : values) {
+            if (n.getEdgesOut().isEmpty()) {
+                String s = n.getLabel();
+                outputMap.put(s, n);
             }
         }
     }
 
-    private boolean existEdge(String a, String b) {
-        for (int i = 0; i < edges.size(); i++) {
-            if (edges.get(i).getIn().getLabel().equals(a) && edges.get(i).getOut().getLabel().equals(b)) {
-                return true;
+    private void performInputMap() {
+        Collection<Node> values = nodes.values();
+        for (Node n : values) {
+            if (n.getEdgesIn().isEmpty()) {
+                String s = n.getLabel();
+                inputMap.put(s, n);
             }
         }
-        return false;
     }
 
     private Node getNode(String s) {
@@ -227,6 +237,8 @@ public class Graph extends Subject {
         rules.add(new Rule("Y :- S, T"));
         Graph g = new Graph(rules);//Passo 1: Rewrite
         g.mapping();//Passo 2
+        Map<String, Node> inputs = g.getinputs();
+        Map<String, Node> output = g.getOutput();
     }
 
 }

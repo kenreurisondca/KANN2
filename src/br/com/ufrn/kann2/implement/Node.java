@@ -74,6 +74,22 @@ public class Node extends Subject {
         return label;
     }
 
+    public ArrayList<Edge> getEdgesIn() {
+        return edgesIn;
+    }
+
+    public void setEdgesIn(ArrayList<Edge> edgesIn) {
+        this.edgesIn = edgesIn;
+    }
+
+    public ArrayList<Edge> getEdgesOut() {
+        return edgesOut;
+    }
+
+    public void setEdgesOut(ArrayList<Edge> edgesOut) {
+        this.edgesOut = edgesOut;
+    }
+
     @Override
     public String toString() {
         return "Node{" + "label=" + label + ", bias=" + getBias() + '}';
