@@ -6,13 +6,11 @@
 package br.com.ufrn.kann2.implement;
 
 import br.com.ufrn.kann2.observer.Subject;
-import com.sun.org.apache.xpath.internal.axes.WalkerFactory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  *
@@ -225,8 +223,22 @@ public class Graph extends Subject {
                 nodeConseq.setLevel(n.getLevel() + 1);
                 if (!outputMap.containsKey(nodeConseq.getLabel())) {
                     propagateLevel(nodeConseq);
+                } else {
+                    ((PropertyGraphImpl) p).updateMaxLevel(nodeConseq.getLevel());
                 }
             }
+        }
+    }
+
+    private boolean addHiddenUnit(String ha, int i) {
+        Integer maxLevel = ((PropertyGraphImpl) p).getMaxLevel();
+        if (i > 0 && i < maxLevel) {
+            Node node = new Node(ha);
+            node.setLevel(i);
+            nodeMap.put(ha, node);
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -240,5 +252,11 @@ public class Graph extends Subject {
         Graph g = new Graph(rules);//Passo 1: Rewrite
         g.mapping();//Passo 2
         g.labeling();//Passo 3
+        boolean addHiddenUnit = g.addHiddenUnit("hA", 0); //Passo 4
+        boolean addHiddenUnit1 = g.addHiddenUnit("hB", 1); //Passo 4
+        boolean addHiddenUnit2 = g.addHiddenUnit("hC", 1); //Passo 4
+        boolean addHiddenUnit3 = g.addHiddenUnit("hD", 2); //Passo 4
+        boolean addHiddenUnit4 = g.addHiddenUnit("hE", 3); //Passo 4
+
     }
 }
