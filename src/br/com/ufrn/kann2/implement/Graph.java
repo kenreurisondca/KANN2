@@ -7,7 +7,9 @@ package br.com.ufrn.kann2.implement;
 
 import br.com.ufrn.kann2.observer.Subject;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,8 +20,8 @@ import java.util.Set;
  */
 public class Graph extends Subject {
 
-    private ArrayList<Edge> edges;
-    private Map<String, Node> nodes;
+    private ArrayList<Edge> edges = new ArrayList<>();
+    private Map<String, Node> nodes = new HashMap<>();
     private Map<String, Node> inputMap = new HashMap<>();
     private Map<String, Node> outputMap = new HashMap<>();
     Property p = new PropertyGraphImpl();
@@ -30,9 +32,8 @@ public class Graph extends Subject {
     }
 
     public Graph(ArrayList<Rule> rules) {
-        for (Rule r : rules) {
-            createArestas(r);
-        }
+        createNodes(rules);
+        //createEdges(r);
     }
 
     public Graph(ArrayList<Edge> edges, Map<String, Node> nodes) {
@@ -143,6 +144,15 @@ public class Graph extends Subject {
         return countConsec;
     }
 
+    private void createNodes(ArrayList<Rule> rules) {
+        for (Rule r : rules) {
+            List<String> antecedents = r.getAntecedents();
+            String consequents = r.getConsequent();
+            antecedents.forEach((s) -> this.nodes.put(s.replace("¬", ""), new Node(s.replace("¬", ""))));
+            this.nodes.put(consequents, new Node(consequents));
+        }
+    }
+
     public static void main(String[] args) {
         ArrayList<Rule> rules = new ArrayList();
         rules.add(new Rule("A :- B, Z"));
@@ -150,8 +160,8 @@ public class Graph extends Subject {
         rules.add(new Rule("B :- E, F, G"));
         rules.add(new Rule("Z :- Y, ¬X"));
         rules.add(new Rule("Y :- S, T"));
-        Graph g = new Graph();
-        ArrayList<Rule> rewrite = g.rewrite(rules);
-        rewrite.toString();
+        Graph g = new Graph(rules);
+        //ArrayList<Rule> rewrite = g.rewrite(rules);
+        Map<String, Node> nodes = g.getNodes();
     }
 }
