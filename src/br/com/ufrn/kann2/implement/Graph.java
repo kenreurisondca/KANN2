@@ -242,6 +242,13 @@ public class Graph extends Subject {
         }
     }
 
+    private void addInputUnit(String ia) {
+        Node a = new Node(ia);
+        a.setLevel(0.0);
+        inputMap.put(ia, a);
+        nodeMap.put(ia, a);
+    }
+
     public static void main(String[] args) {
         ArrayList<Rule> rules = new ArrayList();
         rules.add(new Rule("A :- B, Z"));
@@ -252,11 +259,15 @@ public class Graph extends Subject {
         Graph g = new Graph(rules);//Passo 1: Rewrite
         g.mapping();//Passo 2
         g.labeling();//Passo 3
-        boolean addHiddenUnit = g.addHiddenUnit("hA", 0); //Passo 4
-        boolean addHiddenUnit1 = g.addHiddenUnit("hB", 1); //Passo 4
-        boolean addHiddenUnit2 = g.addHiddenUnit("hC", 1); //Passo 4
-        boolean addHiddenUnit3 = g.addHiddenUnit("hD", 2); //Passo 4
-        boolean addHiddenUnit4 = g.addHiddenUnit("hE", 3); //Passo 4
-
+//        boolean addHiddenUnit = g.addHiddenUnit("hA", 0); //Passo 4
+//        boolean addHiddenUnit1 = g.addHiddenUnit("hB", 1); //Passo 4
+//        boolean addHiddenUnit2 = g.addHiddenUnit("hC", 1); //Passo 4
+//        boolean addHiddenUnit3 = g.addHiddenUnit("hD", 2); //Passo 4
+//        boolean addHiddenUnit4 = g.addHiddenUnit("hE", 3); //Passo 4
+        g.addInputUnit("iA"); //Passo 5
+        g.addInputUnit("iB"); //Passo 5 
+        g.addInputUnit("iC"); //Passo 5
+        g.addInputUnit("iD"); //Passo 5
     }
+
 }
