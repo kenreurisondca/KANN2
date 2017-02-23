@@ -81,11 +81,11 @@ public class Rule {
 
     public ArrayList<Rule> rewriteRule(Integer labelInt) {
         String c = this.getConsequent() + Integer.toString(labelInt);
-        Rule r1 = new Rule(c, this.getAntecedents());
+        Rule newer = new Rule(c, this.getAntecedents());
         Rule old = new Rule(this.getConsequent(), c);
         ArrayList<Rule> rules = new ArrayList<>();
         rules.add(old);
-        rules.add(r1);
+        rules.add(newer);
         return rules;
     }
 

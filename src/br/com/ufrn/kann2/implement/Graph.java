@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -111,6 +112,7 @@ public class Graph extends Subject {
 
     private ArrayList<Rule> rewrite(ArrayList<Rule> arrayListRule) {
         Map<String, Integer> statConsequent = statConsequent(arrayListRule);
+        Map<String, Integer> aux = new HashMap<>(statConsequent);
         ArrayList<Rule> newRules = new ArrayList<>();
         ArrayList<Rule> oldRules = new ArrayList<>();
         for (Rule r : arrayListRule) {
@@ -118,9 +120,9 @@ public class Graph extends Subject {
             Integer sizeConsequent = statConsequent.get(consequent);
             Integer sizeAntecedent = r.getAntecedents().size();
             if (sizeAntecedent > 1 && sizeConsequent > 1) {
-                newRules.addAll(r.rewriteRule(sizeConsequent));
+                newRules.addAll(r.rewriteRule(aux.get(consequent)));
                 oldRules.add(r);
-                statConsequent.put(r.getConsequent(), sizeConsequent - 1);
+                aux.put(r.getConsequent(), aux.get(consequent) - 1);
             }
         }
         arrayListRule.addAll(newRules);
@@ -143,10 +145,11 @@ public class Graph extends Subject {
 
     public static void main(String[] args) {
         ArrayList<Rule> rules = new ArrayList();
-        rules.add(new Rule("A :- B"));
-        rules.add(new Rule("A :- C, D"));
-        rules.add(new Rule("A :- D, E, F"));
-        rules.add(new Rule("A :- G"));
+        rules.add(new Rule("A :- B, Z"));
+        rules.add(new Rule("B :- C, D"));
+        rules.add(new Rule("B :- E, F, G"));
+        rules.add(new Rule("Z :- Y, ¬X"));
+        rules.add(new Rule("Y :- S, T"));
         Graph g = new Graph();
         ArrayList<Rule> rewrite = g.rewrite(rules);
         rewrite.toString();
