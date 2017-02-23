@@ -230,7 +230,7 @@ public class Graph extends Subject {
         }
     }
 
-    private boolean addHiddenUnit(String ha, int i) {
+    public boolean addHiddenUnit(String ha, int i) {
         Integer maxLevel = ((PropertyGraphImpl) p).getMaxLevel();
         if (i > 0 && i < maxLevel) {
             Node node = new Node(ha);
@@ -242,11 +242,53 @@ public class Graph extends Subject {
         }
     }
 
-    private void addInputUnit(String ia) {
+    public void addInputUnit(String ia) {
         Node a = new Node(ia);
         a.setLevel(0.0);
         inputMap.put(ia, a);
         nodeMap.put(ia, a);
+    }
+
+    public List<Edge> addLinks_form1() {
+        Integer maxLevel = ((PropertyGraphImpl) p).getMaxLevel();
+        List<Edge> res = new ArrayList<>();
+        for (int i = 0; i < maxLevel; i++) {
+            res.addAll(connect(i, i + 1));
+        }
+        return res;
+    }
+
+    private List<Edge> connect(int i, int i0) {
+        ArrayList<Node> ant = new ArrayList<>();
+        ArrayList<Node> cons = new ArrayList<>();
+        List<Edge> res = new ArrayList<>();
+        nodeMap.forEach((k, v) -> {
+            if (v.getLevel() == i) {
+                ant.add(v);
+            }
+        });
+        nodeMap.forEach((k, v) -> {
+            if (v.getLevel() == i0) {
+                cons.add(v);
+            }
+        });
+        for (Node low : ant) {
+            for (Node upper : cons) {
+                if (!this.exists(low, upper)) {
+                    res.add(new Edge(low, upper));
+                }
+            }
+        }
+        return res;
+    }
+
+    private boolean exists(Node low, Node upper) {
+        for (Edge e : edgeList) {
+            if (e.exists(low, upper)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void main(String[] args) {
@@ -268,6 +310,7 @@ public class Graph extends Subject {
         g.addInputUnit("iB"); //Passo 5 
         g.addInputUnit("iC"); //Passo 5
         g.addInputUnit("iD"); //Passo 5
+        List<Edge> addLinks_form1 = g.addLinks_form1(); // Passo 6
     }
 
 }

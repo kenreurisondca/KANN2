@@ -71,6 +71,10 @@ public class Edge extends Subject {
 
     @Override
     public String toString() {
-        return "Edge{" + "in=" + in + ", out=" + out + ", peso=" + getWeigth() + '}';
+        return "Edge{ " + in.getLabel() + " -> " + out.getLabel() + " }";
+    }
+
+    public boolean exists(Node a, Node b) {
+        return a.getLabel().equals(this.in.getLabel()) && b.getLabel().equals(this.out.getLabel());
     }
 }
