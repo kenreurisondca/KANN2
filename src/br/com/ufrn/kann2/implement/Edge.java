@@ -69,4 +69,8 @@ public class Edge extends Subject {
         return out;
     }
 
+    @Override
+    public String toString() {
+        return "Edge{" + "in=" + in + ", out=" + out + ", peso=" + getWeigth() + '}';
+    }
 }

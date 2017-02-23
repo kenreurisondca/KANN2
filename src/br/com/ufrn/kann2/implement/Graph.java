@@ -6,13 +6,11 @@
 package br.com.ufrn.kann2.implement;
 
 import br.com.ufrn.kann2.observer.Subject;
+import com.sun.org.apache.xpath.internal.axes.WalkerFactory;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  *
@@ -20,11 +18,12 @@ import java.util.Set;
  */
 public class Graph extends Subject {
 
-    private ArrayList<Edge> edges = new ArrayList<>();
+    private List<Edge> edges = new ArrayList<>();
     private Map<String, Node> nodes = new HashMap<>();
     private Map<String, Node> inputMap = new HashMap<>();
     private Map<String, Node> outputMap = new HashMap<>();
-    Property p = new PropertyGraphImpl();
+    private List<Rule> rules = new ArrayList<>();
+    private Property p = new PropertyGraphImpl();
 
     public Graph() {
         this.edges = new ArrayList<>();
@@ -32,8 +31,9 @@ public class Graph extends Subject {
     }
 
     public Graph(ArrayList<Rule> rules) {
-        createNodes(rules);
-        //createEdges(r);
+        this.rules = rewrite(rules);
+        createNodes();
+        createEdges();
     }
 
     public Graph(ArrayList<Edge> edges, Map<String, Node> nodes) {
@@ -41,7 +41,7 @@ public class Graph extends Subject {
         this.nodes = nodes;
     }
 
-    public ArrayList<Edge> getEdges() {
+    public List<Edge> getEdges() {
         return edges;
     }
 
@@ -107,16 +107,16 @@ public class Graph extends Subject {
         return false;
     }
 
-    private void createArestas(Rule r) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private Node getNode(String s) {
+        return nodes.get(s.replace("¬", ""));
     }
 
-    private ArrayList<Rule> rewrite(ArrayList<Rule> arrayListRule) {
-        Map<String, Integer> statConsequent = statConsequent(arrayListRule);
+    private ArrayList<Rule> rewrite(ArrayList<Rule> rules) {
+        Map<String, Integer> statConsequent = statConsequent(rules);
         Map<String, Integer> aux = new HashMap<>(statConsequent);
         ArrayList<Rule> newRules = new ArrayList<>();
         ArrayList<Rule> oldRules = new ArrayList<>();
-        for (Rule r : arrayListRule) {
+        for (Rule r : rules) {
             String consequent = r.getConsequent();
             Integer sizeConsequent = statConsequent.get(consequent);
             Integer sizeAntecedent = r.getAntecedents().size();
@@ -126,12 +126,16 @@ public class Graph extends Subject {
                 aux.put(r.getConsequent(), aux.get(consequent) - 1);
             }
         }
-        arrayListRule.addAll(newRules);
-        arrayListRule.removeAll(oldRules);
-        return arrayListRule;
+        rules.addAll(newRules);
+        rules.removeAll(oldRules);
+        return rules;
     }
 
-    private Map<String, Integer> statConsequent(ArrayList<Rule> rules) {
+    public void rewrite() {
+        rules = rewrite((ArrayList<Rule>) rules);
+    }
+
+    private Map<String, Integer> statConsequent(List<Rule> rules) {
         Map<String, Integer> countConsec = new HashMap<>();
         for (Rule r : rules) {
             String c = r.getConsequent();
@@ -144,12 +148,30 @@ public class Graph extends Subject {
         return countConsec;
     }
 
-    private void createNodes(ArrayList<Rule> rules) {
+    private void createNodes() {
         for (Rule r : rules) {
             List<String> antecedents = r.getAntecedents();
             String consequents = r.getConsequent();
             antecedents.forEach((s) -> this.nodes.put(s.replace("¬", ""), new Node(s.replace("¬", ""))));
             this.nodes.put(consequents, new Node(consequents));
+        }
+    }
+
+    private void createEdges() {
+        Edge e = null;
+        Node a = null;
+        Node b = null;
+        for (Rule r : rules) {
+            for (String s : r.getAntecedents()) {
+                a = this.getNode(r.getConsequent());
+                b = this.getNode(s);
+                if (s.startsWith("¬")) {
+                    e = new Edge(b, a, -4.);
+                } else {
+                    e = new Edge(b, a, 4.);
+                }
+                edges.add(e);
+            }
         }
     }
 
@@ -161,7 +183,8 @@ public class Graph extends Subject {
         rules.add(new Rule("Z :- Y, ¬X"));
         rules.add(new Rule("Y :- S, T"));
         Graph g = new Graph(rules);
-        //ArrayList<Rule> rewrite = g.rewrite(rules);
+        g.rewrite(rules);
         Map<String, Node> nodes = g.getNodes();
+        List<Edge> edges = g.getEdges();
     }
 }

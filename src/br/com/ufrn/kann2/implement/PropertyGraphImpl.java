@@ -17,7 +17,10 @@ public class PropertyGraphImpl extends Property {
 
     @Override
     public void createFields() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        registerField("lambda");
+        registerField("alpha");
+        registerField("maxIter");
+        registerField("maxError");
     }
 
 }

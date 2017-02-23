@@ -70,4 +70,11 @@ public class Node extends Subject {
         return label;
     }
 
+    @Override
+    public String toString() {
+        return "Node{" + "label=" + label + '}';
+    }
+    
+    
+
 }
