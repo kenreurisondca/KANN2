@@ -6,9 +6,12 @@
 package br.com.ufrn.kann2.padrao;
 
 import br.com.ufrn.kann2.implement.Node;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import javafx.scene.AccessibleAttribute;
 
 /**
  *
@@ -16,31 +19,50 @@ import java.util.Map;
  */
 public abstract class InputPattern {
 
-    private Map<String, Node> inputs = new HashMap<>();
-    private Map<String, Node> outputs = new HashMap<>();
+    private Map<String, Double> inputs;
+    private Map<String, Double> outputs;
+    private Map<String, Double> intermediate;
 
-    public InputPattern(Map<String, Node> inputs, Map<String, Node> outputs) {
+    public InputPattern() {
+        inputs = new HashMap<>();
+        outputs = new HashMap<>();
+    }
+
+    public InputPattern(Map<String, Double> inputs, Map<String, Double> outputs) {
         this.inputs = inputs;
         this.outputs = outputs;
     }
 
-    public InputPattern(List<Node> input, List<Node> output) {
-        for (Node n : input) {
-            inputs.put(n.getLabel(), n);
-        }
-        for (Node n : input) {
-            outputs.put(n.getLabel(), n);
-        }
-    }
-
-    public void mappingInput(String[] label, Double[] values) throws Exception {
+    private Map<String, Double> mappingInput(String[] label, Double[] values) throws Exception {
         if (values.length != label.length || label.length == 0) {
             throw new Exception("Incompatible array length");
         }
-        for (int i = 0; i < label.length; i++) {
-            String name = label[i];
-            Double valor = values[i];
-            inputs.get(name).activation(valor);
+        Map<String, Double> res = new HashMap<>();
+        for (int i = 0; i < values.length; i++) {
+            res.put(label[i], values[i]);
+        }
+        return res;
+    }
+
+    public Map<String, Double> getIntermediateConcusions() {
+        generateOutput();
+        generateIntermediateConclusions();
+        return intermediate;
+    }
+
+    public Map<String, inputError> getErrorByUnit(Map<String, Double> graph) {
+        Set<String> keys = graph.keySet();
+        for (String s : keys) {
+            Double graphValue = graph.get(s);
+            Double patternValue = intermediate.get(s);
+            if (Math.round(graphValue) > Math.round(patternValue)) {
+
+            }
         }
     }
+
+    protected abstract void generateOutput();
+
+    protected abstract void generateIntermediateConclusions();
+
 }
