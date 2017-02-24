@@ -5,13 +5,9 @@
  */
 package br.com.ufrn.kann2.padrao;
 
-import br.com.ufrn.kann2.implement.Node;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javafx.scene.AccessibleAttribute;
 
 /**
  *
@@ -50,15 +46,20 @@ public abstract class InputPattern {
         return intermediate;
     }
 
-    public Map<String, inputError> getErrorByUnit(Map<String, Double> graph) {
+    public Map<String, InputError> getErrorByUnit(Map<String, Double> graph) {
         Set<String> keys = graph.keySet();
+        Map<String, InputError> inputErrorMap = new HashMap<>();
         for (String s : keys) {
             Double graphValue = graph.get(s);
             Double patternValue = intermediate.get(s);
+            InputError ieActual = inputErrorMap.get(s);
             if (Math.round(graphValue) > Math.round(patternValue)) {
-
+                inputErrorMap.put(s, ieActual.incFP());
+            } else if (Math.round(graphValue) < Math.round(patternValue)) {
+                inputErrorMap.put(s, ieActual.incFP());
             }
         }
+        return inputErrorMap;
     }
 
     protected abstract void generateOutput();
