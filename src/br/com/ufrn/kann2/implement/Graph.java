@@ -263,10 +263,8 @@ public class Graph extends Subject {
         Integer maxLevel = ((PropertyGraphImpl) p).getMaxLevel();
         List<Edge> res = new ArrayList<>();
         for (int i = 0; i < maxLevel; i++) {
-            for (int j = 0; j < maxLevel; j++) {
-                if (i < j) {
-                    res.addAll(connect(i, j));
-                }
+            for (int j = i + 1; j <= maxLevel; j++) {
+                res.addAll(connect(i, j));
             }
         }
         edgeList.addAll(res);
@@ -328,14 +326,12 @@ public class Graph extends Subject {
         g.labeling();//Passo 3
 //        boolean addHiddenUnit = g.addHiddenUnit("hA", 0); //Passo 4
 //        boolean addHiddenUnit1 = g.addHiddenUnit("hB", 1); //Passo 4
-        boolean addHiddenUnit2 = g.addHiddenUnit("hC", 1); //Passo 4
         boolean addHiddenUnit3 = g.addHiddenUnit("hD", 2); //Passo 4
 //        boolean addHiddenUnit4 = g.addHiddenUnit("hE", 3); //Passo 4
         g.addInputUnit("iA"); //Passo 5
-        g.addInputUnit("iB"); //Passo 5 
-        g.addInputUnit("iC"); //Passo 5
-        g.addInputUnit("iD"); //Passo 5
-        List<Edge> addLinks_form1 = g.addLinks_form1(); // Passo 6
+        List<Edge> addLinks_form2 = g.addLinks_form2(); // Passo 6
+        String s = "iA";
+        Node node = g.getNode(s);
     }
 
 }

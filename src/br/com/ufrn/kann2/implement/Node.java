@@ -63,11 +63,15 @@ public class Node extends Subject {
     }
 
     void addEdgeIn(Edge e) {
-        edgesIn.add(e);
+        if (!edgesIn.contains(e)) {
+            edgesIn.add(e);
+        }
     }
 
     void addEdgeOut(Edge e) {
-        edgesOut.add(e);
+        if (!edgesOut.contains(e)) {
+            edgesOut.add(e);
+        }
     }
 
     public String getLabel() {

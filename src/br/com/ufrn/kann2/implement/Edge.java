@@ -35,6 +35,8 @@ public class Edge extends Subject {
     public Edge(Node a, Node b, Double weigth) {
         this.in = a;
         this.out = b;
+        a.addEdgeOut(this);
+        b.addEdgeIn(this);
         this.setWeigth(weigth);
     }
 
