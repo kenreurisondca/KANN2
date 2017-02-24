@@ -255,6 +255,31 @@ public class Graph extends Subject {
         for (int i = 0; i < maxLevel; i++) {
             res.addAll(connect(i, i + 1));
         }
+        edgeList.addAll(res);
+        return res;
+    }
+
+    public List<Edge> addLinks_form2() {
+        Integer maxLevel = ((PropertyGraphImpl) p).getMaxLevel();
+        List<Edge> res = new ArrayList<>();
+        for (int i = 0; i < maxLevel; i++) {
+            for (int j = 0; j < maxLevel; j++) {
+                if (i < j) {
+                    res.addAll(connect(i, j));
+                }
+            }
+        }
+        edgeList.addAll(res);
+        return res;
+    }
+
+    public List<Edge> addLinks_form3() {
+        Integer maxLevel = ((PropertyGraphImpl) p).getMaxLevel();
+        List<Edge> res = new ArrayList<>();
+        for (int j = 1; j < maxLevel; j++) {
+            res.addAll(connect(0, j));
+        }
+        edgeList.addAll(res);
         return res;
     }
 
@@ -275,7 +300,7 @@ public class Graph extends Subject {
         for (Node low : ant) {
             for (Node upper : cons) {
                 if (!this.exists(low, upper)) {
-                    res.add(new Edge(low, upper));
+                    res.add(new Edge(low, upper, 0.0));
                 }
             }
         }
@@ -303,8 +328,8 @@ public class Graph extends Subject {
         g.labeling();//Passo 3
 //        boolean addHiddenUnit = g.addHiddenUnit("hA", 0); //Passo 4
 //        boolean addHiddenUnit1 = g.addHiddenUnit("hB", 1); //Passo 4
-//        boolean addHiddenUnit2 = g.addHiddenUnit("hC", 1); //Passo 4
-//        boolean addHiddenUnit3 = g.addHiddenUnit("hD", 2); //Passo 4
+        boolean addHiddenUnit2 = g.addHiddenUnit("hC", 1); //Passo 4
+        boolean addHiddenUnit3 = g.addHiddenUnit("hD", 2); //Passo 4
 //        boolean addHiddenUnit4 = g.addHiddenUnit("hE", 3); //Passo 4
         g.addInputUnit("iA"); //Passo 5
         g.addInputUnit("iB"); //Passo 5 

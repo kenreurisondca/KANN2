@@ -75,6 +75,14 @@ public class Edge extends Subject {
     }
 
     public boolean exists(Node a, Node b) {
-        return a.getLabel().equals(this.in.getLabel()) && b.getLabel().equals(this.out.getLabel());
+        String aLabel = a.getLabel();
+        String bLabel = b.getLabel();
+        String thisaLabel = this.in.getLabel();
+        String thisbLabel = this.out.getLabel();
+        if (aLabel.equals(thisaLabel) && bLabel.equals(thisbLabel)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
