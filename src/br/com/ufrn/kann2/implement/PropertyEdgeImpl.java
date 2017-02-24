@@ -37,4 +37,8 @@ public class PropertyEdgeImpl extends Property {
         setMapValue("weigth", b);
     }
 
+    Double getOldWeigth() {
+        return getMapValue("oldWeigth");
+    }
+
 }

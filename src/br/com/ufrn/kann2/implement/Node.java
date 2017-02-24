@@ -6,6 +6,7 @@
 package br.com.ufrn.kann2.implement;
 
 import br.com.ufrn.kann2.observer.Subject;
+import br.com.ufrn.kann2.util.RandomKann;
 import java.util.ArrayList;
 
 /**
@@ -106,9 +107,19 @@ public class Node extends Subject {
         return ((PropertyNodeImpl) pNode).getLevel();
     }
 
+    void disturbBias() {
+        Double bias = getBias();
+        RandomKann r = RandomKann.getInstance();
+        ((PropertyNodeImpl) pNode).setBias(bias + r.nextDouble() - 0.5);
+    }
+
     @Override
     public String toString() {
-        return "Node{" + "label=" + label + ", level=" + getLevel() + '}';
+        return "Node{" + "label=" + label + ", bias=" + getBias() +  ", oldBias=" + getOldBias() +'}';
+    }
+
+    private Double getOldBias() {
+        return ((PropertyNodeImpl) pNode).getOldBias();
     }
 
 }

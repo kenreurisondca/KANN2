@@ -54,6 +54,10 @@ public class Edge extends Subject {
         return ((PropertyEdgeImpl) p).getWeigth();
     }
 
+    public Double getOldWeigth() {
+        return ((PropertyEdgeImpl) p).getOldWeigth();
+    }
+
     public void setWeigth(Double w) {
         ((PropertyEdgeImpl) p).setWeigth(w);
     }
@@ -73,7 +77,7 @@ public class Edge extends Subject {
 
     @Override
     public String toString() {
-        return "Edge{ " + in.getLabel() + " -> " + out.getLabel() + " }";
+        return "Edge{ " + in.getLabel() + " -> " + out.getLabel() + " } w= + " + getWeigth() + " ow=" + getOldWeigth();
     }
 
     public boolean exists(Node a, Node b) {

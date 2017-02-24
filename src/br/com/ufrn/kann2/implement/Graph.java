@@ -314,6 +314,11 @@ public class Graph extends Subject {
         return false;
     }
 
+    private void disturbEdges() {
+        nodeMap.forEach((k,v)->v.disturbBias());
+        edgeList.forEach((e)->e.disturbWeigth());
+    }
+
     public static void main(String[] args) {
         ArrayList<Rule> rules = new ArrayList();
         rules.add(new Rule("A :- B, Z"));
@@ -324,14 +329,11 @@ public class Graph extends Subject {
         Graph g = new Graph(rules);//Passo 1: Rewrite
         g.mapping();//Passo 2
         g.labeling();//Passo 3
-//        boolean addHiddenUnit = g.addHiddenUnit("hA", 0); //Passo 4
-//        boolean addHiddenUnit1 = g.addHiddenUnit("hB", 1); //Passo 4
-        boolean addHiddenUnit3 = g.addHiddenUnit("hD", 2); //Passo 4
-//        boolean addHiddenUnit4 = g.addHiddenUnit("hE", 3); //Passo 4
+        g.addHiddenUnit("hD", 2); //Passo 4
         g.addInputUnit("iA"); //Passo 5
-        List<Edge> addLinks_form3 = g.addLinks_form3(); // Passo 6
-        String s = "A";
-        Node node = g.getNode(s);
+        g.addLinks_form3(); // Passo 6
+        g.disturbEdges();
+
     }
 
 }
