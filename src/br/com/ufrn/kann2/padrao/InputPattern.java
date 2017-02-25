@@ -46,13 +46,13 @@ public abstract class InputPattern {
         return intermediate;
     }
 
-    public Map<String, InputError> getErrorByUnit(Map<String, Double> graph) {
+    public Map<String, InputErrors> getErrorByUnit(Map<String, Double> graph) {
         Set<String> keys = graph.keySet();
-        Map<String, InputError> inputErrorMap = new HashMap<>();
+        Map<String, InputErrors> inputErrorMap = new HashMap<>();
         for (String s : keys) {
             Double graphValue = graph.get(s);
             Double patternValue = intermediate.get(s);
-            InputError ieActual = inputErrorMap.get(s);
+            InputErrors ieActual = inputErrorMap.get(s);
             if (Math.round(graphValue) > Math.round(patternValue)) {
                 inputErrorMap.put(s, ieActual.incFP());
             } else if (Math.round(graphValue) < Math.round(patternValue)) {
