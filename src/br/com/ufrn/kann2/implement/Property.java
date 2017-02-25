@@ -32,9 +32,24 @@ public abstract class Property {
         return fields.get(field);
     }
 
+    protected void addMapValue(String field, Double value) {
+        fields.computeIfPresent(field, (k, v) -> value + v);
+    }
+
     protected void setMapValue(String field, Double value) {
         fields.computeIfPresent(field, (k, v) -> value);
     }
 
     protected abstract void createFields();
+    
+    public static void main(String[] args) {
+        Property p = new Property() {
+            @Override
+            protected void createFields() {
+                registerField("Kennedy");
+            }
+        };
+        p.addMapValue("Kennedy", 30.);
+        p.addMapValue("Kennedy", 45.);
+    }
 }
