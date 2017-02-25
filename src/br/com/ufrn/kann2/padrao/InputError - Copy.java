@@ -31,13 +31,14 @@ public class InputError {
         return FP + FN;
     }
 
+    public InputError incFP() {
+        this.FP++;
+        return this;
+    }
+
     public InputError incFN() {
         this.FN++;
         return this;
     }
 
-    public InputError incFP() {
-        this.FP++;
-        return this;
-    }
 }
