@@ -65,5 +65,6 @@ public abstract class InputPattern {
     protected abstract void generateOutput();
 
     protected abstract void generateIntermediateConclusions();
+    
 
 }

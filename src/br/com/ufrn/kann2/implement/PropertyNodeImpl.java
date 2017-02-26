@@ -53,7 +53,7 @@ public class PropertyNodeImpl extends Property {
     }
 
     void setActivation(Double d) {
-        setMapValue("activation", d);
+        setMapValue("activation", logsig(d));
     }
 
     void setBias(Double b) {
@@ -79,31 +79,26 @@ public class PropertyNodeImpl extends Property {
         incMapValue("countInput");
         Double countInput = getMapValue("countInput");
         Double sizeInput = getMapValue("sizeInput");
-        addMapValue("contInput", countInput % sizeInput);
+        addMapValue("countInput", (countInput + 1.) % sizeInput);
     }
 
-    private Double getContInput() {
-        return getMapValue("contInput");
+    private Double getCountInput() {
+        return getMapValue("countInput");
     }
 
-    protected void incContInput() {
-        incMapValue("contInput");
+    protected void incCountInput() {
+        incMapValue("countInput");
     }
 
     protected void incSizeInput() {
         incMapValue("sizeInput");
     }
 
-    public static void main(String[] args) {
-        PropertyNodeImpl p = new PropertyNodeImpl();
-        p.setMapValue("sizeInput", 3.);
-        p.addValue(10.);
-        p.addValue(5.);
-        p.addValue(8.);
-        p.addValue(7.);
-        p.addValue(10.);
-        p.addValue(12.);
-        p.addValue(5.);
+    private Double logsig(Double d) {
+        return 1 / (1. + Math.exp(-d));
+    }
 
+    protected boolean isReady() {
+        return (getMapValue("countInput") == 0.);
     }
 }
