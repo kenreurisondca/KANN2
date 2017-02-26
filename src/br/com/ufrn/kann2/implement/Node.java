@@ -65,6 +65,7 @@ public class Node extends Subject {
 
     void addEdgeIn(Edge e) {
         if (!edgesIn.contains(e)) {
+            ((PropertyNodeImpl) pNode).incContInput();
             edgesIn.add(e);
         }
     }
@@ -115,7 +116,7 @@ public class Node extends Subject {
 
     @Override
     public String toString() {
-        return "Node{" + "label=" + label + ", bias=" + getBias() +  ", oldBias=" + getOldBias() +'}';
+        return "Node{" + "label=" + label + ", bias=" + getBias() + ", oldBias=" + getOldBias() + '}';
     }
 
     private Double getOldBias() {

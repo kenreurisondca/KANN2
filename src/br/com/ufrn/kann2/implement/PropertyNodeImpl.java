@@ -23,6 +23,17 @@ public class PropertyNodeImpl extends Property {
         registerField("value");
         registerField("activation");
         registerField("label");
+        registerField("countInput");
+        registerField("sizeInput");
+    }
+
+    @Override
+    protected void cleanFields() {
+        cleanField("bias");
+        cleanField("oldBias");
+        cleanField("value");
+        cleanField("activation");
+        cleanField("countInput");
     }
 
     protected void setNet(Double v) {
@@ -63,4 +74,36 @@ public class PropertyNodeImpl extends Property {
         return getMapValue("oldBias");
     }
 
+    void addValue(Double v) {
+        addMapValue("value", v);
+        incMapValue("countInput");
+        Double countInput = getMapValue("countInput");
+        Double sizeInput = getMapValue("sizeInput");
+        addMapValue("contInput", countInput % sizeInput);
+    }
+
+    private Double getContInput() {
+        return getMapValue("contInput");
+    }
+
+    protected void incContInput() {
+        incMapValue("contInput");
+    }
+
+    protected void incSizeInput() {
+        incMapValue("sizeInput");
+    }
+
+    public static void main(String[] args) {
+        PropertyNodeImpl p = new PropertyNodeImpl();
+        p.setMapValue("sizeInput", 3.);
+        p.addValue(10.);
+        p.addValue(5.);
+        p.addValue(8.);
+        p.addValue(7.);
+        p.addValue(10.);
+        p.addValue(12.);
+        p.addValue(5.);
+
+    }
 }

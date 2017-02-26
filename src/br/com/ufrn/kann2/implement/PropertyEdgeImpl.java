@@ -21,6 +21,12 @@ public class PropertyEdgeImpl extends Property {
         registerField("oldWeigth");
     }
 
+    @Override
+    protected void cleanFields() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
     public Double getWeigth() {
         return getMapValue("weigth");
     }

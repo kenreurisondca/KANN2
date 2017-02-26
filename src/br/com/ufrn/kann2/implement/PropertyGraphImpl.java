@@ -23,6 +23,11 @@ public class PropertyGraphImpl extends Property {
         registerField("maxError");
         registerField("maxLevel");
     }
+
+    @Override
+    protected void cleanFields() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }    
     
     public Integer getMaxLevel() {
         return getMapValue("maxLevel").intValue();
