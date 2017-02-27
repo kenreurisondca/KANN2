@@ -112,15 +112,15 @@ public class Node extends Subject {
         ((PropertyNodeImpl) pNode).setMapValue("value", d);
     }
 
-    public void propagate() {
+    public void propagateRec() {
         PropertyNodeImpl prop = (PropertyNodeImpl) pNode;
         if (this.edgesIn.isEmpty()) {
             this.getEdgesOut().forEach((e) -> e.getOut().addValue(prop.getValue() * e.getWeigth()));
-            this.getEdgesOut().forEach((e) -> e.getOut().propagate());
+            this.getEdgesOut().forEach((e) -> e.getOut().propagateRec());
         } else if (this.isReady()) {
             prop.setActivation(this.getValue() + this.getBias());
             this.getEdgesOut().forEach((e) -> e.getOut().addValue(prop.getActivation() * e.getWeigth()));
-            this.getEdgesOut().forEach((e) -> e.getOut().propagate());
+            this.getEdgesOut().forEach((e) -> e.getOut().propagateRec());
         }
     }
 
