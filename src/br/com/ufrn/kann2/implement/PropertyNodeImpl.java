@@ -78,7 +78,7 @@ public class PropertyNodeImpl extends Property {
         addMapValue("value", v);
         Double countInput = getMapValue("countInput");
         Double sizeInput = getMapValue("sizeInput");
-        addMapValue("countInput", (countInput + 1.) % sizeInput);
+        setMapValue("countInput", (countInput + 1.) % sizeInput);
     }
 
     private Double getCountInput() {

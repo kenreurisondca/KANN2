@@ -325,18 +325,21 @@ public class Graph extends Subject {
         InputPatternExample ipe = new InputPatternExample();
         ipe.generateRandomInput();
         String labels[] = {"D", "E", "F", "G"};
-        Double values[] = {1., 1., 1., 1.};
+        Double values[] = {0., 0., 1., 0.};
         ipe.setInput(labels, values);
         Map<String, Double> input = ipe.getInput();
         inputMap.forEach((k, v) -> v.setValue(input.get(k)));
         for (Node n : inputMap.values()) {
             n.propagate();
         }
-//        for (Node n : outputMap.values()) {
-//            n.setActivation(n.getValue() + n.getBias());
-//        }
     }
 
+    @Override
+    public String toString() {
+        return nodeMap.toString();
+    }
+
+    
     public static void main(String[] args) {
         ArrayList<Rule> rules = new ArrayList();
         rules.add(new Rule("A :- B, C"));
@@ -345,7 +348,7 @@ public class Graph extends Subject {
         Graph g = new Graph(rules);//Passo 1: Rewrite
         g.mapping();//Passo 2
         g.labeling();//Passo 3
-        //g.addLinks_form3(); // Passo 6
+        //g.addLinks_form1(); // Passo 6
         //g.disturbEdges();
         g.forward();
     }

@@ -115,11 +115,11 @@ public class Node extends Subject {
     public void propagate() {
         PropertyNodeImpl prop = (PropertyNodeImpl) pNode;
         if (this.edgesIn.isEmpty()) {
-            this.getEdgesOut().forEach((e) -> e.getOut().addValue(prop.getValue()));
+            this.getEdgesOut().forEach((e) -> e.getOut().addValue(prop.getValue() * e.getWeigth()));
             this.getEdgesOut().forEach((e) -> e.getOut().propagate());
         } else if (this.isReady()) {
             prop.setActivation(this.getValue() + this.getBias());
-            this.getEdgesOut().forEach((e) -> e.getOut().addValue(prop.getActivation()));
+            this.getEdgesOut().forEach((e) -> e.getOut().addValue(prop.getActivation() * e.getWeigth()));
             this.getEdgesOut().forEach((e) -> e.getOut().propagate());
         }
     }
@@ -131,11 +131,20 @@ public class Node extends Subject {
 
     @Override
     public String toString() {
-        return "Node{" + "label=" + label + ", value=" + getValue() + ", countInput=" + pNode.getMapValue("countInput") + '}';
+        return "Node{" + "label=" + label
+                + ", bias=" + getBias()
+                + ", value=" + getValue()
+                + ", activation=" + getActivation() + "}\n";
     }
 
     private boolean isReady() {
         return ((PropertyNodeImpl) pNode).isReady();
+    }
+    
+    
+
+    protected PropertyNodeImpl getProperty() {
+        return ((PropertyNodeImpl) pNode);
     }
 
 }
