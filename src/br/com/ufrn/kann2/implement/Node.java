@@ -147,4 +147,14 @@ public class Node extends Subject {
         return ((PropertyNodeImpl) pNode);
     }
 
+    void propagateIter() {
+         PropertyNodeImpl prop = (PropertyNodeImpl) pNode;
+        if (this.edgesIn.isEmpty()) {
+            this.getEdgesOut().forEach((e) -> e.getOut().addValue(prop.getValue() * e.getWeigth()));
+        } else if (this.isReady()) {
+            prop.setActivation(this.getValue() + this.getBias());
+            this.getEdgesOut().forEach((e) -> e.getOut().addValue(prop.getActivation() * e.getWeigth()));
+        }
+    }
+
 }
