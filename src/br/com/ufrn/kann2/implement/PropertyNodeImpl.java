@@ -76,7 +76,6 @@ public class PropertyNodeImpl extends Property {
 
     void addValue(Double v) {
         addMapValue("value", v);
-        incMapValue("countInput");
         Double countInput = getMapValue("countInput");
         Double sizeInput = getMapValue("sizeInput");
         addMapValue("countInput", (countInput + 1.) % sizeInput);
