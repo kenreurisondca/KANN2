@@ -15,15 +15,15 @@ public class InputPatternExample extends InputPattern {
 
     public InputPatternExample() {
         super();
-    }
-
-    public InputPatternExample(Map<String, Double> inputs, Map<String, Double> outputs) {
-        super(inputs, outputs);
+        inputs.put("D", 0.);
+        inputs.put("E", 0.);
+        inputs.put("F", 0.);
+        inputs.put("G", 0.);
     }
 
     @Override
     protected void generateOutput() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 
     @Override

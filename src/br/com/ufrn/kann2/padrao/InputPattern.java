@@ -5,6 +5,8 @@
  */
 package br.com.ufrn.kann2.padrao;
 
+import br.com.ufrn.kann2.util.RandomKann;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -15,8 +17,8 @@ import java.util.Set;
  */
 public abstract class InputPattern {
 
-    private Map<String, Double> inputs;
-    private Map<String, Double> outputs;
+    protected Map<String, Double> inputs;
+    protected Map<String, Double> outputs;
     private Map<String, Double> intermediate;
 
     public InputPattern() {
@@ -29,7 +31,26 @@ public abstract class InputPattern {
         this.outputs = outputs;
     }
 
-    private Map<String, Double> mappingInput(String[] label, Double[] values) throws Exception {
+    public void setInput(String[] labels, Double[] values) {
+        for (int i = 0; i < labels.length; i++) {
+            inputs.put(labels[i], values[i]);
+        }
+    }
+
+    public Map<String, Double> getInput() {
+        return inputs;
+    }
+
+    public void generateRandomInput() {
+        RandomKann r = RandomKann.getInstance();
+        for (String s : inputs.keySet()) {
+            Integer nextInt = r.nextInt(2);
+            Double doubleValue = nextInt.doubleValue();
+            inputs.put(s, doubleValue);
+        }
+    }
+
+    public Map<String, Double> mappingInput(String[] label, Double[] values) throws Exception {
         if (values.length != label.length || label.length == 0) {
             throw new Exception("Incompatible array length");
         }
@@ -65,6 +86,5 @@ public abstract class InputPattern {
     protected abstract void generateOutput();
 
     protected abstract void generateIntermediateConclusions();
-    
 
 }

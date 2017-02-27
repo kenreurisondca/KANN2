@@ -48,6 +48,12 @@ public abstract class Property {
         fields.computeIfPresent(field, (k, v) -> value);
     }
 
+    @Override
+    public String toString() {
+        return "Property{" + "fields=" + fields.toString() + '}';
+    }
+
+    
     protected abstract void createFields();
     protected abstract void cleanFields();
 }

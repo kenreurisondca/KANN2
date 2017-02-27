@@ -20,9 +20,9 @@ public class PropertyNodeImpl extends Property {
         registerField("bias");
         registerField("oldBias");
         registerField("level");
-        registerField("value");
         registerField("activation");
         registerField("label");
+        registerField("value");
         registerField("countInput");
         registerField("sizeInput");
     }
@@ -36,11 +36,11 @@ public class PropertyNodeImpl extends Property {
         cleanField("countInput");
     }
 
-    protected void setNet(Double v) {
+    protected void setValue(Double v) {
         setMapValue("value", v);
     }
 
-    Double getNet() {
+    Double getValue() {
         return getMapValue("value");
     }
 

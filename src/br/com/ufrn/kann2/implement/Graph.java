@@ -7,6 +7,7 @@ package br.com.ufrn.kann2.implement;
 
 import br.com.ufrn.kann2.observer.Subject;
 import br.com.ufrn.kann2.padrao.InputPattern;
+import br.com.ufrn.kann2.padrao.InputPatternExample;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,23 +19,23 @@ import java.util.Map;
  * @author kenreurison
  */
 public class Graph extends Subject {
-    
+
     private List<Edge> edgeList = new ArrayList<>();
     private Map<String, Node> nodeMap = new HashMap<>();
     private Map<String, Node> inputMap = new HashMap<>();
     private Map<String, Node> outputMap = new HashMap<>();
     private List<Rule> rules = new ArrayList<>();
     private Property p = new PropertyGraphImpl();
-    
+
     public Graph() {
         this.edgeList = new ArrayList<>();
         this.nodeMap = new HashMap<>();
     }
-    
+
     public Graph(ArrayList<Rule> rules) {
         this.rules = rewrite(rules);
     }
-    
+
     public void mapping() {
         createNodes();
         createEdges();
@@ -42,34 +43,34 @@ public class Graph extends Subject {
         performInputMap();
         performOutputMap();
     }
-    
+
     public Graph(ArrayList<Edge> edges, Map<String, Node> nodes) {
         this.edgeList = edges;
         this.nodeMap = nodes;
     }
-    
+
     public List<Edge> getEdges() {
         return edgeList;
     }
-    
+
     public Map<String, Node> getNodes() {
         return nodeMap;
     }
-    
+
     public Map<String, Node> getinputs() {
         if (inputMap.isEmpty()) {
             performInputMap();
         }
         return inputMap;
     }
-    
+
     public Map<String, Node> getOutput() {
         if (outputMap.isEmpty()) {
             performOutputMap();
         }
         return outputMap;
     }
-    
+
     private void performOutputMap() {
         Collection<Node> values = nodeMap.values();
         for (Node n : values) {
@@ -79,7 +80,7 @@ public class Graph extends Subject {
             }
         }
     }
-    
+
     private void performInputMap() {
         Collection<Node> values = nodeMap.values();
         for (Node n : values) {
@@ -89,11 +90,11 @@ public class Graph extends Subject {
             }
         }
     }
-    
+
     private Node getNode(String s) {
         return nodeMap.get(s.replace("¬", ""));
     }
-    
+
     private ArrayList<Rule> rewrite(ArrayList<Rule> rules) {
         Map<String, Integer> statConsequent = statConsequent(rules);
         Map<String, Integer> aux = new HashMap<>(statConsequent);
@@ -113,11 +114,11 @@ public class Graph extends Subject {
         rules.removeAll(oldRules);
         return rules;
     }
-    
+
     public void rewrite() {
         rules = rewrite((ArrayList<Rule>) rules);
     }
-    
+
     private Map<String, Integer> statConsequent(List<Rule> rules) {
         Map<String, Integer> countConsec = new HashMap<>();
         for (Rule r : rules) {
@@ -130,7 +131,7 @@ public class Graph extends Subject {
         }
         return countConsec;
     }
-    
+
     private void createNodes() {
         for (Rule r : rules) {
             List<String> antecedents = r.getAntecedents();
@@ -139,7 +140,7 @@ public class Graph extends Subject {
             this.nodeMap.put(consequents, new Node(consequents));
         }
     }
-    
+
     private void createEdges() {
         Edge e = null;
         Node nodeOut = null;
@@ -159,7 +160,7 @@ public class Graph extends Subject {
             }
         }
     }
-    
+
     private void adjustBias() {
         Double bias = 0.;
         for (Rule r : rules) {
@@ -174,7 +175,7 @@ public class Graph extends Subject {
             nodeAdjust.setBias(bias);
         }
     }
-    
+
     private Map<String, Integer> statAntecedent(List<Rule> rules) {
         Map<String, Integer> res = new HashMap<>();
         Integer soma = 0;
@@ -185,7 +186,7 @@ public class Graph extends Subject {
         }
         return res;
     }
-    
+
     private Integer countPositiveAntecedents(Rule r) {
         Integer N = 0;
         for (String s : r.getAntecedents()) {
@@ -195,7 +196,7 @@ public class Graph extends Subject {
         }
         return N;
     }
-    
+
     public void labeling() {
         Collection<Node> values = inputMap.values();
         values.forEach((n) -> propagateLevel(n));
@@ -214,7 +215,7 @@ public class Graph extends Subject {
         b.getEdgesOut().forEach((e) -> res.add(e.getOut()));
         return res;
     }
-    
+
     private void propagateLevel(Node n) {
         System.out.println(n.getLabel());
         ArrayList<Node> nodesOut = this.nodesOut(n);
@@ -230,7 +231,7 @@ public class Graph extends Subject {
             }
         }
     }
-    
+
     public boolean addHiddenUnit(String ha, int i) {
         Integer maxLevel = ((PropertyGraphImpl) p).getMaxLevel();
         if (i > 0 && i < maxLevel) {
@@ -242,14 +243,14 @@ public class Graph extends Subject {
             return false;
         }
     }
-    
+
     public void addInputUnit(String ia) {
         Node a = new Node(ia);
         a.setLevel(0.0);
         inputMap.put(ia, a);
         nodeMap.put(ia, a);
     }
-    
+
     public List<Edge> addLinks_form1() {
         Integer maxLevel = ((PropertyGraphImpl) p).getMaxLevel();
         List<Edge> res = new ArrayList<>();
@@ -259,7 +260,7 @@ public class Graph extends Subject {
         edgeList.addAll(res);
         return res;
     }
-    
+
     public List<Edge> addLinks_form2() {
         Integer maxLevel = ((PropertyGraphImpl) p).getMaxLevel();
         List<Edge> res = new ArrayList<>();
@@ -271,7 +272,7 @@ public class Graph extends Subject {
         edgeList.addAll(res);
         return res;
     }
-    
+
     public List<Edge> addLinks_form3() {
         Integer maxLevel = ((PropertyGraphImpl) p).getMaxLevel();
         List<Edge> res = new ArrayList<>();
@@ -281,7 +282,7 @@ public class Graph extends Subject {
         edgeList.addAll(res);
         return res;
     }
-    
+
     private List<Edge> connect(int i, int i0) {
         ArrayList<Node> ant = new ArrayList<>();
         ArrayList<Node> cons = new ArrayList<>();
@@ -305,7 +306,7 @@ public class Graph extends Subject {
         }
         return res;
     }
-    
+
     private boolean exists(Node low, Node upper) {
         for (Edge e : edgeList) {
             if (e.exists(low, upper)) {
@@ -314,28 +315,39 @@ public class Graph extends Subject {
         }
         return false;
     }
-    
+
     private void disturbEdges() {
         nodeMap.forEach((k, v) -> v.disturbBias());
         edgeList.forEach((e) -> e.disturbWeigth());
     }
-    
-    
+
+    public void forward() {
+        InputPatternExample ipe = new InputPatternExample();
+        ipe.generateRandomInput();
+        String labels[] = {"D", "E", "F", "G"};
+        Double values[] = {1., 1., 1., 1.};
+        ipe.setInput(labels, values);
+        Map<String, Double> input = ipe.getInput();
+        inputMap.forEach((k, v) -> v.setValue(input.get(k)));
+        for (Node n : inputMap.values()) {
+            n.propagate();
+        }
+//        for (Node n : outputMap.values()) {
+//            n.setActivation(n.getValue() + n.getBias());
+//        }
+    }
+
     public static void main(String[] args) {
         ArrayList<Rule> rules = new ArrayList();
-        rules.add(new Rule("A :- B, Z"));
-        rules.add(new Rule("B :- C, D"));
-        rules.add(new Rule("B :- E, F, G"));
-        rules.add(new Rule("Z :- Y, ¬X"));
-        rules.add(new Rule("Y :- S, T"));
+        rules.add(new Rule("A :- B, C"));
+        rules.add(new Rule("B :- D, E"));
+        rules.add(new Rule("C :- F, G"));
         Graph g = new Graph(rules);//Passo 1: Rewrite
         g.mapping();//Passo 2
         g.labeling();//Passo 3
-        g.addHiddenUnit("hD", 2); //Passo 4
-        g.addInputUnit("iA"); //Passo 5
-        g.addLinks_form3(); // Passo 6
-        g.disturbEdges();
-        
+        //g.addLinks_form3(); // Passo 6
+        //g.disturbEdges();
+        g.forward();
     }
-    
+
 }
