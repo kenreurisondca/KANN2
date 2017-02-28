@@ -29,11 +29,12 @@ public class PropertyNodeImpl extends Property {
 
     @Override
     protected void cleanFields() {
-        cleanField("bias");
-        cleanField("oldBias");
-        cleanField("value");
-        cleanField("activation");
-        cleanField("countInput");
+//        cleanField("bias");
+//        cleanField("oldBias");
+//        cleanField("value");
+//        cleanField("activation");
+//        cleanField("countInput");
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     protected void setValue(Double v) {

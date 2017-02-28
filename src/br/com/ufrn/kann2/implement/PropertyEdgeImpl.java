@@ -23,14 +23,15 @@ public class PropertyEdgeImpl extends Property {
 
     @Override
     protected void cleanFields() {
+//        cleanField("weigth");
+//        cleanField("oldWeigth");
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
     public Double getWeigth() {
         return getMapValue("weigth");
     }
-    
+
     void setWeigth(Double w) {
         Double oldWeigth = getMapValue("weigth");
         setMapValue("oldWeigth", oldWeigth);

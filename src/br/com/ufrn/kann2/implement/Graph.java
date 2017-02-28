@@ -340,6 +340,9 @@ public class Graph extends Subject {
         }
     }
 
+    public void clean(){
+        ((PropertyGraphImpl) p).cleanFields();
+    }
     public void forwardIter() {
         InputPatternExample ipe = new InputPatternExample();
         ipe.generateRandomInput();

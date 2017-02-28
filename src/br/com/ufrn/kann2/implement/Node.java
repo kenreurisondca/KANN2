@@ -156,5 +156,9 @@ public class Node extends Subject {
             this.getEdgesOut().forEach((e) -> e.getOut().addValue(prop.getActivation() * e.getWeigth()));
         }
     }
+    
+    protected void clean(){
+        ((PropertyNodeImpl)  pNode).cleanFields();
+    }
 
 }
