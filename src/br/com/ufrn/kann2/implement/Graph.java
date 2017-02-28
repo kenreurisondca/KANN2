@@ -340,9 +340,10 @@ public class Graph extends Subject {
         }
     }
 
-    public void clean(){
+    public void clean() {
         ((PropertyGraphImpl) p).cleanFields();
     }
+
     public void forwardIter() {
         InputPatternExample ipe = new InputPatternExample();
         ipe.generateRandomInput();
@@ -378,44 +379,33 @@ public class Graph extends Subject {
         rules.add(new Rule("C :- F, G"));
         Long startTime1;
         Long endTime1;
-        Long startTime2;
-        Long endTime2;
-        Long dIterativo = 0L;
-        Long dRecursivo = 0L;
-        int N = 10000;
-        int R = 100;
+        Long dRec = 0L;
+        ArrayList<Long> tempos = new ArrayList<>();
+        Long N = 100L;
+        Long R = 10000L;
+        Graph g2;
         for (int j = 0; j < R; j++) {
+            dRec = 0L;
             for (int i = 0; i < N; i++) {
-                Graph g2 = new Graph(rules);//Passo 1: Rewrite
+                g2 = new Graph(rules);//Passo 1: Rewrite
                 g2.mapping();//Passo 2
                 g2.labeling();//Passo 3
                 g2.addLinks_form1(); // Passo 6
                 g2.disturbEdges();
-                startTime2 = System.currentTimeMillis();
-                g2.forwardIter();
-                endTime2 = System.currentTimeMillis();
-                dRecursivo += endTime2 - startTime2;
-            }
-            for (int i = 0; i < N; i++) {
-                Graph g1 = new Graph(rules);//Passo 1: Rewrite
-                g1.mapping();//Passo 2
-                g1.labeling();//Passo 3
-                g1.addLinks_form1(); // Passo 6
-                g1.disturbEdges();
                 startTime1 = System.currentTimeMillis();
-                g1.forwardRec();
+                g2.forwardIter();
+                //g2.forwardRec();
                 endTime1 = System.currentTimeMillis();
-                dIterativo += endTime1 - startTime1;
+                dRec += endTime1 - startTime1;
             }
-            
-            double dI = dIterativo.doubleValue();
-            double dR = dRecursivo.doubleValue();
-            if (dI > dR) {
-                System.out.println("Iterativo melhor: " + ((100. * (dI - dR)) / dI) + "%");
-            } else {
-                System.out.println("Recursivo melhor: " + ((100. * (dR - dI)) / dR) + "%");
-            }
+            tempos.add(dRec);
         }
+        System.out.println(tempos.toString());
+        Long sum = 0L;
+        sum = tempos.stream().map((l) -> l).reduce(sum, (acc, item) -> acc + item);
+        System.out.println(sum);
+        Long total = N*R;
+        System.out.println(sum.doubleValue() / total.doubleValue());
     }
 
 }
