@@ -80,6 +80,10 @@ public class Edge extends Subject {
         return "Edge{ " + in.getLabel() + " -> " + out.getLabel() + " } w= + " + getWeigth() + " ow=" + getOldWeigth();
     }
 
+    public void clean() {
+        ((PropertyEdgeImpl) p).cleanFields();
+    }
+
     public boolean exists(Node a, Node b) {
         String aLabel = a.getLabel();
         String bLabel = b.getLabel();

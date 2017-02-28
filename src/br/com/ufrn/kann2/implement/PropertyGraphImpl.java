@@ -10,11 +10,11 @@ package br.com.ufrn.kann2.implement;
  * @author kenreurison
  */
 public class PropertyGraphImpl extends Property {
-    
+
     public PropertyGraphImpl() {
         super();
     }
-    
+
     @Override
     public void createFields() {
         registerField("lambda");
@@ -26,25 +26,25 @@ public class PropertyGraphImpl extends Property {
 
     @Override
     protected void cleanFields() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }    
-    
+        super.cleanFields();
+    }
+
     public Integer getMaxLevel() {
         return getMapValue("maxLevel").intValue();
     }
-    
+
     public void setMaxLevel(double doubleValue) {
         setMapValue("maxLevel", doubleValue);
     }
-    
+
     public void setMaxLevel(Integer max) {
         setMapValue("maxLevel", max.doubleValue());
     }
-    
+
     void updateMaxLevel(Double level) {
         if (getMaxLevel() < level) {
             setMaxLevel(level);
         }
     }
-    
+
 }
