@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  *
- * @author larihmoura
+ * @author kenreurison
  */
 public class InputPatternExample extends InputPattern {
 
