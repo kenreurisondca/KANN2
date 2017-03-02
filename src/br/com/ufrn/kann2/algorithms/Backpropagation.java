@@ -5,11 +5,27 @@
  */
 package br.com.ufrn.kann2.algorithms;
 
+import br.com.ufrn.kann2.implement.Graph;
+
 /**
  *
  * @author kenreurison
  */
-public class Backpropagation {
-    Forward f;
-    Backward b;
+public class Backpropagation extends Algorithm {
+
+    public Backpropagation(Graph graph) {
+        super(graph);
+    }
+
+    
+    @Override
+    protected void forward() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected void backward() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

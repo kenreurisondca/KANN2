@@ -6,7 +6,6 @@
 package br.com.ufrn.kann2.padrao;
 
 import br.com.ufrn.kann2.util.RandomKann;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -15,18 +14,18 @@ import java.util.Set;
  *
  * @author kenreurison
  */
-public abstract class InputPattern {
+public abstract class Pattern {
 
     protected Map<String, Double> inputs;
     protected Map<String, Double> outputs;
     private Map<String, Double> intermediate;
 
-    public InputPattern() {
+    public Pattern() {
         inputs = new HashMap<>();
         outputs = new HashMap<>();
     }
 
-    public InputPattern(Map<String, Double> inputs, Map<String, Double> outputs) {
+    private Pattern(Map<String, Double> inputs, Map<String, Double> outputs) {
         this.inputs = inputs;
         this.outputs = outputs;
     }
@@ -50,7 +49,7 @@ public abstract class InputPattern {
         }
     }
 
-    public Map<String, Double> mappingInput(String[] label, Double[] values) throws Exception {
+    private Map<String, Double> mappingInput(String[] label, Double[] values) throws Exception {
         if (values.length != label.length || label.length == 0) {
             throw new Exception("Incompatible array length");
         }
@@ -61,23 +60,18 @@ public abstract class InputPattern {
         return res;
     }
 
-    public Map<String, Double> getIntermediateConcusions() {
-        generateOutput();
-        generateIntermediateConclusions();
-        return intermediate;
-    }
-
-    public Map<String, InputError> getErrorByUnit(Map<String, Double> graph) {
+   
+    public Map<String, OutputError> getErrorByUnit(Map<String, Double> graph) {
         Set<String> keys = graph.keySet();
-        Map<String, InputError> inputErrorMap = new HashMap<>();
+        Map<String, OutputError> inputErrorMap = new HashMap<>();
         for (String s : keys) {
             Double graphValue = graph.get(s);
             Double patternValue = intermediate.get(s);
-            InputError ieActual = inputErrorMap.get(s);
+            OutputError ieActual = inputErrorMap.get(s);
             if (Math.round(graphValue) > Math.round(patternValue)) {
                 inputErrorMap.put(s, ieActual.incFP());
             } else if (Math.round(graphValue) < Math.round(patternValue)) {
-                inputErrorMap.put(s, ieActual.incFP());
+                inputErrorMap.put(s, ieActual.incFN());
             }
         }
         return inputErrorMap;
@@ -86,5 +80,11 @@ public abstract class InputPattern {
     protected abstract void generateOutput();
 
     protected abstract void generateIntermediateConclusions();
+
+    protected abstract void selectInputInOrder();
+
+    protected abstract void selectOutputInOrder();
+    
+    public abstract Map<String, Double> performOutput();
 
 }

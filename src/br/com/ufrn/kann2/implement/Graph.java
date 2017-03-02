@@ -5,8 +5,11 @@
  */
 package br.com.ufrn.kann2.implement;
 
+import br.com.ufrn.kann2.algorithms.Algorithm;
+import br.com.ufrn.kann2.algorithms.Backpropagation;
 import br.com.ufrn.kann2.observer.Subject;
-import br.com.ufrn.kann2.padrao.InputPatternExample;
+import br.com.ufrn.kann2.padrao.Pattern;
+import br.com.ufrn.kann2.padrao.PatternExample;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -25,10 +28,12 @@ public class Graph extends Subject {
     private Map<String, Node> outputMap = new HashMap<>();
     private List<Rule> rules = new ArrayList<>();
     private Property p = new PropertyGraphImpl();
+    private Algorithm algorithm;
 
     public Graph() {
         this.edgeList = new ArrayList<>();
         this.nodeMap = new HashMap<>();
+        algorithm = new Backpropagation(this);
     }
 
     public Graph(ArrayList<Rule> rules) {
@@ -320,7 +325,7 @@ public class Graph extends Subject {
     }
 
     public void forwardRec() {
-        InputPatternExample ipe = new InputPatternExample();
+        Pattern ipe = new PatternExample();
         ipe.generateRandomInput();
         String labels[] = {"D", "E", "F", "G"};
         Double values[] = {1., 1., 1., 1.};
@@ -339,7 +344,8 @@ public class Graph extends Subject {
     }
 
     public void forwardIter() {
-        InputPatternExample ipe = new InputPatternExample();
+        Pattern ipe = new PatternExample();
+        ipe.performOutput();
         ipe.generateRandomInput();
         String labels[] = {"D", "E", "F", "G"};
         Double values[] = {1., 1., 1., 1.};
@@ -375,7 +381,7 @@ public class Graph extends Subject {
         g2.mapping();//Passo 2
         g2.labeling();//Passo 3
         g2.addLinks_form1(); // Passo 6
-        g2.disturbEdges();
+        //g2.disturbEdges();
         g2.forwardIter();
     }
 }

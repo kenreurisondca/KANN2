@@ -9,12 +9,12 @@ package br.com.ufrn.kann2.padrao;
  *
  * @author kenreurison
  */
-public class InputError {
+public class OutputError {
 
     private Double FP;
     private Double FN;
 
-    public InputError(Double FP, Double FN) {
+    public OutputError(Double FP, Double FN) {
         this.FP = FP;
         this.FN = FN;
     }
@@ -31,12 +31,12 @@ public class InputError {
         return FP + FN;
     }
 
-    public InputError incFP() {
+    public OutputError incFP() {
         FP++;
         return this;
     }
 
-    public InputError incFN() {
+    public OutputError incFN() {
         FN++;
         return this;
     }
