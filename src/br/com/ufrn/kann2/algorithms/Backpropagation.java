@@ -33,7 +33,7 @@ public class Backpropagation extends Algorithm {
 
     @Override
     public void forwardRec() {
-        pattern.generateInput();
+        pattern.generateInputOutput();
         Map<String, Double> input = pattern.getInput();
         graph.getInputs().forEach((k, v) -> v.setValue(input.get(k)));
         for (Node n : graph.getInputs().values()) {
@@ -55,7 +55,6 @@ public class Backpropagation extends Algorithm {
 
     public void setPattern(PatternExample patternExample) {
         pattern = patternExample;
-        pattern.generateInput();
     }
 
     @Override
@@ -121,9 +120,9 @@ public class Backpropagation extends Algorithm {
     private void updateHiddenNode(Node nodeHidden) {
         Double delta = nodeHidden.getpNode().getField("delta");
         Double eta = ((PropertyAlgorithmImpl) p).getEta();
-        for (Edge out : nodeHidden.getEdgesOut()) {
-            Double input = out.getNodeIn().getValue();
-            out.setWeigth(out.getOldWeigth() + eta * delta * input);
+        for (Edge in : nodeHidden.getEdgesIn()) {
+            Double input = in.getInValue();
+            in.setWeigth(in.getOldWeigth() + eta * delta * input);
         }
         nodeHidden.setBias(nodeHidden.getOldBias() + eta * delta);
     }
@@ -148,7 +147,7 @@ public class Backpropagation extends Algorithm {
 
     @Override
     public void train() {
-        pattern.generateInput();
+        pattern.generateInputOutput();
         forwardIter();
         backwardIter();
     }

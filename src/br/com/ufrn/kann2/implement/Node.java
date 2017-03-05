@@ -45,6 +45,10 @@ public class Node extends Subject {
         ((PropertyNodeImpl) pNode).setBias(b);
     }
 
+    public void setOldBias(Double bias) {
+        ((PropertyNodeImpl) pNode).setOldBias(bias);
+    }
+
     public Double getBias() {
         return ((PropertyNodeImpl) pNode).getBias();
     }
@@ -165,7 +169,7 @@ public class Node extends Subject {
 
     public void addBias(Double d) {
         Double bias = getBias();
-        ((PropertyEdgeImpl) pNode).setBias(bias + d);
+        ((PropertyNodeImpl) pNode).setBias(bias + d);
     }
 
 }

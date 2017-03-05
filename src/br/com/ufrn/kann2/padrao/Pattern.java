@@ -40,10 +40,11 @@ public abstract class Pattern {
         return inputs;
     }
 
-    public void generateInput() {
+    public void generateInputOutput() {
         RandomKann r = RandomKann.getInstance();
         for (String s : inputs.keySet()) {
-            Integer nextInt = r.nextInt(2);
+            //Integer nextInt = r.nextInt(2);
+            Integer nextInt = 1;
             Double doubleValue = nextInt.doubleValue();
             inputs.put(s, doubleValue);
         }

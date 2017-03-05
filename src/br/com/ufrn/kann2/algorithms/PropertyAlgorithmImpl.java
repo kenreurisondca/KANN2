@@ -11,14 +11,16 @@ import br.com.ufrn.kann2.implement.Property;
  *
  * @author kenreurison
  */
-public class PropertyAlgorithmImpl extends Property {
+public final class PropertyAlgorithmImpl extends Property {
     
     public PropertyAlgorithmImpl() {
+        super();
     }
     
     @Override
     protected void createFields() {
-        addMapValue("eta", 0.7);
+        registerField("eta");
+        setEta(0.7);
     }
     
     public Double getEta() {

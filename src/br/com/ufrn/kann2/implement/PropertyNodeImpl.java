@@ -63,6 +63,10 @@ public class PropertyNodeImpl extends Property {
         setMapValue("bias", b);
     }
 
+    void setOldBias(Double b) {
+        setMapValue("oldBias", b);
+    }
+
     Double getLevel() {
         return getMapValue("level");
     }

@@ -20,7 +20,7 @@ public final class PatternExample extends Pattern {
         for (int i = 0; i < labels.length; i++) {
             inputs.put(labels[i], 0.);
         }
-        this.generateInput();
+        this.generateInputOutput();
         this.generateOutput();
     }
 

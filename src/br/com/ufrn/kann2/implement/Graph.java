@@ -162,8 +162,10 @@ public class Graph extends Subject {
                 nodeIn = this.getNode(s);
                 if (s.startsWith("¬")) {
                     e = new Edge(nodeIn, nodeOut, -4.);
+                    e.setOldWeigth(-4.);
                 } else {
                     e = new Edge(nodeIn, nodeOut, 4.);
+                    e.setOldWeigth(-4.);
                 }
                 nodeIn.addEdgeOut(e);
                 nodeOut.addEdgeIn(e);
@@ -184,6 +186,7 @@ public class Graph extends Subject {
             String consequent = r.getConsequent();
             Node nodeAdjust = nodeMap.get(consequent);
             nodeAdjust.setBias(bias);
+            nodeAdjust.setOldBias(bias);
         }
     }
 
@@ -355,11 +358,11 @@ public class Graph extends Subject {
         g2.mapping();//Passo 2
         g2.labeling();//Passo 3
         g2.addLinks_form1(); // Passo 6
-        g2.disturbEdges();//Passo 7
-        
+        //g2.disturbEdges();//Passo 7
+
         //Treinamento
         Backpropagation bp = new Backpropagation();
-        bp.setPattern(new PatternExample());
+        bp.setPattern(new PatternExample());        
         g2.setAlgorithm(bp);
         bp.train();
     }

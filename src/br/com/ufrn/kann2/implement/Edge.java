@@ -95,4 +95,16 @@ public class Edge extends Subject {
             return false;
         }
     }
+
+    public Double getInValue() {
+        if (in.getEdgesIn().isEmpty()) {
+            return in.getValue();
+        } else {
+            return in.getActivation();
+        }
+    }
+
+    void setOldWeigth(Double w) {
+        ((PropertyEdgeImpl) p).setOldWeigth(w);
+    }
 }

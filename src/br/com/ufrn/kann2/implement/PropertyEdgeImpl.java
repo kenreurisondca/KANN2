@@ -38,14 +38,12 @@ public class PropertyEdgeImpl extends Property {
         setMapValue("weigth", w);
     }
 
-    void setBias(Double b) {
-        Double oldWeigth = getMapValue("bias");
-        setMapValue("oldBias", oldWeigth);
-        setMapValue("weigth", b);
-    }
-
     Double getOldWeigth() {
         return getMapValue("oldWeigth");
+    }
+
+    void setOldWeigth(double w) {
+        setMapValue("oldWeigth", w);
     }
 
 }
