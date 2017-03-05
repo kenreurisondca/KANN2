@@ -6,6 +6,7 @@
 package br.com.ufrn.kann2.algorithms;
 
 import br.com.ufrn.kann2.implement.Graph;
+import br.com.ufrn.kann2.implement.Property;
 import br.com.ufrn.kann2.padrao.Pattern;
 import br.com.ufrn.kann2.padrao.OutputError;
 
@@ -17,7 +18,8 @@ public abstract class Algorithm {
 
     protected Graph graph;
     protected Pattern pattern;
-    private OutputError op;
+    protected OutputError op;
+    protected Property p = new PropertyAlgorithmImpl();
 
     public Algorithm(Graph graph) {
         this.graph = graph;
@@ -38,7 +40,7 @@ public abstract class Algorithm {
     public void setGraph(Graph graph) {
         this.graph = graph;
     }
-    
+
     public abstract void train();
 
 }

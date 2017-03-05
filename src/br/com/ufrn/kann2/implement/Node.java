@@ -27,8 +27,6 @@ public class Node extends Subject {
     public Property getpNode() {
         return pNode;
     }
-    
-    
 
     public void activation(Double d) {
         ((PropertyNodeImpl) pNode).setActivation(d);
@@ -43,7 +41,7 @@ public class Node extends Subject {
         return 1. / (1. + Math.exp(-net));
     }
 
-    void setBias(Double b) {
+    public void setBias(Double b) {
         ((PropertyNodeImpl) pNode).setBias(b);
     }
 
@@ -106,7 +104,7 @@ public class Node extends Subject {
         ((PropertyNodeImpl) pNode).setBias(bias + r.nextDouble() - 0.5);
     }
 
-    private Double getOldBias() {
+    public Double getOldBias() {
         return ((PropertyNodeImpl) pNode).getOldBias();
     }
 
@@ -121,12 +119,12 @@ public class Node extends Subject {
     public void propagateRec() {
         PropertyNodeImpl prop = (PropertyNodeImpl) pNode;
         if (this.edgesIn.isEmpty()) {
-            this.getEdgesOut().forEach((e) -> e.getOut().addValue(prop.getValue() * e.getWeigth()));
-            this.getEdgesOut().forEach((e) -> e.getOut().propagateRec());
+            this.getEdgesOut().forEach((e) -> e.getNodeOut().addValue(prop.getValue() * e.getWeigth()));
+            this.getEdgesOut().forEach((e) -> e.getNodeOut().propagateRec());
         } else if (this.isReady()) {
             prop.setActivation(this.getValue() + this.getBias());
-            this.getEdgesOut().forEach((e) -> e.getOut().addValue(prop.getActivation() * e.getWeigth()));
-            this.getEdgesOut().forEach((e) -> e.getOut().propagateRec());
+            this.getEdgesOut().forEach((e) -> e.getNodeOut().addValue(prop.getActivation() * e.getWeigth()));
+            this.getEdgesOut().forEach((e) -> e.getNodeOut().propagateRec());
         }
     }
 
@@ -146,25 +144,28 @@ public class Node extends Subject {
     public boolean isReady() {
         return ((PropertyNodeImpl) pNode).isReady();
     }
-    
-    
 
     protected PropertyNodeImpl getProperty() {
         return ((PropertyNodeImpl) pNode);
     }
 
     public void propagateIter() {
-         PropertyNodeImpl prop = (PropertyNodeImpl) pNode;
+        PropertyNodeImpl prop = (PropertyNodeImpl) pNode;
         if (this.edgesIn.isEmpty()) {
-            this.getEdgesOut().forEach((e) -> e.getOut().addValue(prop.getValue() * e.getWeigth()));
+            this.getEdgesOut().forEach((e) -> e.getNodeOut().addValue(prop.getValue() * e.getWeigth()));
         } else if (this.isReady()) {
             prop.setActivation(this.getValue() + this.getBias());
-            this.getEdgesOut().forEach((e) -> e.getOut().addValue(prop.getActivation() * e.getWeigth()));
+            this.getEdgesOut().forEach((e) -> e.getNodeOut().addValue(prop.getActivation() * e.getWeigth()));
         }
     }
-    
-    protected void clean(){
-        ((PropertyNodeImpl)  pNode).cleanFields();
+
+    protected void clean() {
+        ((PropertyNodeImpl) pNode).cleanFields();
+    }
+
+    public void addBias(Double d) {
+        Double bias = getBias();
+        ((PropertyEdgeImpl) pNode).setBias(bias + d);
     }
 
 }

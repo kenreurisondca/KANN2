@@ -216,14 +216,14 @@ public class Graph extends Subject {
     //Selectiona todos os Nodes que CHEGAM em a
     private ArrayList<Node> nodesIn(Node a) {
         ArrayList<Node> res = new ArrayList<>();
-        a.getEdgesIn().forEach((e) -> res.add(e.getIn()));
+        a.getEdgesIn().forEach((e) -> res.add(e.getNodeIn()));
         return res;
     }
 
     //Seleciona todos os Nodes que SAEM de b
     private ArrayList<Node> nodesOut(Node b) {
         ArrayList<Node> res = new ArrayList<>();
-        b.getEdgesOut().forEach((e) -> res.add(e.getOut()));
+        b.getEdgesOut().forEach((e) -> res.add(e.getNodeOut()));
         return res;
     }
 

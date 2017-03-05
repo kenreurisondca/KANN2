@@ -67,11 +67,11 @@ public class Edge extends Subject {
         ((PropertyEdgeImpl) p).setWeigth(weigth + d);
     }
 
-    public Node getIn() {
+    public Node getNodeIn() {
         return in;
     }
 
-    public Node getOut() {
+    public Node getNodeOut() {
         return out;
     }
 

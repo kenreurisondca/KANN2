@@ -44,12 +44,12 @@ public class Backpropagation extends Algorithm {
     public void propagateRec(Node n) {
         PropertyNodeImpl prop = (PropertyNodeImpl) n.getpNode();
         if (n.getEdgesIn().isEmpty()) {
-            n.getEdgesOut().forEach((e) -> e.getOut().addValue(prop.getValue() * e.getWeigth()));
-            n.getEdgesOut().forEach((e) -> e.getOut().propagateRec());
+            n.getEdgesOut().forEach((e) -> e.getNodeOut().addValue(prop.getValue() * e.getWeigth()));
+            n.getEdgesOut().forEach((e) -> e.getNodeOut().propagateRec());
         } else if (n.isReady()) {
             prop.setActivation(n.getValue() + n.getBias());
-            n.getEdgesOut().forEach((e) -> e.getOut().addValue(prop.getActivation() * e.getWeigth()));
-            n.getEdgesOut().forEach((e) -> e.getOut().propagateRec());
+            n.getEdgesOut().forEach((e) -> e.getNodeOut().addValue(prop.getActivation() * e.getWeigth()));
+            n.getEdgesOut().forEach((e) -> e.getNodeOut().propagateRec());
         }
     }
 
@@ -67,8 +67,8 @@ public class Backpropagation extends Algorithm {
             ArrayList<Edge> edgesOut = nodeRemove.getEdgesOut();
             nodeRemove.propagateIter();
             for (Edge e : edgesOut) {
-                if (!inputNodeList.contains(e.getOut())) {
-                    inputNodeList.add(e.getOut());
+                if (!inputNodeList.contains(e.getNodeOut())) {
+                    inputNodeList.add(e.getNodeOut());
                 }
             }
         }
@@ -90,18 +90,42 @@ public class Backpropagation extends Algorithm {
             y = nodeOut.getActivation();
             delta = y * (1 - y) * (d - y);
             nodeOut.getpNode().updateField("delta", delta);
+            updateOutputNode(nodeOut);
         }
+
         List<Node> hiddenNodes = this.getHiddenNodes();
         for (Node nodeHidden : hiddenNodes) {
             y = nodeHidden.getActivation();
             delta = y * (1 - y);
             bpError = 0.;
             for (Edge edgeOut : nodeHidden.getEdgesOut()) {
-                bpError += edgeOut.getWeigth() * edgeOut.getOut().getpNode().getField("delta");
+                bpError += edgeOut.getWeigth() * edgeOut.getNodeOut().getpNode().getField("delta");
+
             }
             delta *= bpError;
             nodeHidden.getpNode().updateField("delta", delta);
+            updateHiddenNode(nodeHidden);
         }
+    }
+
+    private void updateOutputNode(Node nodeOut) {
+        Double delta = nodeOut.getpNode().getField("delta");
+        Double eta = ((PropertyAlgorithmImpl) p).getEta();
+        for (Edge in : nodeOut.getEdgesIn()) {
+            Double input = in.getNodeIn().getActivation();
+            in.addWeigth(eta * delta * input);
+        }
+        nodeOut.addBias(eta * delta);
+    }
+
+    private void updateHiddenNode(Node nodeHidden) {
+        Double delta = nodeHidden.getpNode().getField("delta");
+        Double eta = ((PropertyAlgorithmImpl) p).getEta();
+        for (Edge out : nodeHidden.getEdgesOut()) {
+            Double input = out.getNodeIn().getValue();
+            out.setWeigth(out.getOldWeigth() + eta * delta * input);
+        }
+        nodeHidden.setBias(nodeHidden.getOldBias() + eta * delta);
     }
 
     private List<Node> getOutputNodes() {
