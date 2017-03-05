@@ -40,13 +40,14 @@ public abstract class Pattern {
         return inputs;
     }
 
-    public void generateRandomInput() {
+    public void generateInput() {
         RandomKann r = RandomKann.getInstance();
         for (String s : inputs.keySet()) {
             Integer nextInt = r.nextInt(2);
             Double doubleValue = nextInt.doubleValue();
             inputs.put(s, doubleValue);
         }
+        generateOutput();
     }
 
     private Map<String, Double> mappingInput(String[] label, Double[] values) throws Exception {
@@ -80,18 +81,23 @@ public abstract class Pattern {
 
     protected abstract void generateIntermediateConclusions();
 
-    protected void selectInputInOrder(String[] inputNames) {
+    private void selectInputInOrder(String[] inputNames) {
         for (int i = 0; i < inputNames.length; i++) {
             inputs.put(inputNames[i], 0.);
         }
     }
 
-    protected void selectOutputInOrder(String[] outputNames) {
+    private void selectOutputInOrder(String[] outputNames) {
         for (int i = 0; i < outputNames.length; i++) {
             outputs.put(outputNames[i], 0.);
         }
     }
 
-    public abstract Map<String, Double> performOutput();
+    public Map<String, Double> getInputs() {
+        return inputs;
+    }
 
+    public Map<String, Double> getOutputs() {
+        return outputs;
+    }
 }
