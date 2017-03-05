@@ -12,30 +12,30 @@ import java.util.Map;
  *
  * @author kenreurison
  */
-public class PatternExample extends Pattern {
+public final class PatternExample extends Pattern {
 
     public PatternExample() {
         super();
         String labels[] = {"D", "E", "F", "G"};
-        Double values[] = {1., 1., 1., 1.};
         for (int i = 0; i < labels.length; i++) {
-            super.inputs.put(labels[i], values[i]);
+            inputs.put(labels[i], 0.);
         }
+        this.generateInput();
+        this.generateOutput();
     }
 
     @Override
     protected void generateOutput() {
-
+        if (inputs.get("D") == 1. && inputs.get("F") == 1) {
+            outputs.put("A", 1.);
+        } else {
+            outputs.put("A", 0.);
+        }
     }
 
     @Override
     protected void generateIntermediateConclusions() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Map<String, Double> performOutput() {
-        return new HashMap<>();
     }
 
     public Map<String, Double> getInputs() {
