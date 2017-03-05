@@ -13,48 +13,56 @@ import java.util.Map;
  * @author kenreurison
  */
 public abstract class Property {
-    
+
     private final Map<String, Double> fields = new HashMap<>();
-    
+
     public Property() {
         createFields();
     }
-    
+
     protected void registerField(String field) {
         fields.put(field, 0.0);
     }
-    
+
     private void cleanField(String field) {
         fields.put(field, 0.0);
     }
-    
+
     private void removeField(String field) {
         fields.remove(field);
     }
-    
+
     protected Double getMapValue(String field) {
         return fields.get(field);
     }
-    
+
     protected void addMapValue(String field, Double value) {
         fields.computeIfPresent(field, (k, v) -> value + v);
     }
-    
+
     protected void incMapValue(String field) {
         fields.computeIfPresent(field, (k, v) -> v + 1.);
     }
-    
+
     protected void setMapValue(String field, Double value) {
         fields.computeIfPresent(field, (k, v) -> value);
     }
-    
+
     @Override
     public String toString() {
         return "Property{" + "fields=" + fields.toString() + '}';
     }
-    
+
     protected abstract void createFields();
+
+    public void updateField(String key, Double value) {
+        fields.put(key, value);
+    }
     
+    public Double getField(String key){
+        return fields.get(key);
+    }
+
     protected void cleanFields() {
         fields.forEach((k, v) -> v = 0.);
     }

@@ -20,6 +20,9 @@ import java.util.Map;
  */
 public class Backpropagation extends Algorithm {
 
+    private List<Node> hiddenNodes = new ArrayList<>();
+    private List<Node> outputNodes = new ArrayList<>();
+
     public Backpropagation(Graph graph) {
         super(graph);
     }
@@ -30,7 +33,7 @@ public class Backpropagation extends Algorithm {
 
     @Override
     public void forwardRec() {
-        pattern.generateRandomInput();
+        pattern.generateInput();
         Map<String, Double> input = pattern.getInput();
         graph.getInputs().forEach((k, v) -> v.setValue(input.get(k)));
         for (Node n : graph.getInputs().values()) {
@@ -52,11 +55,11 @@ public class Backpropagation extends Algorithm {
 
     public void setPattern(PatternExample patternExample) {
         pattern = patternExample;
+        pattern.generateInput();
     }
 
     @Override
     public void forwardIter() {
-        pattern.generateRandomInput();
         graph.getInputs().forEach((k, v) -> v.setValue(pattern.getInput().get(k)));
         List<Node> inputNodeList = new ArrayList<>(graph.getInputs().values());
         while (!inputNodeList.isEmpty()) {
@@ -73,12 +76,57 @@ public class Backpropagation extends Algorithm {
 
     @Override
     public void backwardRec() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 
     @Override
     public void backwardIter() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Node> output = this.getOutputNodes();
+        Double y, d, delta, bpError;
+
+        for (Node nodeOut : output) {
+            String label = nodeOut.getLabel();
+            d = pattern.getOutputs().get(label);
+            y = nodeOut.getActivation();
+            delta = y * (1 - y) * (d - y);
+            nodeOut.getpNode().updateField("delta", delta);
+        }
+        List<Node> hiddenNodes = this.getHiddenNodes();
+        for (Node nodeHidden : hiddenNodes) {
+            y = nodeHidden.getActivation();
+            delta = y * (1 - y);
+            bpError = 0.;
+            for (Edge edgeOut : nodeHidden.getEdgesOut()) {
+                bpError += edgeOut.getWeigth() * edgeOut.getOut().getpNode().getField("delta");
+            }
+            delta *= bpError;
+            nodeHidden.getpNode().updateField("delta", delta);
+        }
+    }
+
+    private List<Node> getOutputNodes() {
+        if (outputNodes.isEmpty()) {
+            outputNodes = new ArrayList<>(graph.getOutput().values());
+        }
+        return outputNodes;
+    }
+
+    private List<Node> getHiddenNodes() {
+        if (hiddenNodes.isEmpty()) {
+            for (Node n : graph.getNodes().values()) {
+                if (!n.getEdgesOut().isEmpty() && (!n.getEdgesIn().isEmpty())) {
+                    hiddenNodes.add(n);
+                }
+            }
+        }
+        return hiddenNodes;
+    }
+
+    @Override
+    public void train() {
+        pattern.generateInput();
+        forwardIter();
+        backwardIter();
     }
 
 }

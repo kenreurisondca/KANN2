@@ -46,7 +46,7 @@ public class Graph extends Subject {
         performOutputMap();
     }
 
-    public Graph(ArrayList<Edge> edges, Map<String, Node> nodes) {
+    public Graph(List<Edge> edges, Map<String, Node> nodes) {
         this.edgeList = edges;
         this.nodeMap = nodes;
     }
@@ -106,7 +106,7 @@ public class Graph extends Subject {
         return nodeMap.get(s.replace("¬", ""));
     }
 
-    private ArrayList<Rule> rewrite(ArrayList<Rule> rules) {
+    private List<Rule> rewrite(ArrayList<Rule> rules) {
         Map<String, Integer> statConsequent = statConsequent(rules);
         Map<String, Integer> aux = new HashMap<>(statConsequent);
         ArrayList<Rule> newRules = new ArrayList<>();
@@ -342,6 +342,10 @@ public class Graph extends Subject {
         return nodeMap.toString();
     }
 
+    public void train() {
+        algorithm.train();
+    }
+
     public static void main(String[] args) {
         ArrayList<Rule> rules = new ArrayList();
         rules.add(new Rule("A :- B, C"));
@@ -351,11 +355,12 @@ public class Graph extends Subject {
         g2.mapping();//Passo 2
         g2.labeling();//Passo 3
         g2.addLinks_form1(); // Passo 6
-        //g2.disturbEdges();//Passo 7
+        g2.disturbEdges();//Passo 7
+        
         //Treinamento
         Backpropagation bp = new Backpropagation();
         bp.setPattern(new PatternExample());
         g2.setAlgorithm(bp);
-        bp.forwardIter();
+        bp.train();
     }
 }

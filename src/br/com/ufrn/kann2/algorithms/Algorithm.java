@@ -38,5 +38,7 @@ public abstract class Algorithm {
     public void setGraph(Graph graph) {
         this.graph = graph;
     }
+    
+    public abstract void train();
 
 }
