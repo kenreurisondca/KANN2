@@ -6,10 +6,8 @@
 package br.com.ufrn.kann2.algorithms;
 
 import br.com.ufrn.kann2.implement.Graph;
-import br.com.ufrn.kann2.implement.Node;
 import br.com.ufrn.kann2.padrao.Pattern;
 import br.com.ufrn.kann2.padrao.OutputError;
-import java.util.Map;
 
 /**
  *
@@ -17,20 +15,28 @@ import java.util.Map;
  */
 public abstract class Algorithm {
 
-    private Graph graph;
-    private Pattern p;
+    protected Graph graph;
+    protected Pattern pattern;
     private OutputError op;
 
     public Algorithm(Graph graph) {
         this.graph = graph;
     }
-    
-    protected void forward(){
-        Map<String, Node> inputs = graph.getinputs();
+
+    public Algorithm() {
+
     }
 
-    protected void backward(){
-        Map<String, Node> output = graph.getOutput();
+    public abstract void forwardRec();
+
+    public abstract void forwardIter();
+
+    public abstract void backwardRec();
+
+    public abstract void backwardIter();
+
+    public void setGraph(Graph graph) {
+        this.graph = graph;
     }
 
 }

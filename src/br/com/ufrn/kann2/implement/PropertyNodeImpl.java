@@ -41,7 +41,7 @@ public class PropertyNodeImpl extends Property {
         setMapValue("value", v);
     }
 
-    Double getValue() {
+    public Double getValue() {
         return getMapValue("value");
     }
 
@@ -49,11 +49,11 @@ public class PropertyNodeImpl extends Property {
         return getMapValue("bias");
     }
 
-    Double getActivation() {
+    public Double getActivation() {
         return getMapValue("activation");
     }
 
-    void setActivation(Double d) {
+    public void setActivation(Double d) {
         setMapValue("activation", logsig(d));
     }
 

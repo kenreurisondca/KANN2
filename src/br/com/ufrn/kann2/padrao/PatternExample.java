@@ -5,9 +5,7 @@
  */
 package br.com.ufrn.kann2.padrao;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,16 +16,11 @@ public class PatternExample extends Pattern {
 
     public PatternExample() {
         super();
-        this.selectInputInOrder();
-    }
-
-    @Override
-    public void selectInputInOrder() {
-        inputs.put("D", 0.);
-        inputs.put("E", 0.);
-        inputs.put("F", 0.);
-        inputs.put("G", 0.);
-        
+        String labels[] = {"D", "E", "F", "G"};
+        Double values[] = {1., 1., 1., 1.};
+        for (int i = 0; i < labels.length; i++) {
+            super.inputs.put(labels[i], values[i]);
+        }
     }
 
     @Override
@@ -41,13 +34,8 @@ public class PatternExample extends Pattern {
     }
 
     @Override
-    protected void selectOutputInOrder() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public Map<String, Double> performOutput() {
-        return new HashMap<String, Double>();
+        return new HashMap<>();
     }
 
     public Map<String, Double> getInputs() {

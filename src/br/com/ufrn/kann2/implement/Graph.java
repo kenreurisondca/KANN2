@@ -8,7 +8,6 @@ package br.com.ufrn.kann2.implement;
 import br.com.ufrn.kann2.algorithms.Algorithm;
 import br.com.ufrn.kann2.algorithms.Backpropagation;
 import br.com.ufrn.kann2.observer.Subject;
-import br.com.ufrn.kann2.padrao.Pattern;
 import br.com.ufrn.kann2.padrao.PatternExample;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,7 +32,6 @@ public class Graph extends Subject {
     public Graph() {
         this.edgeList = new ArrayList<>();
         this.nodeMap = new HashMap<>();
-        algorithm = new Backpropagation(this);
     }
 
     public Graph(ArrayList<Rule> rules) {
@@ -61,7 +59,7 @@ public class Graph extends Subject {
         return nodeMap;
     }
 
-    public Map<String, Node> getinputs() {
+    public Map<String, Node> getInputs() {
         if (inputMap.isEmpty()) {
             performInputMap();
         }
@@ -73,6 +71,15 @@ public class Graph extends Subject {
             performOutputMap();
         }
         return outputMap;
+    }
+
+    public Algorithm getAlgorithm() {
+        return algorithm;
+    }
+
+    public void setAlgorithm(Algorithm algorithm) {
+        this.algorithm = algorithm;
+        this.algorithm.setGraph(this);
     }
 
     private void performOutputMap() {
@@ -324,47 +331,10 @@ public class Graph extends Subject {
         edgeList.forEach((e) -> e.disturbWeigth());
     }
 
-    public void forwardRec() {
-        Pattern ipe = new PatternExample();
-        ipe.generateRandomInput();
-        String labels[] = {"D", "E", "F", "G"};
-        Double values[] = {1., 1., 1., 1.};
-        ipe.setInput(labels, values);
-        Map<String, Double> input = ipe.getInput();
-        inputMap.forEach((k, v) -> v.setValue(input.get(k)));
-        for (Node n : inputMap.values()) {
-            n.propagateRec();
-        }
-    }
-
     public void clean() {
         ((PropertyGraphImpl) p).cleanFields();
         edgeList.forEach((e) -> e.clean());
         nodeMap.forEach((k, v) -> v.clean());
-    }
-
-    public void forwardIter() {
-        Pattern ipe = new PatternExample();
-        ipe.performOutput();
-        ipe.generateRandomInput();
-        String labels[] = {"D", "E", "F", "G"};
-        Double values[] = {1., 1., 1., 1.};
-        ipe.setInput(labels, values);
-        Map<String, Double> inputPattern = ipe.getInput();
-        inputMap.forEach((k, v) -> v.setValue(inputPattern.get(k)));
-        List<Node> inputNodeList = new ArrayList<>(inputMap.values());
-        String label;
-        while (!inputNodeList.isEmpty()) {
-            Node nodeRemove = inputNodeList.remove(0);
-            ArrayList<Edge> edgesOut = nodeRemove.getEdgesOut();
-            nodeRemove.propagateIter();
-            for (Edge e : edgesOut) {
-                if (!inputNodeList.contains(e.getOut())) {
-                    inputNodeList.add(e.getOut());
-                }
-            }
-        }
-
     }
 
     @Override
@@ -381,7 +351,11 @@ public class Graph extends Subject {
         g2.mapping();//Passo 2
         g2.labeling();//Passo 3
         g2.addLinks_form1(); // Passo 6
-        //g2.disturbEdges();
-        g2.forwardIter();
+        //g2.disturbEdges();//Passo 7
+        //Treinamento
+        Backpropagation bp = new Backpropagation();
+        bp.setPattern(new PatternExample());
+        g2.setAlgorithm(bp);
+        bp.forwardIter();
     }
 }

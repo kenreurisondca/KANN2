@@ -24,6 +24,12 @@ public class Node extends Subject {
         this.label = label;
     }
 
+    public Property getpNode() {
+        return pNode;
+    }
+    
+    
+
     public void activation(Double d) {
         ((PropertyNodeImpl) pNode).setActivation(d);
         notifyObserver();
@@ -41,11 +47,11 @@ public class Node extends Subject {
         ((PropertyNodeImpl) pNode).setBias(b);
     }
 
-    Double getBias() {
+    public Double getBias() {
         return ((PropertyNodeImpl) pNode).getBias();
     }
 
-    Double getValue() {
+    public Double getValue() {
         return ((PropertyNodeImpl) pNode).getValue();
     }
 
@@ -104,7 +110,7 @@ public class Node extends Subject {
         return ((PropertyNodeImpl) pNode).getOldBias();
     }
 
-    private void addValue(Double d) {
+    public void addValue(Double d) {
         ((PropertyNodeImpl) pNode).addValue(d);
     }
 
@@ -137,7 +143,7 @@ public class Node extends Subject {
                 + ", activation=" + getActivation() + "}\n";
     }
 
-    private boolean isReady() {
+    public boolean isReady() {
         return ((PropertyNodeImpl) pNode).isReady();
     }
     
@@ -147,7 +153,7 @@ public class Node extends Subject {
         return ((PropertyNodeImpl) pNode);
     }
 
-    void propagateIter() {
+    public void propagateIter() {
          PropertyNodeImpl prop = (PropertyNodeImpl) pNode;
         if (this.edgesIn.isEmpty()) {
             this.getEdgesOut().forEach((e) -> e.getOut().addValue(prop.getValue() * e.getWeigth()));

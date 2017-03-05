@@ -60,7 +60,6 @@ public abstract class Pattern {
         return res;
     }
 
-   
     public Map<String, OutputError> getErrorByUnit(Map<String, Double> graph) {
         Set<String> keys = graph.keySet();
         Map<String, OutputError> inputErrorMap = new HashMap<>();
@@ -81,10 +80,18 @@ public abstract class Pattern {
 
     protected abstract void generateIntermediateConclusions();
 
-    protected abstract void selectInputInOrder();
+    protected void selectInputInOrder(String[] inputNames) {
+        for (int i = 0; i < inputNames.length; i++) {
+            inputs.put(inputNames[i], 0.);
+        }
+    }
 
-    protected abstract void selectOutputInOrder();
-    
+    protected void selectOutputInOrder(String[] outputNames) {
+        for (int i = 0; i < outputNames.length; i++) {
+            outputs.put(outputNames[i], 0.);
+        }
+    }
+
     public abstract Map<String, Double> performOutput();
 
 }
