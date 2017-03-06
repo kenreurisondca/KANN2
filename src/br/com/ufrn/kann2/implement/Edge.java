@@ -77,7 +77,8 @@ public class Edge extends Subject {
 
     @Override
     public String toString() {
-        return "Edge{ " + in.getLabel() + " -> " + out.getLabel() + " } w= + " + getWeigth() + " ow=" + getOldWeigth();
+        //return "Edge{ " + in.getLabel() + " -> " + out.getLabel() + " } w= + " + getWeigth() + " ow=" + getOldWeigth();
+        return "w" + in.getLabel() + out.getLabel() + "=" + getWeigth();
     }
 
     public void clean() {

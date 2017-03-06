@@ -33,9 +33,9 @@ public abstract class Algorithm {
 
     public abstract void forwardIter();
 
-    public abstract void backwardRec();
+    public abstract Double backwardRec();
 
-    public abstract void backwardIter();
+    public abstract Double backwardIter();
 
     public void setGraph(Graph graph) {
         this.graph = graph;

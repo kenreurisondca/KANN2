@@ -139,10 +139,7 @@ public class Node extends Subject {
 
     @Override
     public String toString() {
-        return "Node{" + "label=" + label
-                + ", bias=" + getBias()
-                + ", value=" + getValue()
-                + ", activation=" + getActivation() + "}\n";
+        return "s" + label + "=" + getActivation() + ";" + " b" + label + "=" + getBias();
     }
 
     public boolean isReady() {

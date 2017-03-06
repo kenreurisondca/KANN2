@@ -43,8 +43,7 @@ public abstract class Pattern {
     public void generateInputOutput() {
         RandomKann r = RandomKann.getInstance();
         for (String s : inputs.keySet()) {
-            //Integer nextInt = r.nextInt(2);
-            Integer nextInt = 1;
+            Integer nextInt = r.nextInt(2);
             Double doubleValue = nextInt.doubleValue();
             inputs.put(s, doubleValue);
         }

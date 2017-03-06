@@ -26,7 +26,7 @@ public final class PatternExample extends Pattern {
 
     @Override
     protected void generateOutput() {
-        if (inputs.get("D") == 1. && inputs.get("F") == 1) {
+        if ((inputs.get("D") == 1. && inputs.get("E") == 1) || (inputs.get("F") == 1. && inputs.get("G") == 1)) {
             outputs.put("A", 1.);
         } else {
             outputs.put("A", 0.);

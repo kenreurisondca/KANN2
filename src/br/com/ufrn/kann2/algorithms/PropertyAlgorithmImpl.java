@@ -12,22 +12,46 @@ import br.com.ufrn.kann2.implement.Property;
  * @author kenreurison
  */
 public final class PropertyAlgorithmImpl extends Property {
-    
+
     public PropertyAlgorithmImpl() {
         super();
     }
-    
+
     @Override
     protected void createFields() {
         registerField("eta");
-        setEta(0.7);
+        registerField("maxIter");
+        registerField("maxError");
+        setMaxIter(1000.);
+        setEta(0.5);
+        setMaxError(0.01);
     }
-    
+
     public Double getEta() {
         return getField("eta");
     }
-    
-    public void setEta(Double _eta) {
+
+    void setEta(Double _eta) {
         setMapValue("eta", _eta);
+    }
+
+    private void incMaxIter() {
+        incMapValue("maxIter");
+    }
+
+    public Double getMaxIter() {
+        return getField("maxIter");
+    }
+
+    public void setMaxIter(Double d) {
+        setMapValue("maxIter", d);
+    }
+
+    public Double getMaxError() {
+        return getField("maxError");
+    }
+
+    private void setMaxError(Double d) {
+        setMapValue("maxError", d);
     }
 }

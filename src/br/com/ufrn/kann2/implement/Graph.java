@@ -21,21 +21,19 @@ import java.util.Map;
  */
 public class Graph extends Subject {
 
-    private List<Edge> edgeList = new ArrayList<>();
-    private Map<String, Node> nodeMap = new HashMap<>();
+    private List<Edge> edgeList;
+    private Map<String, Node> nodeMap;
     private Map<String, Node> inputMap = new HashMap<>();
     private Map<String, Node> outputMap = new HashMap<>();
-    private List<Rule> rules = new ArrayList<>();
+    private List<Rule> rules;
     private Property p = new PropertyGraphImpl();
     private Algorithm algorithm;
 
     public Graph() {
         this.edgeList = new ArrayList<>();
         this.nodeMap = new HashMap<>();
-    }
+        this.rules = new ArrayList<>();
 
-    public Graph(ArrayList<Rule> rules) {
-        this.rules = rewrite(rules);
     }
 
     public void mapping() {
@@ -106,7 +104,8 @@ public class Graph extends Subject {
         return nodeMap.get(s.replace("¬", ""));
     }
 
-    private List<Rule> rewrite(ArrayList<Rule> rules) {
+    public List<Rule> rewrite(ArrayList<Rule> rules) {
+        this.rules = rules;
         Map<String, Integer> statConsequent = statConsequent(rules);
         Map<String, Integer> aux = new HashMap<>(statConsequent);
         ArrayList<Rule> newRules = new ArrayList<>();
@@ -127,7 +126,7 @@ public class Graph extends Subject {
     }
 
     public void rewrite() {
-        rules = rewrite((ArrayList<Rule>) rules);
+        this.rules = rewrite((ArrayList<Rule>) rules);
     }
 
     private Map<String, Integer> statConsequent(List<Rule> rules) {
@@ -342,28 +341,40 @@ public class Graph extends Subject {
 
     @Override
     public String toString() {
-        return nodeMap.toString();
+        String res = "";
+        for (Node n : nodeMap.values()) {
+            res += n.toString() + "\n";
+        }
+        for (Edge e : edgeList) {
+            res += e.toString() + "\n";
+        }
+        return res;
     }
 
     public void train() {
         algorithm.train();
     }
 
+   
+
     public static void main(String[] args) {
+        
         ArrayList<Rule> rules = new ArrayList();
         rules.add(new Rule("A :- B, C"));
         rules.add(new Rule("B :- D, E"));
         rules.add(new Rule("C :- F, G"));
-        Graph g2 = new Graph(rules);//Passo 1: Rewrite
+        Graph g2 = new Graph();
+        g2.rewrite(rules);//Passo 1
         g2.mapping();//Passo 2
         g2.labeling();//Passo 3
         g2.addLinks_form1(); // Passo 6
         //g2.disturbEdges();//Passo 7
 
         //Treinamento
-        Backpropagation bp = new Backpropagation();
-        bp.setPattern(new PatternExample());        
+        Algorithm bp = new Backpropagation();
+        ((Backpropagation) bp).setPattern(new PatternExample());
         g2.setAlgorithm(bp);
         bp.train();
+
     }
 }

@@ -74,15 +74,17 @@ public class Backpropagation extends Algorithm {
     }
 
     @Override
-    public void backwardRec() {
-
+    public Double backwardRec() {
+        cleanAllValues();
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void backwardIter() {
+    public Double backwardIter() {
         List<Node> output = this.getOutputNodes();
         Double y, d, delta, bpError;
-
+        Double erro = 0.;
+        cleanAllValues();
         for (Node nodeOut : output) {
             String label = nodeOut.getLabel();
             d = pattern.getOutputs().get(label);
@@ -90,6 +92,7 @@ public class Backpropagation extends Algorithm {
             delta = y * (1 - y) * (d - y);
             nodeOut.getpNode().updateField("delta", delta);
             updateOutputNode(nodeOut);
+            erro += (d - y) * (d - y);
         }
 
         List<Node> hiddenNodes = this.getHiddenNodes();
@@ -105,6 +108,7 @@ public class Backpropagation extends Algorithm {
             nodeHidden.getpNode().updateField("delta", delta);
             updateHiddenNode(nodeHidden);
         }
+        return erro;
     }
 
     private void updateOutputNode(Node nodeOut) {
@@ -145,11 +149,35 @@ public class Backpropagation extends Algorithm {
         return hiddenNodes;
     }
 
+    private void cleanAllValues() {
+        graph.getNodes().values().forEach((n) -> n.setValue(0.));
+
+    }
+
+    private Double getMaxIter() {
+        return ((PropertyAlgorithmImpl) p).getMaxIter();
+    }
+
+    private Double getMaxError() {
+        return ((PropertyAlgorithmImpl) p).getMaxError();
+    }
+
     @Override
     public void train() {
-        pattern.generateInputOutput();
-        forwardIter();
-        backwardIter();
+        Double erroTotal = 0.;
+        Double erro = 0.;
+        Double iter = 0.;
+        Double N = 10000.;
+        do {
+            iter++;
+            erroTotal = 0.;
+            for (int i = 0; i < N; i++) {
+                pattern.generateInputOutput();
+                forwardIter();
+                erroTotal += backwardIter();
+            }
+            erroTotal = (0.5 * erroTotal) / N;
+        } while (iter < this.getMaxIter() && erroTotal > this.getMaxError());
     }
 
 }
