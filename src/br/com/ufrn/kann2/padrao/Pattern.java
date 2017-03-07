@@ -51,13 +51,16 @@ public abstract class Pattern {
         generateOutput();
     }
 
-    public void generateInputOutputSequencial(int i) {
-        String binaryString = Integer.toString(i, 2);
-        String[] toArray = (String[]) inputs.keySet().toArray();
+    public void generateInputOutputSequencial(Integer i, String nBits) {
+        Integer total = new Integer(nBits);
+        total *= total;
+        String binaryString = String.format("%" + nBits + "s", Integer.toBinaryString(i % total)).replace(" ", "0");
+        Object[] toArray = inputs.keySet().toArray();
         for (int j = 0; j < binaryString.length(); j++) {
-            Double d = new Double(binaryString.charAt(i));
-            inputs.put(toArray[j], d);
+            Double d = new Double(binaryString.charAt(j));
+            inputs.put((String) toArray[j], d - 48.);
         }
+        generateOutput();
     }
 
     private Map<String, Double> mappingInput(String[] label, Double[] values) throws Exception {

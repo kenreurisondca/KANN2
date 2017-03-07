@@ -355,10 +355,8 @@ public class Graph extends Subject {
         algorithm.train();
     }
 
-   
-
     public static void main(String[] args) {
-        
+
         ArrayList<Rule> rules = new ArrayList();
         rules.add(new Rule("A :- B"));
         rules.add(new Rule("A :- C"));
@@ -369,12 +367,13 @@ public class Graph extends Subject {
         g2.mapping();//Passo 2
         g2.labeling();//Passo 3
         g2.addLinks_form1(); // Passo 6
-        //g2.disturbEdges();//Passo 7
+        g2.disturbEdges();//Passo 7
 
         //Treinamento
         Algorithm bp = new Backpropagation();
         ((Backpropagation) bp).setPattern(new PatternExample());
-        bp.setEta(.7);
+        ((Backpropagation) bp).setMaxError(0.01);
+        bp.setEta(0.1);
         bp.setMaxIter(1000.);
         g2.setAlgorithm(bp);
         bp.train();

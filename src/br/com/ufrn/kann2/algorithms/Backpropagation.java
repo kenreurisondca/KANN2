@@ -118,9 +118,9 @@ public class Backpropagation extends Algorithm {
         Double eta = ((PropertyAlgorithmImpl) p).getEta();
         for (Edge in : nodeOut.getEdgesIn()) {
             Double input = in.getNodeIn().getActivation();
-            in.addWeigth(-eta * delta * input);
+            in.addWeigth(eta * delta * input);
         }
-        nodeOut.addBias(-eta * delta);
+        nodeOut.addBias(eta * delta);
     }
 
     private void updateHiddenNode(Node nodeHidden) {
@@ -128,9 +128,9 @@ public class Backpropagation extends Algorithm {
         Double eta = ((PropertyAlgorithmImpl) p).getEta();
         for (Edge in : nodeHidden.getEdgesIn()) {
             Double input = in.getInValue();
-            in.setWeigth(in.getOldWeigth() - eta * delta * input);
+            in.setWeigth(in.getOldWeigth() + eta * delta * input);
         }
-        nodeHidden.setBias(nodeHidden.getOldBias() - eta * delta);
+        nodeHidden.setBias(nodeHidden.getOldBias() + eta * delta);
     }
 
     private List<Node> getOutputNodes() {
@@ -164,17 +164,22 @@ public class Backpropagation extends Algorithm {
         return ((PropertyAlgorithmImpl) p).getMaxError();
     }
 
+    public void setMaxError(Double d) {
+        ((PropertyAlgorithmImpl) p).setMaxError(d);
+    }
+
     @Override
     public void train() {
         Double erroTotal = 0.;
+        Double erroAntigo = 0.;
         Double iter = 0.;
-        int size = pattern.getInput().size();
-        Double N = new Double(size*size);
+        Double N = 16.;
         do {
             iter++;
             erroTotal = 0.;
             for (int i = 0; i < N; i++) {
-                pattern.generateInputOutputSequencial(i);
+                //pattern.generateInputOutputSequencial(i, "4");
+                pattern.generateInputOutput();
                 forwardIter();
                 erroTotal += backwardIter();
             }

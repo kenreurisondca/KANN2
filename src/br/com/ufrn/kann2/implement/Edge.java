@@ -47,7 +47,7 @@ public class Edge extends Subject {
     public void disturbWeigth() {
         Double weigth = getWeigth();
         RandomKann r = RandomKann.getInstance();
-        ((PropertyEdgeImpl) p).setWeigth(weigth + r.nextDouble() - 0.5);
+        ((PropertyEdgeImpl) p).setWeigth(weigth + r.nextDouble() - 0.05);
     }
 
     public Double getWeigth() {

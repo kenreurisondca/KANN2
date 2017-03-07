@@ -105,7 +105,7 @@ public class Node extends Subject {
     void disturbBias() {
         Double bias = getBias();
         RandomKann r = RandomKann.getInstance();
-        ((PropertyNodeImpl) pNode).setBias(bias + r.nextDouble() - 0.5);
+        ((PropertyNodeImpl) pNode).setBias(bias + r.nextDouble() - 0.05);
     }
 
     public Double getOldBias() {
@@ -139,7 +139,11 @@ public class Node extends Subject {
 
     @Override
     public String toString() {
-        return "s" + label + "=" + getActivation() + ";" + " b" + label + "=" + getBias();
+        if (this.edgesIn.isEmpty()) {
+            return "s" + label + "=" + getValue() + ";" + " b" + label + "=" + getBias();
+        } else {
+            return "s" + label + "=" + getActivation() + ";" + " b" + label + "=" + getBias();
+        }
     }
 
     public boolean isReady() {

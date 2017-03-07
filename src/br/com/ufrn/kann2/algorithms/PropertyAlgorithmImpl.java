@@ -51,7 +51,7 @@ public final class PropertyAlgorithmImpl extends Property {
         return getField("maxError");
     }
 
-    private void setMaxError(Double d) {
+    public void setMaxError(Double d) {
         setMapValue("maxError", d);
     }
 }

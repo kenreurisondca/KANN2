@@ -23,6 +23,11 @@ public final class RandomKann extends Random {
         super(l);
     }
 
+    @Override
+    public double nextDouble() {
+        return (super.nextDouble() / 10.); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public static RandomKann getInstance() {
         if (uniqueInstance == null) {
             uniqueInstance = new RandomKann();
