@@ -59,7 +59,10 @@ public class Backpropagation extends Algorithm {
 
     @Override
     public void forwardIter() {
-        graph.getInputs().forEach((k, v) -> v.setValue(pattern.getInput().get(k)));
+        cleanAllValues();
+        for (Node n : graph.getInputs().values()) {
+            n.setValue(pattern.getInput().get(n.getLabel()));
+        }
         List<Node> inputNodeList = new ArrayList<>(graph.getInputs().values());
         while (!inputNodeList.isEmpty()) {
             Node nodeRemove = inputNodeList.remove(0);
@@ -84,7 +87,6 @@ public class Backpropagation extends Algorithm {
         List<Node> output = this.getOutputNodes();
         Double y, d, delta, bpError;
         Double erro = 0.;
-        cleanAllValues();
         for (Node nodeOut : output) {
             String label = nodeOut.getLabel();
             d = pattern.getOutputs().get(label);
@@ -101,7 +103,7 @@ public class Backpropagation extends Algorithm {
             delta = y * (1 - y);
             bpError = 0.;
             for (Edge edgeOut : nodeHidden.getEdgesOut()) {
-                bpError += edgeOut.getWeigth() * edgeOut.getNodeOut().getpNode().getField("delta");
+                bpError += edgeOut.getOldWeigth() * edgeOut.getNodeOut().getpNode().getField("delta");
 
             }
             delta *= bpError;
@@ -116,9 +118,9 @@ public class Backpropagation extends Algorithm {
         Double eta = ((PropertyAlgorithmImpl) p).getEta();
         for (Edge in : nodeOut.getEdgesIn()) {
             Double input = in.getNodeIn().getActivation();
-            in.addWeigth(eta * delta * input);
+            in.addWeigth(-eta * delta * input);
         }
-        nodeOut.addBias(eta * delta);
+        nodeOut.addBias(-eta * delta);
     }
 
     private void updateHiddenNode(Node nodeHidden) {
@@ -126,9 +128,9 @@ public class Backpropagation extends Algorithm {
         Double eta = ((PropertyAlgorithmImpl) p).getEta();
         for (Edge in : nodeHidden.getEdgesIn()) {
             Double input = in.getInValue();
-            in.setWeigth(in.getOldWeigth() + eta * delta * input);
+            in.setWeigth(in.getOldWeigth() - eta * delta * input);
         }
-        nodeHidden.setBias(nodeHidden.getOldBias() + eta * delta);
+        nodeHidden.setBias(nodeHidden.getOldBias() - eta * delta);
     }
 
     private List<Node> getOutputNodes() {
@@ -165,14 +167,14 @@ public class Backpropagation extends Algorithm {
     @Override
     public void train() {
         Double erroTotal = 0.;
-        Double erro = 0.;
         Double iter = 0.;
-        Double N = 10000.;
+        int size = pattern.getInput().size();
+        Double N = new Double(size*size);
         do {
             iter++;
             erroTotal = 0.;
             for (int i = 0; i < N; i++) {
-                pattern.generateInputOutput();
+                pattern.generateInputOutputSequencial(i);
                 forwardIter();
                 erroTotal += backwardIter();
             }

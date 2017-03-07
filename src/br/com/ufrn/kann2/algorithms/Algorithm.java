@@ -43,4 +43,12 @@ public abstract class Algorithm {
 
     public abstract void train();
 
+    public void setEta(double d) {
+        ((PropertyAlgorithmImpl) p).setEta(d);
+    }
+
+    public void setMaxIter(double d) {
+        ((PropertyAlgorithmImpl) p).setMaxIter(d);
+    }
+
 }

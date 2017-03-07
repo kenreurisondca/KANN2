@@ -98,10 +98,10 @@ public class Edge extends Subject {
     }
 
     public Double getInValue() {
-        if (in.getEdgesIn().isEmpty()) {
-            return in.getValue();
+        if (this.in.getEdgesIn().isEmpty()) {
+            return this.in.getValue();
         } else {
-            return in.getActivation();
+            return this.in.getActivation();
         }
     }
 

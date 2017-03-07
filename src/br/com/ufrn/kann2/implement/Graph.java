@@ -164,7 +164,7 @@ public class Graph extends Subject {
                     e.setOldWeigth(-4.);
                 } else {
                     e = new Edge(nodeIn, nodeOut, 4.);
-                    e.setOldWeigth(-4.);
+                    e.setOldWeigth(4.);
                 }
                 nodeIn.addEdgeOut(e);
                 nodeOut.addEdgeIn(e);
@@ -360,7 +360,8 @@ public class Graph extends Subject {
     public static void main(String[] args) {
         
         ArrayList<Rule> rules = new ArrayList();
-        rules.add(new Rule("A :- B, C"));
+        rules.add(new Rule("A :- B"));
+        rules.add(new Rule("A :- C"));
         rules.add(new Rule("B :- D, E"));
         rules.add(new Rule("C :- F, G"));
         Graph g2 = new Graph();
@@ -373,6 +374,8 @@ public class Graph extends Subject {
         //Treinamento
         Algorithm bp = new Backpropagation();
         ((Backpropagation) bp).setPattern(new PatternExample());
+        bp.setEta(.7);
+        bp.setMaxIter(1000.);
         g2.setAlgorithm(bp);
         bp.train();
 

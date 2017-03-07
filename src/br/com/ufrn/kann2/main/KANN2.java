@@ -5,6 +5,7 @@
  */
 package br.com.ufrn.kann2.main;
 
+import br.com.ufrn.kann2.implement.Graph;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -32,7 +33,8 @@ public class KANN2 extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        launch(args);
+        //launch(args);
+        Graph.main(args);
     }
 
 }

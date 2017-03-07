@@ -6,6 +6,7 @@
 package br.com.ufrn.kann2.padrao;
 
 import br.com.ufrn.kann2.util.RandomKann;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -48,6 +49,15 @@ public abstract class Pattern {
             inputs.put(s, doubleValue);
         }
         generateOutput();
+    }
+
+    public void generateInputOutputSequencial(int i) {
+        String binaryString = Integer.toString(i, 2);
+        String[] toArray = (String[]) inputs.keySet().toArray();
+        for (int j = 0; j < binaryString.length(); j++) {
+            Double d = new Double(binaryString.charAt(i));
+            inputs.put(toArray[j], d);
+        }
     }
 
     private Map<String, Double> mappingInput(String[] label, Double[] values) throws Exception {
@@ -100,4 +110,10 @@ public abstract class Pattern {
     public Map<String, Double> getOutputs() {
         return outputs;
     }
+
+    @Override
+    public String toString() {
+        return "Pattern{" + "inputs=" + inputs + ", outputs=" + outputs + '}';
+    }
+
 }
