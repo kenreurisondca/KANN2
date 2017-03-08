@@ -23,11 +23,6 @@ public final class RandomKann extends Random {
         super(l);
     }
 
-    @Override
-    public double nextDouble() {
-        return (super.nextDouble() / 10.); //To change body of generated methods, choose Tools | Templates.
-    }
-
     public static RandomKann getInstance() {
         if (uniqueInstance == null) {
             uniqueInstance = new RandomKann();
@@ -41,6 +36,10 @@ public final class RandomKann extends Random {
         }
         System.out.println("Não foi possível criar um novo numero aleatorio");
         return uniqueInstance;
+    }
+
+    public Double disturbBiasWeigth() {
+        return (nextDouble() / 1) - 0.5;
     }
 
 }

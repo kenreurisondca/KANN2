@@ -105,7 +105,7 @@ public class Node extends Subject {
     void disturbBias() {
         Double bias = getBias();
         RandomKann r = RandomKann.getInstance();
-        ((PropertyNodeImpl) pNode).setBias(bias + r.nextDouble() - 0.05);
+        ((PropertyNodeImpl) pNode).setBias(bias + r.disturbBiasWeigth());
     }
 
     public Double getOldBias() {

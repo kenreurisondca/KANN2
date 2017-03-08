@@ -360,7 +360,7 @@ public class Graph extends Subject {
         ArrayList<Rule> rules = new ArrayList();
         rules.add(new Rule("A :- B"));
         rules.add(new Rule("A :- C"));
-        rules.add(new Rule("B :- D, E"));
+        rules.add(new Rule("B :- D, E" ));
         rules.add(new Rule("C :- F, G"));
         Graph g2 = new Graph();
         g2.rewrite(rules);//Passo 1

@@ -18,7 +18,7 @@ public abstract class Algorithm {
 
     protected Graph graph;
     protected Pattern pattern;
-    protected OutputError op;
+    protected OutputError op = new OutputError(0., 0.);
     protected Property p = new PropertyAlgorithmImpl();
 
     public Algorithm(Graph graph) {

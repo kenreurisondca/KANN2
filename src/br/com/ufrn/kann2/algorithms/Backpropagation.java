@@ -9,6 +9,7 @@ import br.com.ufrn.kann2.implement.Edge;
 import br.com.ufrn.kann2.implement.Graph;
 import br.com.ufrn.kann2.implement.Node;
 import br.com.ufrn.kann2.implement.PropertyNodeImpl;
+import br.com.ufrn.kann2.padrao.OutputError;
 import br.com.ufrn.kann2.padrao.PatternExample;
 import java.util.ArrayList;
 import java.util.List;
@@ -95,6 +96,11 @@ public class Backpropagation extends Algorithm {
             nodeOut.getpNode().updateField("delta", delta);
             updateOutputNode(nodeOut);
             erro += (d - y) * (d - y);
+            if (d > Math.round(y)) {
+                op.incFN();
+            } else if (d < Math.round(y)) {
+                op.incFP();
+            }
         }
 
         List<Node> hiddenNodes = this.getHiddenNodes();
@@ -174,17 +180,31 @@ public class Backpropagation extends Algorithm {
         Double erroAntigo = 0.;
         Double iter = 0.;
         Double N = 16.;
-        do {
-            iter++;
-            erroTotal = 0.;
-            for (int i = 0; i < N; i++) {
-                //pattern.generateInputOutputSequencial(i, "4");
-                pattern.generateInputOutput();
-                forwardIter();
-                erroTotal += backwardIter();
-            }
-            erroTotal = (0.5 * erroTotal) / N;
-        } while (iter < this.getMaxIter() && erroTotal > this.getMaxError());
+        Double erroMedio = 0.;
+        for (int k = 0; k < 100; k++) {
+            iter = 0.;
+            op = new OutputError(0., 0.);
+            do {
+                iter++;
+                erroTotal = 0.;
+                erroMedio = 0.;
+                for (int i = 0; i < N; i++) {
+                    //pattern.generateInputOutputSequencial(i, "4");
+                    pattern.generateInputOutput();
+                    forwardIter();
+                    erroTotal += backwardIter();
+                    if (iter > 500) {
+                        pattern.generateInputOutput();
+                        forwardIter();
+                        erroTotal += backwardIter();
+                    }
+                }
+                erroMedio = (0.5 * erroTotal) / N;
+            } while (op.getError() < 1 && iter < this.getMaxIter() && erroMedio > this.getMaxError());
+            System.out.println("OPErro " + op.getError());
+            System.out.println("Iterações " + iter);
+            System.out.println("erroMedio " + erroMedio);
+        }
     }
 
 }
