@@ -9,8 +9,10 @@ import br.com.ufrn.kann2.algorithms.Algorithm;
 import br.com.ufrn.kann2.algorithms.Backpropagation;
 import br.com.ufrn.kann2.observer.Subject;
 import br.com.ufrn.kann2.padrao.PatternExample;
+import br.com.ufrn.kann2.padrao.TabuleiroPattern;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +21,7 @@ import java.util.Map;
  *
  * @author kenreurison
  */
-public class Graph extends Subject {
+public class Graph extends Subject implements Cloneable {
 
     private List<Edge> edgeList;
     private Map<String, Node> nodeMap;
@@ -149,6 +151,16 @@ public class Graph extends Subject {
             antecedents.forEach((s) -> this.nodeMap.put(s.replace("¬", ""), new Node(s.replace("¬", ""))));
             this.nodeMap.put(consequents, new Node(consequents));
         }
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        super.clone();
+        Graph gClone = new Graph();
+        ArrayList<Edge> copy = new ArrayList<Edge>(this.edgeList.size());
+        Collections.copy(copy, this.edgeList);
+        gClone.setEdgeList(copy);
+        return gClone;
     }
 
     private void createEdges() {
@@ -355,12 +367,36 @@ public class Graph extends Subject {
         algorithm.train();
     }
 
+    private void setEdgeList(List<Edge> edgeList) {
+        this.edgeList = edgeList;
+    }
+
+    private void setNodeMap(Map<String, Node> nodeMap) {
+        this.nodeMap = nodeMap;
+    }
+
+    private void setInputMap(Map<String, Node> inputMap) {
+        this.inputMap = inputMap;
+    }
+
+    private void setOutputMap(Map<String, Node> outputMap) {
+        this.outputMap = outputMap;
+    }
+
+    private void setRules(List<Rule> rules) {
+        this.rules = rules;
+    }
+
+    private void setP(Property p) {
+        this.p = p;
+    }
+
     public static void main(String[] args) {
 
         ArrayList<Rule> rules = new ArrayList();
         rules.add(new Rule("A :- B"));
         rules.add(new Rule("A :- C"));
-        rules.add(new Rule("B :- D, E" ));
+        rules.add(new Rule("B :- D, E"));
         rules.add(new Rule("C :- F, G"));
         Graph g2 = new Graph();
         g2.rewrite(rules);//Passo 1
@@ -368,10 +404,11 @@ public class Graph extends Subject {
         g2.labeling();//Passo 3
         g2.addLinks_form1(); // Passo 6
         g2.disturbEdges();//Passo 7
+        //Graph clone = (Graph) g2.clone();
 
         //Treinamento
         Algorithm bp = new Backpropagation();
-        ((Backpropagation) bp).setPattern(new PatternExample());
+        ((Backpropagation) bp).setPattern(new TabuleiroPattern());
         ((Backpropagation) bp).setMaxError(0.01);
         bp.setEta(0.1);
         bp.setMaxIter(1000.);

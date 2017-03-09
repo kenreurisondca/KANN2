@@ -10,6 +10,7 @@ import br.com.ufrn.kann2.implement.Graph;
 import br.com.ufrn.kann2.implement.Node;
 import br.com.ufrn.kann2.implement.PropertyNodeImpl;
 import br.com.ufrn.kann2.padrao.OutputError;
+import br.com.ufrn.kann2.padrao.Pattern;
 import br.com.ufrn.kann2.padrao.PatternExample;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +55,7 @@ public class Backpropagation extends Algorithm {
         }
     }
 
-    public void setPattern(PatternExample patternExample) {
+    public void setPattern(Pattern patternExample) {
         pattern = patternExample;
     }
 
@@ -179,7 +180,7 @@ public class Backpropagation extends Algorithm {
         Double erroTotal = 0.;
         Double erroAntigo = 0.;
         Double iter = 0.;
-        Double N = 16.;
+        Double N = 64.;
         Double erroMedio = 0.;
         for (int k = 0; k < 100; k++) {
             iter = 0.;

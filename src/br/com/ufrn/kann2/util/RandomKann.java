@@ -39,7 +39,7 @@ public final class RandomKann extends Random {
     }
 
     public Double disturbBiasWeigth() {
-        return (nextDouble() / 1) - 0.5;
+        return (nextDouble() / 100) - 0.005;
     }
 
 }
