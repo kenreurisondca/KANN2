@@ -21,7 +21,7 @@ public final class PatternExample extends Pattern {
             inputs.put(labels[i], 0.);
         }
         this.generateInputOutput();
-        this.generateOutput();
+        //this.generateOutput();
     }
 
     @Override

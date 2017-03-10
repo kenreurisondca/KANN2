@@ -9,7 +9,6 @@ import br.com.ufrn.kann2.algorithms.Algorithm;
 import br.com.ufrn.kann2.algorithms.Backpropagation;
 import br.com.ufrn.kann2.observer.Subject;
 import br.com.ufrn.kann2.padrao.PatternExample;
-import br.com.ufrn.kann2.padrao.TabuleiroPattern;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -35,6 +34,32 @@ public class Graph extends Subject implements Cloneable {
         this.edgeList = new ArrayList<>();
         this.nodeMap = new HashMap<>();
         this.rules = new ArrayList<>();
+
+    }
+
+    public static void main(String[] args) {
+
+        ArrayList<Rule> rules = new ArrayList();
+        rules.add(new Rule("A :- B"));
+        rules.add(new Rule("A :- C"));
+        rules.add(new Rule("B :- D, E"));
+        rules.add(new Rule("C :- F, G"));
+        Graph g2 = new Graph();
+        g2.rewrite(rules);//Passo 1
+        g2.mapping();//Passo 2
+        g2.labeling();//Passo 3
+        g2.addLinks_form1(); // Passo 6
+        g2.disturbEdges();//Passo 7
+        //Graph clone = (Graph) g2.clone();
+
+        //Treinamento
+        Algorithm bp = new Backpropagation();
+        ((Backpropagation) bp).setPattern(new PatternExample());
+        ((Backpropagation) bp).setMaxError(0.01);
+        bp.setEta(0.1);
+        bp.setMaxIter(1000.);
+        g2.setAlgorithm(bp);
+        bp.train();
 
     }
 
@@ -340,7 +365,7 @@ public class Graph extends Subject implements Cloneable {
         return false;
     }
 
-    private void disturbEdges() {
+    public void disturbEdges() {
         nodeMap.forEach((k, v) -> v.disturbBias());
         edgeList.forEach((e) -> e.disturbWeigth());
     }
@@ -391,29 +416,4 @@ public class Graph extends Subject implements Cloneable {
         this.p = p;
     }
 
-    public static void main(String[] args) {
-
-        ArrayList<Rule> rules = new ArrayList();
-        rules.add(new Rule("A :- B"));
-        rules.add(new Rule("A :- C"));
-        rules.add(new Rule("B :- D, E"));
-        rules.add(new Rule("C :- F, G"));
-        Graph g2 = new Graph();
-        g2.rewrite(rules);//Passo 1
-        g2.mapping();//Passo 2
-        g2.labeling();//Passo 3
-        g2.addLinks_form1(); // Passo 6
-        g2.disturbEdges();//Passo 7
-        //Graph clone = (Graph) g2.clone();
-
-        //Treinamento
-        Algorithm bp = new Backpropagation();
-        ((Backpropagation) bp).setPattern(new TabuleiroPattern());
-        ((Backpropagation) bp).setMaxError(0.01);
-        bp.setEta(0.1);
-        bp.setMaxIter(1000.);
-        g2.setAlgorithm(bp);
-        bp.train();
-
-    }
 }
