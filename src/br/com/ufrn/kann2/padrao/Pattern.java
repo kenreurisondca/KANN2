@@ -6,7 +6,6 @@
 package br.com.ufrn.kann2.padrao;
 
 import br.com.ufrn.kann2.util.RandomKann;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -24,6 +23,11 @@ public abstract class Pattern {
     public Pattern() {
         inputs = new HashMap<>();
         outputs = new HashMap<>();
+    }
+
+    public Pattern(Set<String> inputs, Set<String> outputs) {
+        inputs.forEach((k) -> this.inputs.put(k, 0.));
+        outputs.forEach((k) -> this.outputs.put(k, 0.));
     }
 
     private Pattern(Map<String, Double> inputs, Map<String, Double> outputs) {

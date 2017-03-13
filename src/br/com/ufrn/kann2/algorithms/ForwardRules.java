@@ -7,6 +7,7 @@ package br.com.ufrn.kann2.algorithms;
 
 import br.com.ufrn.kann2.implement.Edge;
 import br.com.ufrn.kann2.implement.Node;
+import br.com.ufrn.kann2.padrao.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,12 +16,12 @@ import java.util.List;
  * @author kenreurison
  */
 public final class ForwardRules extends Algorithm {
-
+    
     @Override
     public void forwardRec() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
     public void forwardIter() {
         cleanAllValues();
@@ -39,25 +40,31 @@ public final class ForwardRules extends Algorithm {
             }
         }
     }
-
+    
     private void cleanAllValues() {
         graph.getNodes().values().forEach((n) -> n.setValue(0.));
-
+        
     }
-
+    
     @Override
     public Double backwardRec() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
     public Double backwardIter() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
     public void train() {
         forwardIter();
     }
-
+    
+    @Override
+    public void setPattern(Pattern pattern) {
+        this.pattern = pattern;
+        graph.getInputs().forEach((k, v) -> v.setValue(pattern.getInputs().get(k)));
+    }
+    
 }

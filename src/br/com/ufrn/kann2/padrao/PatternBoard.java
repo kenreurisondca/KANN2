@@ -6,18 +6,17 @@
 package br.com.ufrn.kann2.padrao;
 
 import br.com.ufrn.kann2.algorithms.Algorithm;
-import br.com.ufrn.kann2.algorithms.Backpropagation;
 import br.com.ufrn.kann2.algorithms.ForwardRules;
 import br.com.ufrn.kann2.implement.Graph;
 import br.com.ufrn.kann2.implement.Rule;
 import br.com.ufrn.kann2.util.RandomKann;
 import br.com.ufrn.kann2.util.ReadFile;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -34,7 +33,14 @@ public class PatternBoard extends Pattern {
         generatePieces();
         initMap();
         Collections.shuffle(pieces, RandomKann.getInstance());
-        generateInputOutput();
+    }
+
+    public PatternBoard(Set<String> inputs, Set<String> outputs) {
+        super(inputs, outputs);
+        generatePieces();
+        initMap();
+        Collections.shuffle(pieces, RandomKann.getInstance());
+
     }
 
     private void initMap() {
@@ -77,11 +83,6 @@ public class PatternBoard extends Pattern {
         }
     }
 
-    public static void main(String[] args) {
-        PatternBoard b = new PatternBoard();
-        PatternBoard b2 = b.randomBoard();
-    }
-
     @Override
     public void generateInputOutput() {
         //Mapeando entrada
@@ -122,6 +123,65 @@ public class PatternBoard extends Pattern {
         }
         return 0.;
     }
+
+//    public Double diagonalCheck() {
+//        Double res = 0.;
+//        res = isQueen(9) + isBishop(9) + 
+//        return res;
+//    }
+//
+//    public double chequeDiagonal() {
+//        double b[] = new double[6];
+//        b[0] = ((queen(3, 0) + bishop(3, 0)) * oppositeColor(3, 0) * isEmpty(2, 1));
+//        b[1] = ((queen(3, 4) + bishop(3, 4)) * oppositeColor(3, 4) * isEmpty(2, 3));
+//        b[2] = ((queen(2, 1) + bishop(2, 1)) * oppositeColor(2, 1));
+//        b[3] = ((queen(2, 3) + bishop(2, 3)) * oppositeColor(2, 3));
+//        b[4] = ((queen(0, 1) + bishop(0, 1)) * oppositeColor(0, 1));
+//        b[5] = ((queen(0, 3) + bishop(0, 3)) * oppositeColor(0, 3));
+//        if ((b[0] + b[1] + b[2] + b[3] + b[4] + b[5]) > 0) {
+//            return 1;
+//        } else {
+//            return 0;
+//        }
+//    }
+//
+//    public double chequeParalelo() {
+//        double b[] = new double[6];
+//        b[0] = ((queen(3, 2) + rook(3, 2)) * oppositeColor(3, 2) * isEmpty(2, 2));
+//        b[1] = ((queen(2, 2) + rook(2, 2)) * oppositeColor(2, 2));
+//        b[2] = ((queen(1, 0) + rook(1, 0)) * oppositeColor(1, 0) * isEmpty(1, 1));
+//        b[3] = ((queen(1, 1) + rook(1, 1)) * oppositeColor(1, 1));
+//        b[4] = ((queen(1, 3) + rook(1, 3)) * oppositeColor(1, 3));
+//        b[5] = ((queen(1, 4) + rook(1, 4)) * oppositeColor(1, 4) * isEmpty(1, 3));
+//        if ((b[0] + b[1] + b[2] + b[3] + b[4] + b[5]) > 0) {
+//            return 1;
+//        } else {
+//            return 0;
+//        }
+//    }
+//
+//    public double chequeCavalo() {
+//        double b[] = new double[6];
+//        b[0] = (knight(3, 1) * oppositeColor(3, 1));
+//        b[1] = (knight(3, 3) * oppositeColor(3, 3));
+//        b[2] = (knight(2, 0) * oppositeColor(2, 0));
+//        b[3] = (knight(2, 4) * oppositeColor(2, 4));
+//        b[4] = (knight(0, 0) * oppositeColor(0, 0));
+//        b[5] = (knight(0, 4) * oppositeColor(0, 4));
+//        if ((b[0] + b[1] + b[2] + b[3] + b[4] + b[5]) > 0) {
+//            return 1;
+//        } else {
+//            return 0;
+//        }
+//    }
+//
+//    public double movimentoIlegal() {
+//        if ((chequeCavalo() + chequeDiagonal() + chequeParalelo()) > 0) {
+//            return 1;
+//        } else {
+//            return 0;
+//        }
+//    }
 
     private Double isQueen(String strPosition) {
         Integer i = reversePositionMap.get(strPosition);
@@ -181,18 +241,24 @@ public class PatternBoard extends Pattern {
         Collections.shuffle(pieces, RandomKann.getInstance());
         return this;
     }
+    
+    public static void main(String[] args) {
+        PatternBoard board = new PatternBoard();
+        board.generateInput();
+        board.generateOutput();
+
+    }
+
+    private void generateInput() {
+        for (String str : this.inputs.keySet()) {
+            this.inputs.put(str, evaluate(str));
+        }
+    }
 
     @Override
-    protected void generateOutput() {
-        Graph g = new Graph();
-        ReadFile f = new ReadFile("src\\br\\com\\ufrn\\kann2\\resources\\xadrez.txt");
-        ArrayList<Rule> rules = f.getRules();
-        g.rewrite(rules);//Passo 1
-        g.mapping();//Passo 2
-        g.labeling();//Passo 3
-        Algorithm fr = new ForwardRules();
-        ((ForwardRules) fr).setPattern(new PatternBoard());
-        g.setAlgorithm(fr);
-        fr.train();
+    public void generateOutput() {
+        for (String str : this.inputs.keySet()) {
+            this.outputs.put(str, evaluate(str));
+        }
     }
 }

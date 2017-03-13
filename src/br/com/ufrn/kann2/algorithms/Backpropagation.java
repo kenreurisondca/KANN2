@@ -11,7 +11,6 @@ import br.com.ufrn.kann2.implement.Node;
 import br.com.ufrn.kann2.implement.PropertyNodeImpl;
 import br.com.ufrn.kann2.padrao.OutputError;
 import br.com.ufrn.kann2.padrao.Pattern;
-import br.com.ufrn.kann2.padrao.PatternExample;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -53,10 +52,6 @@ public class Backpropagation extends Algorithm {
             n.getEdgesOut().forEach((e) -> e.getNodeOut().addValue(prop.getActivation() * e.getWeigth()));
             n.getEdgesOut().forEach((e) -> e.getNodeOut().propagateRec());
         }
-    }
-
-    public void setPattern(Pattern patternExample) {
-        pattern = patternExample;
     }
 
     @Override
@@ -206,6 +201,11 @@ public class Backpropagation extends Algorithm {
             System.out.println("Iterações " + iter);
             System.out.println("erroMedio " + erroMedio);
         }
+    }
+
+    @Override
+    public void setPattern(Pattern p) {
+        pattern = p;
     }
 
 }

@@ -9,12 +9,14 @@ import br.com.ufrn.kann2.algorithms.Algorithm;
 import br.com.ufrn.kann2.algorithms.Backpropagation;
 import br.com.ufrn.kann2.observer.Subject;
 import br.com.ufrn.kann2.padrao.PatternExample;
+import br.com.ufrn.kann2.util.ReadFile;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -39,14 +41,14 @@ public class Graph extends Subject implements Cloneable {
 
     public static void main(String[] args) {
 
-        ArrayList<Rule> rules = new ArrayList();
-        rules.add(new Rule("A :- B"));
-        rules.add(new Rule("A :- C"));
-        rules.add(new Rule("B :- D, E"));
-        rules.add(new Rule("C :- F, G"));
+        ReadFile r = new ReadFile("src\\br\\com\\ufrn\\kann2\\resources\\xadrez_1.txt");
+        ArrayList<Rule> rules = r.getRules();
         Graph g2 = new Graph();
         g2.rewrite(rules);//Passo 1
         g2.mapping();//Passo 2
+        Map<String, Node> inputs = g2.getInputs();
+        Set<String> keySet = g2.inputMap.keySet();
+        //inputs.keySet().forEach((s) -> keyList.add(s));
         g2.labeling();//Passo 3
         g2.addLinks_form1(); // Passo 6
         g2.disturbEdges();//Passo 7
@@ -54,7 +56,7 @@ public class Graph extends Subject implements Cloneable {
 
         //Treinamento
         Algorithm bp = new Backpropagation();
-        ((Backpropagation) bp).setPattern(new PatternExample());
+        bp.setPattern(new PatternExample());
         ((Backpropagation) bp).setMaxError(0.01);
         bp.setEta(0.1);
         bp.setMaxIter(1000.);

@@ -29,7 +29,7 @@ public class ReadFile {
     public ReadFile(String File) {
         this.file = File;
     }
-
+    
     private String getContents() throws FileNotFoundException, IOException {
         FileReader fr = new FileReader(file);
         BufferedReader txtReader = new BufferedReader(fr);

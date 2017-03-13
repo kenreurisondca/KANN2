@@ -37,6 +37,8 @@ public abstract class Algorithm {
 
     public abstract Double backwardIter();
 
+    public abstract void setPattern(Pattern pattern);
+    
     public void setGraph(Graph graph) {
         this.graph = graph;
     }
