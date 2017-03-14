@@ -7,9 +7,9 @@ package br.com.ufrn.kann2.implement;
 
 import br.com.ufrn.kann2.algorithms.Algorithm;
 import br.com.ufrn.kann2.algorithms.Backpropagation;
+import br.com.ufrn.kann2.algorithms.Validation;
 import br.com.ufrn.kann2.observer.Subject;
 import br.com.ufrn.kann2.padrao.PatternBoard;
-import br.com.ufrn.kann2.padrao.PatternExample;
 import br.com.ufrn.kann2.util.ReadFile;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  *
@@ -37,29 +36,6 @@ public class Graph extends Subject implements Cloneable {
         this.edgeList = new ArrayList<>();
         this.nodeMap = new HashMap<>();
         this.rules = new ArrayList<>();
-
-    }
-
-    public static void main(String[] args) {
-
-        ReadFile r = new ReadFile("src\\br\\com\\ufrn\\kann2\\resources\\xadrez_-1Regra.txt");
-        ArrayList<Rule> rules = r.getRules();
-        Graph g2 = new Graph();
-        g2.rewrite(rules);//Passo 1
-        g2.mapping();//Passo 2
-        g2.labeling();//Passo 3
-        g2.addLinks_form1(); // Passo 6
-        g2.disturbEdges();//Passo 7
-
-        //Treinamento
-        Algorithm bp = new Backpropagation();
-        PatternBoard board = new PatternBoard(g2.getInputs().keySet(), g2.getOutput().keySet());
-        bp.setPattern(board);
-        ((Backpropagation) bp).setMaxError(0.01);
-        bp.setEta(0.1);
-        bp.setMaxIter(1000.);
-        g2.setAlgorithm(bp);
-        bp.train();
 
     }
 

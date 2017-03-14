@@ -6,6 +6,7 @@
 package br.com.ufrn.kann2.main;
 
 import br.com.ufrn.kann2.implement.Graph;
+import br.com.ufrn.kann2.implement.Main;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -34,7 +35,7 @@ public class KANN2 extends Application {
      */
     public static void main(String[] args) {
         //launch(args);
-        Graph.main(args);
+        Main.main(args);
     }
 
 }

@@ -25,6 +25,7 @@ public class Backpropagation extends Algorithm {
 
     private List<Node> hiddenNodes = new ArrayList<>();
     private List<Node> outputNodes = new ArrayList<>();
+    private Double trainningError;
 
     public Backpropagation(Graph graph) {
         super(graph);
@@ -37,7 +38,7 @@ public class Backpropagation extends Algorithm {
     @Override
     public void forwardRec() {
         pattern.generateInputOutput();
-        Map<String, Double> input = pattern.getInput();
+        Map<String, Double> input = pattern.getInputs();
         graph.getInputs().forEach((k, v) -> v.setValue(input.get(k)));
         for (Node n : graph.getInputs().values()) {
             n.propagateRec();
@@ -60,7 +61,7 @@ public class Backpropagation extends Algorithm {
     public void forwardIter() {
         cleanAllValues();
         for (Node n : graph.getInputs().values()) {
-            n.setValue(pattern.getInput().get(n.getLabel()));
+            n.setValue(pattern.getInputs().get(n.getLabel()));
         }
         List<Node> inputNodeList = new ArrayList<>(graph.getInputs().values());
         while (!inputNodeList.isEmpty()) {
@@ -95,14 +96,9 @@ public class Backpropagation extends Algorithm {
             nodeOut.getpNode().updateField("delta", delta);
             updateOutputNode(nodeOut);
             erro += (d - y) * (d - y);
-            if (d > Math.round(y)) {
-                op.incFN();
-            } else if (d < Math.round(y)) {
-                op.incFP();
-            }
         }
 
-        List<Node> hiddenNodes = this.getOrderedHiddenNodes();
+        hiddenNodes = this.getOrderedHiddenNodes();
         for (Node nodeHidden : hiddenNodes) {
             y = nodeHidden.getActivation();
             delta = y * (1 - y);
@@ -183,41 +179,38 @@ public class Backpropagation extends Algorithm {
         return ((PropertyAlgorithmImpl) p).getMaxError();
     }
 
+    private Double getSampleSize() {
+        return ((PropertyAlgorithmImpl) p).getSampleSize();
+    }
+
     public void setMaxError(Double d) {
         ((PropertyAlgorithmImpl) p).setMaxError(d);
     }
 
     @Override
     public void train() {
-        Double erroTotal = 0.;
+        Double totalError = 0.;
         Double erroAntigo = 0.;
-        Double iter = 0.;
-        Double N = 10000.;
-        Double erroMedio = 0.;
-        //for (int k = 0; k < 100; k++) {
-            iter = 0.;
-            op = new OutputError(0., 0.);
-            do {
-                iter++;
-                erroTotal = 0.;
-                erroMedio = 0.;
-                for (int i = 0; i < N; i++) {
-                    pattern.generateInputOutput();
-                    forwardIter();
-                    erroTotal += backwardIter();
-                    if (iter > 500) {
-                        pattern.generateInputOutput();
-                        forwardIter();
-                        erroTotal += backwardIter();
-                    }
-                }
-                erroMedio = (0.5 * erroTotal) / N;
-            } while (op.getError() < 1 && iter < this.getMaxIter() && erroMedio > this.getMaxError());
-            System.out.println("OPErro " + op.getError());
-            System.out.println("Iterações " + iter);
-            System.out.println("erroMedio " + erroMedio);
-            
-        //}
+        Double epocas = 0.;
+        Double N = this.getSampleSize();
+        trainningError = this.getMaxError();
+        epocas = 0.;
+        do {
+            epocas++;
+            totalError = 0.;
+            for (int i = 0; i < N; i++) {
+                pattern.generateInputOutput();
+                forwardIter();
+                totalError += backwardIter();
+            }
+            erroAntigo = trainningError;
+            trainningError = (0.5 * totalError) / N;
+        } while (epocas < this.getMaxIter() && trainningError > this.getMaxError()
+                && Math.abs(erroAntigo - trainningError) > this.getMaxError() / 10);
+    }
+
+    public Double getTrainningError() {
+        return this.trainningError;
     }
 
     @Override

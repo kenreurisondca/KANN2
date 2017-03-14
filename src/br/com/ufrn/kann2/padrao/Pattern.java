@@ -41,10 +41,6 @@ public abstract class Pattern {
         }
     }
 
-    public Map<String, Double> getInput() {
-        return inputs;
-    }
-
     public void generateInputOutput() {
         RandomKann r = RandomKann.getInstance();
         for (String s : inputs.keySet()) {

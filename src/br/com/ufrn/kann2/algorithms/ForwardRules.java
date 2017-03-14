@@ -15,18 +15,18 @@ import java.util.List;
  *
  * @author kenreurison
  */
-public final class ForwardRules extends Algorithm {
-    
+public class ForwardRules extends Algorithm {
+
     @Override
     public void forwardRec() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public void forwardIter() {
         cleanAllValues();
         for (Node n : graph.getInputs().values()) {
-            n.setValue(pattern.getInput().get(n.getLabel()));
+            n.setValue(pattern.getInputs().get(n.getLabel()));
         }
         List<Node> inputNodeList = new ArrayList<>(graph.getInputs().values());
         while (!inputNodeList.isEmpty()) {
@@ -40,31 +40,31 @@ public final class ForwardRules extends Algorithm {
             }
         }
     }
-    
+
     private void cleanAllValues() {
         graph.getNodes().values().forEach((n) -> n.setValue(0.));
-        
+
     }
-    
+
     @Override
     public Double backwardRec() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public Double backwardIter() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public void train() {
         forwardIter();
     }
-    
+
     @Override
     public void setPattern(Pattern pattern) {
         this.pattern = pattern;
         graph.getInputs().forEach((k, v) -> v.setValue(pattern.getInputs().get(k)));
     }
-    
+
 }

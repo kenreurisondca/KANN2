@@ -212,16 +212,8 @@ public class PatternBoard extends Pattern {
         }
     }
 
-    public PatternBoard randomBoard() {
+    public void randomBoard() {
         Collections.shuffle(pieces, RandomKann.getInstance());
-        return this;
-    }
-
-    public static void main(String[] args) {
-        PatternBoard board = new PatternBoard();
-        board.generateInput();
-        board.generateOutput();
-
     }
 
     private void generateInput() {
@@ -239,6 +231,7 @@ public class PatternBoard extends Pattern {
 
     @Override
     public void generateInputOutput() {
+        this.randomBoard();
         this.generateInput();
         this.generateOutput();
     }

@@ -29,7 +29,7 @@ public class ReadFile {
     public ReadFile(String File) {
         this.file = File;
     }
-    
+
     private String getContents() throws FileNotFoundException, IOException {
         FileReader fr = new FileReader(file);
         BufferedReader txtReader = new BufferedReader(fr);
@@ -89,12 +89,5 @@ public class ReadFile {
             Logger.getLogger(ReadFile.class.getName()).log(Level.SEVERE, null, ex);
         }
         return res;
-    }
-
-    public static void main(String[] args) {
-        ReadFile f = new ReadFile("src\\br\\com\\ufrn\\kann2\\resources\\xadrez.txt");
-        List<String> vocabulary = f.getVocabulary();
-        System.out.println(vocabulary.toString());
-
     }
 }

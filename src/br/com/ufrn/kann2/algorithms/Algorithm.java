@@ -38,7 +38,7 @@ public abstract class Algorithm {
     public abstract Double backwardIter();
 
     public abstract void setPattern(Pattern pattern);
-    
+
     public void setGraph(Graph graph) {
         this.graph = graph;
     }
@@ -51,6 +51,10 @@ public abstract class Algorithm {
 
     public void setMaxIter(double d) {
         ((PropertyAlgorithmImpl) p).setMaxIter(d);
+    }
+
+    public void setSampleSize(double d) {
+        ((PropertyAlgorithmImpl) p).setSampleSize(d);
     }
 
 }

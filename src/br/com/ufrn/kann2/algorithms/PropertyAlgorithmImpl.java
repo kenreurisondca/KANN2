@@ -22,9 +22,11 @@ public final class PropertyAlgorithmImpl extends Property {
         registerField("eta");
         registerField("maxIter");
         registerField("maxError");
+        registerField("sampleSize");
         setMaxIter(1000.);
         setEta(0.5);
         setMaxError(0.01);
+        setSampleSize(10000);
     }
 
     public Double getEta() {
@@ -53,5 +55,13 @@ public final class PropertyAlgorithmImpl extends Property {
 
     public void setMaxError(Double d) {
         setMapValue("maxError", d);
+    }
+
+    void setSampleSize(double d) {
+        setMapValue("sampleSize", d);
+    }
+
+    Double getSampleSize() {
+        return getField("sampleSize");
     }
 }
