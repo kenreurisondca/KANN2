@@ -16,9 +16,9 @@ import java.util.Set;
  */
 public abstract class Pattern {
 
-    protected Map<String, Double> inputs;
-    protected Map<String, Double> outputs;
-    private Map<String, Double> intermediate;
+    protected Map<String, Double> inputs = new HashMap<>();
+    protected Map<String, Double> outputs = new HashMap<>();
+    private Map<String, Double> intermediate = new HashMap<>();
 
     public Pattern() {
         inputs = new HashMap<>();
@@ -26,8 +26,8 @@ public abstract class Pattern {
     }
 
     public Pattern(Set<String> inputs, Set<String> outputs) {
-        inputs.forEach((k) -> this.inputs.put(k, 0.));
-        outputs.forEach((k) -> this.outputs.put(k, 0.));
+        inputs.forEach((s) -> this.inputs.put(s, 0.));
+        outputs.forEach((s) -> this.outputs.put(s, 0.));
     }
 
     private Pattern(Map<String, Double> inputs, Map<String, Double> outputs) {

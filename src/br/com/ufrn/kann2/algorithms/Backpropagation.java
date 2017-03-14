@@ -12,6 +12,8 @@ import br.com.ufrn.kann2.implement.PropertyNodeImpl;
 import br.com.ufrn.kann2.padrao.OutputError;
 import br.com.ufrn.kann2.padrao.Pattern;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -84,6 +86,7 @@ public class Backpropagation extends Algorithm {
         List<Node> output = this.getOutputNodes();
         Double y, d, delta, bpError;
         Double erro = 0.;
+        this.op = new OutputError(0., 0.);
         for (Node nodeOut : output) {
             String label = nodeOut.getLabel();
             d = pattern.getOutputs().get(label);
@@ -99,7 +102,7 @@ public class Backpropagation extends Algorithm {
             }
         }
 
-        List<Node> hiddenNodes = this.getHiddenNodes();
+        List<Node> hiddenNodes = this.getOrderedHiddenNodes();
         for (Node nodeHidden : hiddenNodes) {
             y = nodeHidden.getActivation();
             delta = y * (1 - y);
@@ -153,6 +156,20 @@ public class Backpropagation extends Algorithm {
         return hiddenNodes;
     }
 
+    private List<Node> getOrderedHiddenNodes() {
+        this.getHiddenNodes();
+        Collections.sort(hiddenNodes, (Node o1, Node o2) -> {
+            if (o1.getLevel() > o2.getLevel()) {
+                return -1;
+            } else if (o1.getLevel() < o2.getLevel()) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+        return hiddenNodes;
+    }
+
     private void cleanAllValues() {
         graph.getNodes().values().forEach((n) -> n.setValue(0.));
 
@@ -175,9 +192,9 @@ public class Backpropagation extends Algorithm {
         Double erroTotal = 0.;
         Double erroAntigo = 0.;
         Double iter = 0.;
-        Double N = 64.;
+        Double N = 10000.;
         Double erroMedio = 0.;
-        for (int k = 0; k < 100; k++) {
+        //for (int k = 0; k < 100; k++) {
             iter = 0.;
             op = new OutputError(0., 0.);
             do {
@@ -185,7 +202,6 @@ public class Backpropagation extends Algorithm {
                 erroTotal = 0.;
                 erroMedio = 0.;
                 for (int i = 0; i < N; i++) {
-                    //pattern.generateInputOutputSequencial(i, "4");
                     pattern.generateInputOutput();
                     forwardIter();
                     erroTotal += backwardIter();
@@ -200,7 +216,8 @@ public class Backpropagation extends Algorithm {
             System.out.println("OPErro " + op.getError());
             System.out.println("Iterações " + iter);
             System.out.println("erroMedio " + erroMedio);
-        }
+            
+        //}
     }
 
     @Override

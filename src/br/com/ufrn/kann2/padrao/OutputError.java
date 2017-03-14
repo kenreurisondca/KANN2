@@ -40,4 +40,11 @@ public class OutputError {
         FN++;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "OutputError{" + "FP=" + FP + ", FN=" + FN + '}';
+    }
+    
+    
 }
