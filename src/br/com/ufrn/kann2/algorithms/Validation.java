@@ -10,6 +10,7 @@ import br.com.ufrn.kann2.implement.Node;
 import br.com.ufrn.kann2.padrao.OutputError;
 import br.com.ufrn.kann2.padrao.Pattern;
 import static java.lang.Double.sum;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -31,9 +32,15 @@ public final class Validation extends ForwardRules {
     public Double validate(Integer sampleSize, Integer iterSize) {
         g.setAlgorithm(this);
         this.setPattern(this.pattern);
-        Long d, y;
+        Double d, y;
         Double dError, yError;
         Double sum = 0.;
+        Double limiar = 12. / 13.;
+        //Double limiar = 1. / 2.;
+        ArrayList<Node> intermediateNodes = new ArrayList<>();
+        intermediateNodes.add(graph.getNodes().get("PCK"));
+        intermediateNodes.add(graph.getNodes().get("DCK"));
+        intermediateNodes.add(graph.getNodes().get("KCK"));
         for (int i = 0; i < iterSize; i++) {
             for (int j = 1; j < sampleSize; j++) {
                 pattern.generateInputOutput();
@@ -42,18 +49,31 @@ public final class Validation extends ForwardRules {
                     dError = pattern.getOutputs().get(n.getLabel());
                     yError = n.getActivation();
                     sum += Math.pow(dError - yError, 2);
-//                    d = (pattern.getOutputs().get(n.getLabel())).longValue();
-//                    y = Math.round(n.getActivation());
-//                    if (!Objects.equals(y, d)) {
-//                        if (y < d) {
-//                            this.op.incFN();
-//                        } else {
-//                            this.op.incFP();
-//                        }
-//                    }
+                    d = (pattern.getOutputs().get(n.getLabel()));
+                    y = n.getActivation();
+                    if (y < limiar && d == 1.0) {
+                        n.getOp().incFN();
+                    } else if (y > limiar && d == 0.0) {
+                        n.getOp().incFP();
+                    }
+                }
+                for (Node n : intermediateNodes) {
+                    d = (pattern.getIntermediate().get(n.getLabel()));
+                    y = n.getActivation();
+                    if (y < limiar && d == 1.0) {
+                        n.getOp().incFN();
+                    } else if (y > limiar && d == 0.0) {
+                        n.getOp().incFP();
+                    }
+
                 }
             }
         }
-        return (0.5 * sum / ((sampleSize) * (iterSize)));
+        //return (0.5 * sum / ((sampleSize) * (iterSize)));
+        Double outputErro = graph.getOutput().get("IM").getOp().getError();
+        Double i1 = intermediateNodes.get(0).getOp().getError();
+        Double i2 = intermediateNodes.get(1).getOp().getError();
+        Double i3 = intermediateNodes.get(2).getOp().getError();
+        return outputErro + i1 + i2 + i3;
     }
 }

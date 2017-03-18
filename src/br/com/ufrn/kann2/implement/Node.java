@@ -6,6 +6,7 @@
 package br.com.ufrn.kann2.implement;
 
 import br.com.ufrn.kann2.observer.Subject;
+import br.com.ufrn.kann2.padrao.OutputError;
 import br.com.ufrn.kann2.util.RandomKann;
 import java.util.ArrayList;
 
@@ -19,6 +20,7 @@ public class Node extends Subject {
     private ArrayList<Edge> edgesOut = new ArrayList<>();
     private String label;
     Property pNode = new PropertyNodeImpl();
+    private OutputError op = new OutputError(0., 0.);
 
     public Node(String label) {
         this.label = label;
@@ -171,6 +173,10 @@ public class Node extends Subject {
     public void addBias(Double d) {
         Double bias = getBias();
         ((PropertyNodeImpl) pNode).setBias(bias + d);
+    }
+
+    public OutputError getOp() {
+        return this.op;
     }
 
 }

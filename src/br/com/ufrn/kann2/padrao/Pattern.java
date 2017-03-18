@@ -18,7 +18,7 @@ public abstract class Pattern {
 
     protected Map<String, Double> inputs = new HashMap<>();
     protected Map<String, Double> outputs = new HashMap<>();
-    private Map<String, Double> intermediate = new HashMap<>();
+    protected Map<String, Double> intermediate = new HashMap<>();
 
     public Pattern() {
         inputs = new HashMap<>();
@@ -117,6 +117,10 @@ public abstract class Pattern {
     @Override
     public String toString() {
         return "Pattern{" + "inputs=" + inputs + ", outputs=" + outputs + '}';
+    }
+
+    public Map<String, Double> getIntermediate() {
+        return intermediate;
     }
 
 }

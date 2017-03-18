@@ -19,17 +19,31 @@ import java.util.List;
  */
 public class Main {
 
-    public static void main(String[] args) {
-        ReadFile r = new ReadFile("src\\br\\com\\ufrn\\kann2\\resources\\xadrez_-1Regra.txt");
+    public Main() {
+    }
+
+    public static Graph Kabann() {
+        ReadFile r = new ReadFile("src\\br\\com\\ufrn\\kann2\\resources\\xadrez_1.txt");
         ArrayList<Rule> rules = r.getRules();
         Graph g = new Graph();
         g.rewrite(rules);//Passo 1
         g.mapping();//Passo 2
         g.labeling();//Passo 3
-        g.addLinks_form3(); // Passo 6
-        g.disturbEdges();//Passo 7
+        //g.addLinks_form1(); // Passo 6
+        //g.disturbEdges();//Passo 7
+        return g;
+    }
 
-        //Treinamento
+    private static Double val(Graph g, PatternBoard board) {
+        Double v;
+        Validation val = new Validation(g, board);
+        v = val.validate(3000, 1);
+        return v;
+    }
+
+    public static void main(String[] args) {
+        Graph g = Kabann();
+
         Algorithm bp = new Backpropagation();
         PatternBoard board = new PatternBoard(g.getInputs().keySet(), g.getOutput().keySet());
         bp.setPattern(board);
@@ -38,17 +52,18 @@ public class Main {
         bp.setMaxIter(1000.);
         bp.setSampleSize(7000.);
         g.setAlgorithm(bp);
-        Double v;
         List<Double> trainningErrors = new ArrayList<>();
         List<Double> validationErrors = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            bp.train();
-            Double t = ((Backpropagation) bp).getTrainningError();
-            trainningErrors.add(t);
-            Validation val = new Validation(g, board);
-            v = val.validate(3000, 1);
-            validationErrors.add(v);
-        }
+        Double val = val(g, board);
+//        Double v;
+//        for (int i = 0; i < 10; i++) {
+//            bp.train();
+//            Double t = ((Backpropagation) bp).getTrainningError();
+//            trainningErrors.add(t);
+//            Validation val = new Validation(g, board);
+//            v = val.validate(3000, 1);
+//            validationErrors.add(v);
+//        }
         System.out.println(trainningErrors.toString() + validationErrors.toString());
     }
 }

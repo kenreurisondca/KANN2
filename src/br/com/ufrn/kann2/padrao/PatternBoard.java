@@ -34,7 +34,6 @@ public class PatternBoard extends Pattern {
         super(inputs, outputs);
         generatePieces();
         initMap();
-        Collections.shuffle(pieces, RandomKann.getInstance());
     }
 
     private void initMap() {
@@ -79,7 +78,21 @@ public class PatternBoard extends Pattern {
 
     @Override
     protected void generateIntermediateConclusions() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (diagonalCheck() > 0) {
+            super.intermediate.put("DCK", 1.);
+        } else {
+            super.intermediate.put("DCK", 0.);
+        }
+        if (parallelalCheck() > 0) {
+            super.intermediate.put("PCK", 1.);
+        } else {
+            super.intermediate.put("PCK", 0.);
+        }
+        if (knigthCheck() > 0) {
+            super.intermediate.put("KCK", 1.);
+        } else {
+            super.intermediate.put("KCK", 0.);
+        }
     }
 
     private Double evaluate(String s) {
@@ -151,11 +164,54 @@ public class PatternBoard extends Pattern {
     }
 
     public Double IllegalMove() {
-        if ((knigthCheck() + diagonalCheck() + parallelalCheck()) > 0) {
+        String chkPiece = "";
+        if ((knigthCheck() > 0)) {
+            chkPiece = find("k");
+            return 1.;
+        } else if (diagonalCheck() > 0) {
+            chkPiece = find("d");
+            return 1.;
+        } else if (parallelalCheck() > 0) {
+            chkPiece = find("p");
             return 1.;
         } else {
             return 0.;
         }
+    }
+
+    private String find(String chkType) {
+        if (null != chkType) {
+            switch (chkType) {
+                case "p":
+                    for (int i = 0; i < this.pieces.size(); i++) {
+                        if (pieces.get(i) == "Q") {
+                            return (pieces.get(i) + this.positionMap.get(i));
+                        } else if (pieces.get(i) == "R") {
+                            return (pieces.get(i) + this.positionMap.get(i));
+                        }
+                    }
+                    break;
+                case "k":
+                    for (int i = 0; i < this.pieces.size(); i++) {
+                        if (pieces.get(i) == "K") {
+                            return (pieces.get(i) + this.positionMap.get(i));
+                        }
+                    }
+                    break;
+                case "d":
+                    for (int i = 0; i < this.pieces.size(); i++) {
+                        if (pieces.get(i) == "Q") {
+                            return (pieces.get(i) + this.positionMap.get(i));
+                        } else if (pieces.get(i) == "B") {
+                            return (pieces.get(i) + this.positionMap.get(i));
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        return "";
     }
 
     private Double isQueen(String strPosition) {
@@ -224,8 +280,13 @@ public class PatternBoard extends Pattern {
 
     @Override
     public void generateOutput() {
-        for (String str : this.outputs.keySet()) {
-            this.outputs.put(str, evaluateOutput(str));
+        Double d1 = this.intermediate.get("PCK");
+        Double d2 = this.intermediate.get("DCK");
+        Double d3 = this.intermediate.get("KCK");
+        if (d1 + d2 + d3 > 0) {
+            this.outputs.put("IM", 1.);
+        } else {
+            this.outputs.put("IM", 0.);
         }
     }
 
@@ -233,6 +294,7 @@ public class PatternBoard extends Pattern {
     public void generateInputOutput() {
         this.randomBoard();
         this.generateInput();
+        this.generateIntermediateConclusions();
         this.generateOutput();
     }
 

@@ -43,7 +43,7 @@ public class ForwardRules extends Algorithm {
 
     private void cleanAllValues() {
         graph.getNodes().values().forEach((n) -> n.setValue(0.));
-
+        graph.getNodes().values().forEach((n) -> n.setActivation(0.));
     }
 
     @Override
